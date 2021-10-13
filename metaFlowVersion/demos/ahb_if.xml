@@ -1,0 +1,61 @@
+<busDefinition>
+	<vendor>amba</vendor>
+	<library>amba</library>
+	<name>ahb</name>
+	<version>v2.0</version>
+	<maxMasters>16</maxMasters>
+	<maxSlaves>16</maxSlaves>
+</busDefinition>
+
+<abstractionDefinition>
+	<busType
+		vendor=""
+		library=""
+		name=""
+		version=""
+	/>
+	<!-- specify include *.sv files -->
+	<fileSet path=""/>
+	<ports>
+		<port>
+			<logicalName>HCLK</logicalName>
+			<wire>
+				<qualifier>
+					<isClock>true</isClock>
+				</qualifier>
+				<onMaster>
+					<presense>required</presense>
+					<direction>in</direction>
+				</onMaster>
+				<onSlave>
+					<direction>in</direction>
+				</onSlave>
+				<defaultValue>0</defaultValue>
+			</wire>
+		</port>
+		<port>
+			<logicalName>HRESETN</logicalName>
+			<wire>
+			</wire>
+		</port>
+		<port>
+			<logicalName>HADDR</logicalName>
+			<wire>
+				<qualifier>
+					<isAddress>true</isAddress>
+				</qualifier>
+			</wire>
+		</port>
+		<port>
+			<logicalName>HSEL</logicalName>
+			<wire>
+				<qualifier>
+					<isControl>true</isControl>
+				</qualifier>
+				<onSlave>
+					<presense>required</presense>
+				</onSlave>
+			</wire>
+		</port>
+	</ports>
+</abstractionDefinition>
