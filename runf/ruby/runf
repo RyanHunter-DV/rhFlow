@@ -1,0 +1,21 @@
+#! /usr/bin/env ruby
+
+
+def main ## {
+	mainSig = 0;
+
+	cfgH = RunfConfig.new();
+
+	return mainSig;
+end ## }
+
+def preLoads ## {
+	thisDir = File.dirname(__FILE__);
+	includeDir = File.join(thisDir,'include');
+	require includeDir+'/runfConfig';
+end ## }
+
+
+preLoads;
+$SIG = main();
+exit $SIG;
