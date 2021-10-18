@@ -1,14 +1,69 @@
-
+## this is a fifo component
 ## comments
 
 ## port declaration
 
+## declare parameter, width, default
+## proposal 1. width = declareParam :width,32
+## proposal 1. depth = declareParam :depth,8
+## proposal 1. pointerWidth = declareParam :pointerWidth, rhFlow.logarithm2(3)
+## proposal 1. 
+## proposal 1. regSignals :writePointer,pointerWidth,0
+## proposal 1. regSignals :readPointer,pointerWidth,0
+## proposal 1. regSignals :readData,width,0
+## proposal 1. mem :r_mem,width,depth
+## proposal 1. 
+## proposal 1. resetFeature :as=>:reset {
+## proposal 1. 	|config|
+## proposal 1. 
+## proposal 1. 	config.setType 'async'
+## proposal 1. 	config.addSensitive 'posedge i_Clk or negedge i_Rstn'
+## proposal 1. 	config.resetSignals {
+## proposal 1. 		writePointer.name=>writePointer.resetValue,
+## proposal 1. 		readPointer.name=>readPointer.resetValue,
+## proposal 1. 		readData.name=>readData.resetValue
+## proposal 1. 	}
+## proposal 1. 
+## proposal 1. }
+## proposal 1. 
+## proposal 1. 
+## proposal 1. fifoFeature :as=>:fifo {
+## proposal 1. 	|config|
+## proposal 1. }
 
-featureConfig useSensitive,True;
-regSignals.add 'r_WE',1,0;
-regSignals.add 'r_RE',1,0;
-regSignals.add writePointer,3,0;
-featureEstablish "resets/reset";
-featureConfig fifoWidth,32;
-featureConfig fifoDepth,16;
-featureEstablish "fifos/fifo";
+
+## proposal 2.
+
+component :fifo do ## {
+	
+	require 'reset.feature'
+	require 'fifo.feature'
+	
+	parameter depth,8
+	parameter width,32
+	
+	regSignal :writePointer, pointerWidth, 0
+	regSignal :readPointer, pointerWidth, 0
+	regSignal :readData,
+	
+	resetFeature {
+		addSensitive 'posedge i_Clk or negedge i_Rstn'
+		setResetType 'async'
+		resetSignals 
+			writePointer.name=>writePointer.resetValue,
+			readPointer.name=>readPointer.resetValue
+	}
+	
+	fifoFeature {
+		setDepth depth
+		setWidth width
+		linkSignals 
+			:r_WP => writePointer,
+			:r_RP => readPointer,
+			:r_RD => readData
+	}
+
+
+end ## }
+
+

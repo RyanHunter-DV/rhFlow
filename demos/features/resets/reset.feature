@@ -1,21 +1,41 @@
-## each feature file will encapsulated as an API function and will called by component which invoked
-## to generate a standard HDL file.
-## using python based language
-## fully support of python language
+## feature based on ruby language
+## reset.feature
+## this file should be included by a component which is going to use this feature.
+##
 
-## regSignals[]
+class ResetFeature < Feature; ## {
+	
+	def feature name, &block; ## {
+		super(name);
+	end ## }
+
+	def setResetType type; ## {
+		@resetType = type;
+	end ## }
 
 
-if useSensitive:
-	verilog "always @(posedge iClk or negedge iRstn) begin";
+	def resetSignals **signalPairs ## {
+	end ## }
 
-## verilog is a self-defined method, in base feature flow
-verilog "if (~Rstn) begin // {";
-## sequentialAssign is a self-defined method, for non-blocking assignment.
-for signal in regSignals: ##{
-	## standardSequentialAssign signal;
-	sequentialAssign signal.name,signal.getResetValue;
-##}
-verilog "end // }";
+	## publish reset feature to RTL
+	def publish &block ## {
+		instance_exec self,&block;
+		RTLString = '';
+		if not @sensitive.empty
+			RTLString = 'always @ ('+@sensitive+') begin'
+			verilog RTLString;
+		end
+
+		publish
+
+	end ## }
+
+end ## }
+
+## 
+def resetFeature &block; ## {
+	reset = ResetFeature.new 'reset';
+	reset.publish &block;
+end ## }
 
 
