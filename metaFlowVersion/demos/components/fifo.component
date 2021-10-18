@@ -2,6 +2,7 @@
 ## comments
 
 ## port declaration
+<<<<<<< HEAD:demos/components/fifo.component
 
 ## declare parameter, width, default
 ## proposal 1. width = declareParam :width,32
@@ -66,4 +67,7 @@ component :fifo do ## {
 
 end ## }
 
+=======
+portSignals.add 'i_Clk'
+>>>>>>> d31ac641e47a2de37423fce38dba308ec182c9ce:metaFlowVersion/demos/components/fifo.component
 

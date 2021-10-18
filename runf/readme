@@ -1,0 +1,13 @@
+# runf is a tool that converts and controls generic options/commands into a third vendor EDA tools
+
+# Usage Information:
+# 
+
+# OPTIONS SUPPORT #
+# listing examples here, this is comment
+
+# every option must exceeds with name, the keyword of name is
+name    => help
+type    => !
+default => null
+descrip =>

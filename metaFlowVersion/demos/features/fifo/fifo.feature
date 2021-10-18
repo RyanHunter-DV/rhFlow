@@ -1,5 +1,5 @@
 ## regSignals class is a built-in class for all features, but user can manually define
-## it's attributes based on python language.
+## it's attributes based on ruby language.
 
 ## 
 ## if elseBranch: ## {
@@ -22,5 +22,23 @@
 ## sequentialIncr regSignals.readPointer;
 ## verilog "end // }";
 
+<<<<<<< HEAD:demos/features/fifo/fifo.feature
+=======
+if elseBranch ## {
+	verilog "else begin // {";
+## }
+else ## {
+	verilog "begin // {";
+end ## }
+>>>>>>> d31ac641e47a2de37423fce38dba308ec182c9ce:metaFlowVersion/demos/features/fifo/fifo.feature
 
 
+<<<<<<< HEAD:demos/features/fifo/fifo.feature
+=======
+verilog "if ("+regSignals.readEnable+"==1) begin // {";
+sequentialAssign regSignals.readData, regSignals.mem[regSignals.readPointer];
+sequentialIncr regSignals.readPointer;
+verilog "end // }";
+
+
+>>>>>>> d31ac641e47a2de37423fce38dba308ec182c9ce:metaFlowVersion/demos/features/fifo/fifo.feature
