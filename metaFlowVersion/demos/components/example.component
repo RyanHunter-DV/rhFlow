@@ -1,0 +1,23 @@
+component :drc_ass_block do ##{
+
+	ports[:iUnReachableRspVld]
+
+	## regs = RegisterNet.new()
+	## regs.add
+	regs[:rAssPktType] = [6,0]
+	regs[:rAssPktVld] = [1,0]
+
+	arbitorFeature do ##{
+		signals.addClock :iClk
+		signals.addReset :iResetN
+		signals.addRegs regs
+		signals.setCondition
+			condition: 'iUnReachableRspVld==1',
+			bundle: {
+				:rAssPktType => 0,
+				:rAssPktVld => 1
+			}
+	end ##}
+
+
+end ##}

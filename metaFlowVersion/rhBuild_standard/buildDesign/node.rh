@@ -1,0 +1,26 @@
+=begin
+file will be required by rhMain
+supported action of design build is:
+build:
+	to assemble a component of a given component file and all required features and other
+	components. The build action can be specified to build all files and its dependencies
+	or a specified component and its dependencies, or a specified component only
+
+a build action will contain following steps:
+1.loading all features
+2.check and build its instances
+3.interface connectivity
+
+=end
+
+
+
+## rh_require 'signal'
+## rh_require 'seqblock'
+
+## TODO, rh_require 'std_design'
+## TODO, rh_require 'std_component'
+
+## rh_require 'std_feature'
+load 'buildDesign/std_feature.rh' ## TODO
+

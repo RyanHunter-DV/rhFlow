@@ -1,0 +1,8 @@
+#! /usr/bin/env ruby
+
+incdir = File.expand_path(File.join(File.dirname(__FILE__),'../','latest/includes'))
+
+$: << incdir
+require 'rh'
+
+RhMain.run
