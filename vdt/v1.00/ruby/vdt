@@ -12,7 +12,7 @@ def main ##{
 
 	config = ProgramConfig.new();
 	analyzer = VdtsAnalyzer.new(config);
-	publisher = TargetPublisher.new(analyzer);
+	publisher = VerilogPublisher.new(analyzer);
 
 
 	config.parseUserOptions;
