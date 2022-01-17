@@ -1,0 +1,22 @@
+
+
+
+class DesignAction ##{
+
+	## create instance variables
+	## @name, is the name of this action instance
+	@name = '<unknow>'
+
+	def initialize name ##{
+		@name = name
+	end ##}
+
+	def name;@name;end
+
+	## method of adding a new action, this method can only be called by DesignAction self.
+	## the arg::action is an instance of the DesignAction class
+	def self.add action ##{
+	end ##}
+
+
+end ##}
