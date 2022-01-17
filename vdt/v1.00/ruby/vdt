@@ -1,0 +1,28 @@
+#! /usr/bin/env ruby
+
+
+$LOAD_PATH << File.dirname(__FILE__)+'/lib';
+
+require "config";
+require "analyzer";
+require "publisher";
+
+def main ##{
+	localSig = 0;
+
+	config = ProgramConfig.new();
+	analyzer = VdtsAnalyzer.new(config);
+	publisher = TargetPublisher.new(analyzer);
+
+
+	config.parseUserOptions;
+	analyzer.analyzeSrc;
+##	publisher.publish;
+
+	return localSig;
+end ##}
+
+
+
+$SIG = main;
+exit($SIG);
