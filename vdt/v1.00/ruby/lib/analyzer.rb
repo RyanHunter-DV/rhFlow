@@ -29,40 +29,20 @@ class VdtsAnalyzer; ##{
 		return contents
 	end ##}
 
-	def willowComments(rawC); ## {
+	## willowComments method will willow all supported comments, both single line comment and
+	## multi-line comment. for multi-line comment, which is start by /*, and end by */, these can
+	## exists both in one line or multiple lines.
+	## the return of this method is raw contents without any comment.
+	def willowComments(rawC); ##{{{
 		willowed = []
-		inMultiComment = false;
 		rawC.each do ## {
 			|line|
-			if inMultiComment
-				inMultiComment = (detectMultiCommentEndMark(line)==nil);
-				next;
-			end
-			line = clearStartWhitespace(line);
-			(cT,cP) = @syn.detectCommentTypeAndPos(line);
-			case cT
-			when 'SINGLE':
-				line = removeComment(line,cP);
-			when 'MULTI':
-				## in case the end mark is in the same line
-				eP = nil;
-				eP = detectMultiCommentEndMark(line)
-				inMultiComment = true if eP==nil;
-				line = removeComment(line,cP,eP);
-			else
-				## no comment, do nothing
-			end
-			willowed.append(line);
+			## 1. detect comment (// or /*) of a line
+			VdtsComment.line=(line);
+			if VdtsComment.isMultiComment?
 		end ## }
-	end ## }
+	end ##}}}
 
-	## if eP=nil, then remove from sP till to the end of line
-	def removeComment(line,sP,eP=nil); ## {{{
-	end ## }}}
-
-	## return nil if no endMark, else return the start position
-	def detectMultiCommentEndMark(line); ## {
-	end ## }
 
 
 

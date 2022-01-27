@@ -1,0 +1,3 @@
+./vdt
+./lib/analyzer.rb
+	## this is the VdtAnalyzer class that do analyzing actions for vdts files
