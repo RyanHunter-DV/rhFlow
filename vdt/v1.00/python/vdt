@@ -1,0 +1,14 @@
+#! /usr/bin/env python3
+import sys;
+
+
+import config;
+
+def main(): #{
+	config.processUserOptions();
+
+
+#}
+
+
+sys.exit(main());
