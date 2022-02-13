@@ -5,11 +5,16 @@ import os;
 libPath = os.path.dirname(os.path.abspath(__file__));
 sys.path.append(libPath);
 
+from userOptions import *;
 
-_options = None;
+_uo = None;
 ## to instantiate the userOption object and process input user options
 def processUserOptions(): #{
-	global _options;
-	## TODO
+	global _uo;
+	_uo = UserOptions();
+#}
+
+def getVdts(): #{
+	return _uo.getVdts();
 #}
 
