@@ -1,0 +1,63 @@
+## vdts -n syncFifo
+## ft depth 8
+## ft ptrW 3
+## ft width 32
+##
+## md -n syncFifo#{depth}x#{width}
+## port -i iClk
+## port -i iRstn
+## port -i iWe
+## port -i iRe
+## port -i [#{width}-1:0] iWData
+## port -o [#{width}-1:0] oRData
+## port -o oFull
+## port -o oEmpty
+##
+## sig -r [#{width}-1:0] mem [#{depth}] // vlog reg [#{width}-1:0] mem[#{depth}]
+## sig -r [#{ptrW}-1:0] rPtr
+## // sig -r [#{ptrW}-1:0] wPtr
+## sig -r [#{ptrW}-1:0] rCount
+##
+##
+## // use single selection block
+## // if signal of -o has been declared before, then do not declare it
+## // else automatically declare it
+## lsel -s -n wPtrSel
+## wPtrSel -p iClk -n iRstn
+## wPtrSel -o [#{ptrW}-1:0] wPtr -r 0
+## wPtrSel -i wPtr+1'b1 -c iWe==1'b1
+## lsel -s -n rPtrSel
+## rPtrSel -p iClk -n iRstn
+## rPtrSel -o [#{ptrW}-1:0] rPtr -r 0
+## rPtrSel -i rPtr+1'b1 -c iRe==1'b1
+## lsel -s -n wDatSel
+## wDatSel -p iClk -n iRstn
+## wDatSel -o mem[wPtr]
+## wDatSel -i iWData -c iWe==1'b1
+## lsel -s -n rCountSel
+## rCountSel -p iClk -n iRstn
+## rCountSel -o rCount
+## rCountSel -i rCount+1'b1 -c iWe&~iRe
+## rCountSel -i rCount-1'b1 -c ~iWe&iRe
+## rCountSel -i rCount -c default
+##
+## vdts -e
+
+design :syncFifo do #{
+
+	feature :width,32
+	feature :depth,8
+
+	signal :iClk,:in
+	signal :iReset,:in
+	signal :iWe,:in
+	signal :iRe,:in
+	signal :iWData,:in,feature.width
+	signal :oRData,:out,feature.width
+
+	## TODO, net of array
+	array :mem,feature.width,feature.depth
+
+
+
+end #}

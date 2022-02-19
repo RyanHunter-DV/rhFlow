@@ -1,0 +1,14 @@
+#! /usr/bin/env ruby
+
+$toolHome = File.dirname(File.absolute_path(__FILE__))+'/..';
+$LOAD_PATH << $toolHome
+require 'lib/design'
+
+def main ##{{{
+	puts "loading test stage ";
+	puts $toolHome+'/test/syncFifo.vdts';
+	require 'test/syncFifo';
+	return 0;
+end ##}}}
+
+exit(main);
