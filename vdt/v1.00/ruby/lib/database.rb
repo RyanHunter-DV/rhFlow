@@ -22,4 +22,13 @@ module DB ##{
 		return nil;
 	end ##}}}
 
+
+	## call this method by vdt main to elaborate all designs existing in @designs
+	def self.elaborate ##{{{
+		@designs.each_value do #{
+			|v|
+			v.elaborate
+		end #}
+	end ##}}}
+
 end ##}

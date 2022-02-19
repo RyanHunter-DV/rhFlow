@@ -47,6 +47,7 @@ design :syncFifo do #{
 
 	feature :width,32
 	feature :depth,8
+	feature :ptrW,3
 
 	signal :iClk,:in
 	signal :iReset,:in
@@ -56,8 +57,16 @@ design :syncFifo do #{
 	signal :oRData,:out,feature.width
 
 	## TODO, net of array
-	array :mem,feature.width,feature.depth
+	## array :mem,feature.width,feature.depth
 
+
+	## logic selection component
+	lsel :rPtrSel do
+		feature :isSeq,true
+		
+	end
 
 
 end #}
+
+
