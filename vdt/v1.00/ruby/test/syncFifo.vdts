@@ -57,36 +57,46 @@ design :syncFifo,:width=>32,:depth=>8,:ptrW=>3 do #{
 
 
 	## logic selection component
-	import :lsel;
+	import :ptrSel;
 
 	signal :rPtr,:reg,feature.ptrW
+	signal :wPtr,:reg,feature.ptrW
 
-	lsel :rPtrSel do
-		feature :isSeq,true
-		## signal connection
-		connect :s=>:rPtr
+	ptrSel :rPtrSel do
+		connect :s=>:iRe
+		connect :o=>:rPtr
+		connect :i=>:rPtr
 	end
 
-	lsel :wPtrSel do
-		feature :isSeq,false
+	ptrSel :wPtrSel do
+		connect :s=>:iWe
+		connect :o=>:wPtr
+		connect :i=>:wPtr
 	end
 
 
 end #}
 
-component :lsel, :isSeq=>true do
+component :ptrSel, :isSeq=>true,:w=>3 do
 
-	signal :o,:out,1
-	signal :i0,:in,1
-	signal :i1,:in,1
-	signal :s,:in,2
+	signal :o,:out,feature.w
+	signal :i,:in,feature.w
+	signal :s,:in,1
 
 	block :exe do
 		if feature.isSeq
 			puts "executing with isSeq==true"
+			oo = o.rtlname;
+			io = i.rtlname;
+			so = s.rtlname;
+			seqSel :sel0, 
+			:clk=>parent.iClk,
+			:rstn=>parent.iReset,
+			:cond=>{
+				"#{oo}<=#{io}+1'b1"=>"#{so}==1'b1",
+			}
 		else
 			puts "executing with isSeq==false"
-			##logical :sel, "#{s.rtlName}[0]==1'b1"
 		end
 	end
 end

@@ -4,6 +4,7 @@
 require 'lib/database'
 require 'lib/feature'
 require 'lib/signal'
+require 'lib/logical'
 
 require 'lib/baseContainer'
 require 'lib/component'

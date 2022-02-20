@@ -36,10 +36,10 @@ def __defineComponentMethodLocally name ##{{{
 			|inst,&b|
 			c = ComponentRegistry.getComponent name
 			self.instantiate inst,c;
-			if b!=nil
-				c.pre_elaborate inst,b;
-			end
 			c.elaborate if not c.elaborated;
+			if b!=nil
+				c.instantiate inst,b;
+			end
 			c.exec
 		end ##}
 	end

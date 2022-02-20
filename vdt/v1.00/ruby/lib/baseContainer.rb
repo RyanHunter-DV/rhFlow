@@ -7,8 +7,9 @@ class BaseContainer; ##{
 	attr :blocks;
 	attr :logics;
 	attr :parent;
-	attr :connections;
+	## TODO, attr :connections;
 	attr :exes;
+	attr :currentInst;
 
 	def initialize name,ft,block ##{{{
 		@blocks = Array.new();
@@ -19,12 +20,17 @@ class BaseContainer; ##{
 		@name = name;
 		@blocks.push(block);
 		@parent = nil;
-		@connections = Hash.new();
+		## TODO, @connections = Hash.new();
 		@exes = Array.new();
+		@currentInst = '';
 
 		if ft.is_a?(Hash)
 			__addFeaturesFromHash ft
 		end
+	end ##}}}
+
+	def addLogics l ##{{{
+		@logics.push(l);
 	end ##}}}
 
 	def block name, &b ##{{{
@@ -84,7 +90,7 @@ class BaseContainer; ##{
 		end
 	end ##}}}
 
-	def pre_elaborate inst,b ##{{{
+	def instantiate inst,b ##{{{
 		@currentInst = inst.to_s;
 		self.instance_exec &b;
 	end ##}}}
@@ -99,8 +105,9 @@ class BaseContainer; ##{
 	def connect opts ##{{{
 		opts.each_pair do
 			|s,t| ## s:source, t:target
-			fullS = @currentInst+'.'+s.to_s;
-			@connections[fullS] = t.to_s;
+			## fullS = @currentInst+'.'+s.to_s;
+			## @connections[fullS] = t.to_s;
+			self.send(s.to_sym).connect @currentInst,@parent.send(t.to_sym);
 		end
 	end ##}}}
 
