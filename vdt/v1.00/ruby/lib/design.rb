@@ -5,29 +5,21 @@ require 'lib/database'
 require 'lib/feature'
 require 'lib/signal'
 
-class DesignModule ##{
-	@blocks;
-	attr :name;
-	attr :features;
-	attr :signals;
-	attr :instances; ## type is DesignModule
-	attr :featureRegistry;
+require 'lib/baseContainer'
+require 'lib/component'
 
-    def initialize name,block ##{{{
-		@blocks = Array.new();
-		@blocks.push(block);
-		@name = name;
+class DesignModule < BaseContainer; ##{
+	attr :subDesigns; ## type is DesignModule
+	attr :subComps; ## type is component
 
+
+    def initialize name,ft,block ##{{{
+		super(name,ft,block);
 		## init
-		@features = Hash.new();
-		@signals  = Hash.new();
-		@instances= Hash.new();
-		@featureRegistry = FeatureRegistry.new();
+		@subDesigns = Hash.new();
+		@subComps = Hash.new();
 	end ##}}}
 
-	def expand block ##{{{
-		@blocks.push(block);
-	end ##}}}
 
 	def elaborate ##{{{
 		@blocks.each do ##{
@@ -37,41 +29,29 @@ class DesignModule ##{
 		end ##}
 	end ##}}}
 
-	def addFeature ft ##{{{
-		## simply overwrite now
-		@features[ft.name] = ft;
-		puts "adding feature of #{ft.name}"
-		getFeatureRegistry.instance_exec do
-			define_singleton_method ft.name.to_sym do
-				return ft.value;
-			end
+	def instantiate inst,c
+		## TODO
+		c.setParent self;
+		if c.is_a?(DesignComponent)
+			@subComps[inst.to_s] = c;
+		else
 		end
-	end ##}}}
-
-	def addSignal sig ##{{{
-		if @signals.has_key?(sig.name)
-			puts "ERROR: signal already registered, ignored"
-			return;
-		end
-		@signals[sig.name] = sig;
-	end ##}}}
-
-	def getFeatureRegistry
-		return @featureRegistry;
 	end
+
+
 
 end ##}
 
 ## by calling this method, will create a new DesignModule class instance, and stores block
 ## into that class, also, if the named design has already been declared, then added block to that
 ## registered DesignModule instance.
-def design name, &block ##{{{
+def design name,ft, &block ##{{{
 	#1. check named design in database, or create a new one
 	designObj = DB.getDesign(name);
 	if designObj==nil
-		designObj = DesignModule.new(name,block);
+		designObj = DesignModule.new(name,ft,block);
 		DB.addNewDesign(designObj);
 	else
-		DB.expandDesign(designObj,block);
+		DB.expandDesign(designObj,ft,block);
 	end
 end ##}}}

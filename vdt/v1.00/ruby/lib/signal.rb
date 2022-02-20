@@ -1,11 +1,21 @@
 class DesignSignal ##{
 
 	attr :name,:dir,:width;
+	attr :container;
 
 	def initialize name,dir,w ##{{{
 		@name  = name;
 		@dir   = dir;
 		@width = w;
+		@container = nil;
+	end ##}}}
+
+
+	def rtlName ##{{{
+	end ##}}}
+
+	def setContainer c ##{{{
+		@container = c;
 	end ##}}}
 
 end ##}

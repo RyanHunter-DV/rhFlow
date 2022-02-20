@@ -43,11 +43,7 @@
 ##
 ## vdts -e
 
-design :syncFifo do #{
-
-	feature :width,32
-	feature :depth,8
-	feature :ptrW,3
+design :syncFifo,:width=>32,:depth=>8,:ptrW=>3 do #{
 
 	signal :iClk,:in
 	signal :iReset,:in
@@ -61,12 +57,37 @@ design :syncFifo do #{
 
 
 	## logic selection component
+	import :lsel;
+
+	signal :rPtr,:reg,feature.ptrW
+
 	lsel :rPtrSel do
 		feature :isSeq,true
-		
+		## signal connection
+		connect :s=>:rPtr
+	end
+
+	lsel :wPtrSel do
+		feature :isSeq,false
 	end
 
 
 end #}
 
+component :lsel, :isSeq=>true do
+
+	signal :o,:out,1
+	signal :i0,:in,1
+	signal :i1,:in,1
+	signal :s,:in,2
+
+	block :exe do
+		if feature.isSeq
+			puts "executing with isSeq==true"
+		else
+			puts "executing with isSeq==false"
+			##logical :sel, "#{s.rtlName}[0]==1'b1"
+		end
+	end
+end
 

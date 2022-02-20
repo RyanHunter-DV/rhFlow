@@ -9,12 +9,15 @@ module DB ##{
 	end ##}}}
 
 	## expand block
-	def self.expandDesign obj,block ##{{{
+	def self.expandDesign obj,ft,block ##{{{
 		if not @designs.has_key?(obj.name)
 			puts "FATAL, design not registered !!!"
 			return;
 		end
 		@designs[obj.name].expand(block);
+		if ft.is_a?(Hash) and (not ft.empty?)
+			@designs[obj.name].__addFeaturesFromHash ft
+		end
 	end ##}}}
 
 	def self.getDesign name ##{{{

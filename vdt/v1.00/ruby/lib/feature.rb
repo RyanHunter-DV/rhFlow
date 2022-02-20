@@ -19,7 +19,7 @@ end ##}}}
 def feature *args ##{{{
 	## branch for adding new features
 	if args.size == 2
-		ft = DesignFeature.new(args[0],args[1]);
+		ft = DesignFeature.new(args[0].to_s,args[1]);
 		self.addFeature(ft);
 		return;
 	end
