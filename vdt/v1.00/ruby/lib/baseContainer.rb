@@ -13,7 +13,7 @@ class BaseContainer; ##{
 
 	def initialize name,ft,block ##{{{
 		@blocks = Array.new();
-		@logics = Array.new();
+		@logics = Hash.new();
 		@features = Hash.new();
 		@signals  = Hash.new();
 		@featureRegistry = FeatureRegistry.new();
@@ -29,8 +29,12 @@ class BaseContainer; ##{
 		end
 	end ##}}}
 
-	def addLogics l ##{{{
-		@logics.push(l);
+	def addLogics l,inst='design' ##{{{
+		if self.is_a?(DesignComponent)
+			@logics[inst.to_s] = l;
+		else
+			@logics[l.name] = l;
+		end
 	end ##}}}
 
 	def block name, &b ##{{{
@@ -110,5 +114,6 @@ class BaseContainer; ##{
 			self.send(s.to_sym).connect @currentInst,@parent.send(t.to_sym);
 		end
 	end ##}}}
+
 
 end ##}

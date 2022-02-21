@@ -74,6 +74,8 @@ design :syncFifo,:width=>32,:depth=>8,:ptrW=>3 do #{
 		connect :i=>:wPtr
 	end
 
+	publish
+
 
 end #}
 

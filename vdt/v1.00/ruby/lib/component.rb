@@ -25,6 +25,12 @@ class DesignComponent < BaseContainer; ##{
 	## 	self.instance_exec &b
 	## end ##}}}
 
+	def publish inst ##{{{
+		@logics.each_pair do ##{
+			|i,l|
+			l.publish if i==inst;
+		end ##}
+	end ##}}}
 
 end ##}
 

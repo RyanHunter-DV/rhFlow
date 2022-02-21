@@ -39,6 +39,20 @@ class DesignModule < BaseContainer; ##{
 		end
 	end
 
+	def publish
+		@subDesigns.each do
+			|d|
+			d.publish
+		end
+		@subComps.each_pair do
+			|i,c|
+			c.publish i
+		end
+		@logics.each_pair do
+			|ln,l|
+			l.publish
+		end
+	end
 
 
 end ##}
