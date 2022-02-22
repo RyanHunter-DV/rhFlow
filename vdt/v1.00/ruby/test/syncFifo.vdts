@@ -42,6 +42,9 @@
 ## rCountSel -i rCount -c default
 ##
 ## vdts -e
+design :testDesign do #{
+	signal :iClk, :in
+end #}
 
 design :syncFifo,:width=>32,:depth=>8,:ptrW=>3 do #{
 
@@ -74,7 +77,11 @@ design :syncFifo,:width=>32,:depth=>8,:ptrW=>3 do #{
 		connect :i=>:wPtr
 	end
 
-	publish
+	testDesign :utest do
+		connect :iClk=>:iClk
+	end
+
+	publish ## TODO, this should be called outside of the target design, coded here just for test
 
 
 end #}

@@ -62,11 +62,8 @@ class LogicalSel < DesignLogicalBase; ##{{{
 		else
 		end
 
-		puts "[DEBUG]"
-		cnts.each do
-			|line|
-			puts line;
-		end
+		## return contents to caller
+		return cnts;
 	end
 
 end ##}}}

@@ -35,3 +35,19 @@ module DB ##{
 	end ##}}}
 
 end ##}
+
+## to define a method with the name of the design, by calling thie defined method
+## it can call to instantiate a design instance into the caller
+def createNewDesignMethod de ##{{{
+	define_method de.name.to_sym do
+		|inst,&b|
+		if not self.is_a?(DesignModule)
+			puts "Error, a deisng must be instantiated within a design"
+			return;
+		end
+		self.instantiate inst,de
+		if b!=nil
+			de.instanceExecution inst, b
+		end
+	end
+end ##}}}

@@ -94,7 +94,7 @@ class BaseContainer; ##{
 		end
 	end ##}}}
 
-	def instantiate inst,b ##{{{
+	def instanceExecution inst,b ##{{{
 		@currentInst = inst.to_s;
 		self.instance_exec &b;
 	end ##}}}

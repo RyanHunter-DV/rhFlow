@@ -26,10 +26,12 @@ class DesignComponent < BaseContainer; ##{
 	## end ##}}}
 
 	def publish inst ##{{{
+		cnts = Array.new();
 		@logics.each_pair do ##{
 			|i,l|
-			l.publish if i==inst;
+			cnts.push(l.publish) if i==inst;
 		end ##}
+		return cnts;
 	end ##}}}
 
 end ##}
@@ -44,7 +46,7 @@ def __defineComponentMethodLocally name ##{{{
 			self.instantiate inst,c;
 			c.elaborate if not c.elaborated;
 			if b!=nil
-				c.instantiate inst,b;
+				c.instanceExecution inst,b;
 			end
 			c.exec
 		end ##}
