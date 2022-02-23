@@ -17,7 +17,7 @@ class BaseContainer; ##{
 		@features = Hash.new();
 		@signals  = Hash.new();
 		@featureRegistry = FeatureRegistry.new();
-		@name = name;
+		@name = name.to_s;
 		@blocks.push(block);
 		@parent = nil;
 		## TODO, @connections = Hash.new();

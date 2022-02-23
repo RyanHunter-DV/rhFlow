@@ -48,6 +48,15 @@ class DesignModule < BaseContainer; ##{
 		end
 	end
 
+	def getInstanceConnections inst ##{{{
+		connects = Hash.new();
+		@signals.each_pair do
+			|n,s|
+			connects[n] = s.connections[inst+'.'+s.name].name;
+		end
+		return connects;
+	end ##}}}
+
 	def publishLocalLogics; ##{{{
 		@logics.each do
 			|l|
@@ -64,7 +73,13 @@ class DesignModule < BaseContainer; ##{
 
 	def publishDesignInstances; ##{{{
 		## TODO
+		@subDesigns.each_pair do ##{
+			|i,d|
+			connects = d.getInstanceConnections i
+			@logicCnts.push RTL.designInstance d.name,i,connects;
+		end ##}
 	end ##}}}
+
 
 	def publishSignals; ##{{{
 		## TODO

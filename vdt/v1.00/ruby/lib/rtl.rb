@@ -52,6 +52,22 @@ class VerilogSyntax; ##{
 		end
 	end ##}}}
 
+
+	def instance dname, iname, connects; ##{{{
+		line = dname+' '+iname+'(';
+		cntPush line,:inc;
+		cSize = connects.keys.size;
+		count = 0;
+		connects.each_pair do
+			|l,r|
+			count+=1;
+			line = '.'+l+'('+r+')';
+			line += ',' if count<cSize;
+			cntPush line;
+		end
+		cntPush ');',:dec;
+	end ##}}}
+
 	private
 	def _genSeqCondition type,cStr,oStr
 		case type
@@ -90,6 +106,18 @@ module RTL; ##{
 
 		return cnts;
 
+	end ##}}}
+
+	def self.designInstance deName, inst, connections; ##{{{
+		if @@syntax == :verilog
+			cnts = vs.verilog :nonseq do #{
+				instance deName,inst, connections
+			end #}
+		else
+			puts "not support other syntax except verilog"
+		end
+
+		return cnts;
 	end ##}}}
 
 

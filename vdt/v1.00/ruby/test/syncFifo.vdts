@@ -44,6 +44,8 @@
 ## vdts -e
 design :testDesign do #{
 	signal :iClk, :in
+	signal :iResetn,:in
+	signal :iWe,:in
 end #}
 
 design :syncFifo,:width=>32,:depth=>8,:ptrW=>3 do #{
@@ -79,6 +81,8 @@ design :syncFifo,:width=>32,:depth=>8,:ptrW=>3 do #{
 
 	testDesign :utest do
 		connect :iClk=>:iClk
+		connect :iResetn=>:iReset
+		connect :iWe=>:iRe
 	end
 
 	publish ## TODO, this should be called outside of the target design, coded here just for test
