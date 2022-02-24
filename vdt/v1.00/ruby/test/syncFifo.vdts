@@ -42,11 +42,13 @@
 ## rCountSel -i rCount -c default
 ##
 ## vdts -e
+design :testDesign do #{
+	signal :iClk, :in
+	signal :iResetn,:in
+	signal :iWe,:in
+end #}
 
-design :syncFifo do #{
-
-	feature :width,32
-	feature :depth,8
+design :syncFifo,:width=>32,:depth=>8,:ptrW=>3 do #{
 
 	signal :iClk,:in
 	signal :iReset,:in
@@ -56,8 +58,59 @@ design :syncFifo do #{
 	signal :oRData,:out,feature.width
 
 	## TODO, net of array
-	array :mem,feature.width,feature.depth
+	## array :mem,feature.width,feature.depth
 
+
+	## logic selection component
+	import :ptrSel;
+
+	signal :rPtr,:reg,feature.ptrW
+	signal :wPtr,:reg,feature.ptrW
+
+	ptrSel :rPtrSel do
+		connect :s=>:iRe
+		connect :o=>:rPtr
+		connect :i=>:rPtr
+	end
+
+	ptrSel :wPtrSel do
+		connect :s=>:iWe
+		connect :o=>:wPtr
+		connect :i=>:wPtr
+	end
+
+	testDesign :utest do
+		connect :iClk=>:iClk
+		connect :iResetn=>:iReset
+		connect :iWe=>:iRe
+	end
+
+	publish ## TODO, this should be called outside of the target design, coded here just for test
 
 
 end #}
+
+component :ptrSel, :isSeq=>true,:w=>3 do
+
+	signal :o,:out,feature.w
+	signal :i,:in,feature.w
+	signal :s,:in,1
+
+	block :exe do
+		if feature.isSeq
+			puts "executing with isSeq==true"
+			oo = o.rtlname;
+			io = i.rtlname;
+			so = s.rtlname;
+			seqSel :sel0, 
+			:clk=>parent.iClk,
+			:rstn=>parent.iReset,
+			:cond=>{
+				"#{oo}<=#{io}+1'b1"=>"#{so}==1'b1",
+			}
+		else
+			puts "executing with isSeq==false"
+		end
+	end
+end
+

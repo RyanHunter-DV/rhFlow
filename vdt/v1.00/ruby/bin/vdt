@@ -7,7 +7,8 @@ require 'lib/design'
 def main ##{{{
 	puts "loading test stage ";
 	puts $toolHome+'/test/syncFifo.vdts';
-	require 'test/syncFifo';
+	load 'test/syncFifo.vdts';
+	DB.elaborate;
 	return 0;
 end ##}}}
 
