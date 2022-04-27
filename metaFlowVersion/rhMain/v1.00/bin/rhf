@@ -1,0 +1,8 @@
+#! /usr/bin/env ruby
+
+require 'rhload';
+$LOAD_PATH << "#{ENV['RHMAIN']}/lib";
+
+rhload 'rhf';
+
+RHF.run

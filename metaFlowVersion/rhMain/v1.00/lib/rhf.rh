@@ -1,0 +1,18 @@
+module RHF; ##{{{
+	def self.application
+		@application = Application.new unless @application
+		@application
+	end
+	def self.run
+		application.run
+	end
+
+	class Application ##{{{
+		def initialize
+		end
+
+		def run
+			## TODO
+		end
+	end ##}}}
+end ##}}}
