@@ -1,0 +1,2 @@
+container :uvm
+rhload 'uvm_comp'

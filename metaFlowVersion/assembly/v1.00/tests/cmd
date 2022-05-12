@@ -1,0 +1,2 @@
+rh-assembly -l ../builtin/uvmfps.rh  -l ../builtin/svfps.rh -l users/testfp.rh  -u users/user1.rh
+##rh-assembly -l ../builtin/uvmfps.rh  -l ../builtin/svfps.rh -u users/user.rh

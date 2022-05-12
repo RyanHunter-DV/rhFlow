@@ -1,0 +1,19 @@
+fp :phase,:container=>true,:parent=>:uvm
+
+
+fp :build,:parent=>:phase do
+	|s,**config|
+	s.addcode 'function void build_phase(uvm_phase phase); // {',:indent=>true
+	code=<<-CODE
+		super.build_phase(phase);
+		<extracode>
+	CODE
+	s.addcode code
+	s.addcode 'endfunction // }',:outdent=>true
+end
+
+fp :run,:parent=>:phase do |s,**config|
+	s.addcode 'task run_phase(uvm_phase phase); // {',:indent=>true
+	s.addcode '<extra>'
+	s.addcode 'endtask // }',:outdent=>true
+end

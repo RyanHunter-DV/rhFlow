@@ -1,0 +1,30 @@
+fp :proc, :container=>true, :parent=>:sv
+
+fp :foreverb,:parent=>:proc do |s,**config|
+	s.addcode 'forever begin // {',:indent=>true
+	s.addcode '<extra>'
+	s.addcode 'end // }',:outdent=>true
+end
+
+fp :task,:parent=>:proc do |s,**config|
+	if config.has_key?(:virtual)
+		s.addcode 'virtual task <name>(<args>);'
+	else
+		s.addcode 'task <name>(<args>);'
+	end
+	s.addcode '<extra>'
+	s.addcode 'endtask'
+end
+
+fp :func,:parent=>:proc do |s,**config|
+	rtype = config[:return]
+	fname = config[:name]
+	args  = config[:args]
+	body  = config[:body]
+	rawcode = "function #{rtype} #{fname}(#{args});"
+	rawcode = 'virtual '+rawcode if config.has_key?(:virtual);
+
+	s.addcode rawcode,:indent=>true
+	s.addcode body
+	s.addcode 'endfunction',:outdent=>true
+end

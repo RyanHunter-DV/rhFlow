@@ -1,0 +1,4 @@
+fp :uvm,  :container=>true
+rhload 'uvm_phase'
+rhload 'uvm_comp'
+rhload 'uvm_obj'

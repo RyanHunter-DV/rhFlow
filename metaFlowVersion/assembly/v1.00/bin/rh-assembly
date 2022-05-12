@@ -1,0 +1,61 @@
+#! /usr/bin/env ruby
+
+require 'rhload';
+
+$ToolHome = ENV['ASSEMBLY'];
+$LOAD_PATH << "#{$ToolHome}"
+$LOAD_PATH << "#{$ToolHome}/builtin"
+$main = self
+
+rhload 'lib/options'
+rhload 'lib/featurePart'
+rhload 'lib/assembly'
+
+## TODO
+
+$exitSig = 0;
+
+
+def loadLibraries files ##{{{
+	files.each do
+		|f|
+		rhload f;
+	end
+end ##}}}
+
+def loadUserfiles files ##{{{
+	files.each do
+		|f|
+		rhload f;
+	end
+end ##}}}
+
+def main ##{{{
+
+	opt = Options.new
+	libs      = opt.get :libfps
+	userfiles = opt.get :userfiles
+
+
+	loadLibraries libs if libs;
+	loadUserfiles userfiles if userfiles;
+
+	## TODO
+
+end ##}}}
+
+def processExit ##{{{
+	if $exitSig == 0
+		puts "program exitting successfully"
+	else
+		puts "Error, program exitting with sig:#{$exitSig}"
+	end
+end ##}}}
+
+def pre_main ##{{{
+	at_exit {processExit};
+end ##}}}
+
+pre_main;
+main;
+exit $exitSig;

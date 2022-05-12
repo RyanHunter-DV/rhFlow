@@ -1,0 +1,14 @@
+fp :driver, :parent=>:uvm do
+	|s,**config|
+	uclass = 'rh_axi4_drvBase'
+	## here we need to need to use {}
+	s.addcode uvm.declareDriver { |s|
+		s.config :name=>uclass
+		s.config :req=>'rh_axi4_trans'
+		s.config :rsp=>'REQ'
+	}
+	s.addcode uvm.comp.utils { |s|
+		s.config :comp=>uclass
+		s.config :field=>f
+	}
+end

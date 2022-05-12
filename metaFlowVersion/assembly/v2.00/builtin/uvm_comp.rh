@@ -1,0 +1,42 @@
+container :comp,:parent=>:uvm
+
+
+
+fp :utils,:container=>:comp do ##{
+	|**opts|
+	## add code of component's begin/end
+	## extra field utils
+end ##}
+
+fp :declare,:container=>:comp do ##{{{
+	|**opts|
+
+	## opts.each_pair do
+	## 	|t,v|
+	## 	## utils features can be override by calling utils
+	## 	unless @fields.has_key?(v.to_sym)
+	## 		@fields[v.to_sym]={:type=>t.to_sym,:utils=>true,:utils_flag=>:allon};
+	## 	end
+	## 	addcode "#{t.to_s} #{v.to_s};", :raw=>true
+	## end
+
+end ##}}}
+
+fp :driver,:container=>:comp do ##{{{
+	|**opts,&block|
+
+	name = 'unknown';
+	req  = 'uvm_sequence_item';
+	rsp  = 'req';
+
+	name = opts[:name]if opts.has_key?(:name);
+	req  = opts[:req] if opts.has_key?(:req);
+	rsp  = opts[:rsp] if opts.has_key?(:rsp);
+
+
+
+
+
+
+
+end ##}}}

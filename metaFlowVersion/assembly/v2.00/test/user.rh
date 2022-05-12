@@ -1,0 +1,5 @@
+sv.proc.func :testf do |s|
+	s.config :return=>'void'
+	s.config :
+
+end
