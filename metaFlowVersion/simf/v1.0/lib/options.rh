@@ -1,0 +1,41 @@
+require 'optparse';
+
+rhload 'lib/baseflow';
+
+class Options; ##{
+
+	attr :options;
+
+	def initialize ##{{{
+		@options = {};
+		@options[:help] = false;
+		@options[:flow] = nil;
+		OptionParser.new do |opts|
+			opts.on('-h') do |v|
+				@options[:help]=true;
+			end
+			opts.on('-f','--flow','select flow') do |v|
+				if v != nil
+					flow = eval v.to_s+'.new';
+					@options[:flow] = flow;
+				else
+					@options[:flow] = BaseFlow.new;
+				end
+			end
+		end.parse!
+	end ##}}}
+
+	def helpMessage ##{
+		puts "help information, TBD";
+		exit 0;
+	end ##}
+
+	def gethelp ##{{{
+		helpMessage if @options[:help]==true;
+	end ##}}}
+
+	def selectFlow
+		return @options[:flow];
+	end
+
+end ##}

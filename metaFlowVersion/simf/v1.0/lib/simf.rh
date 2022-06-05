@@ -8,11 +8,34 @@ end ## }
 
 class Application ##{
 
-	def initialize ##{
-		@option = 
+	attr_accessor :option;
+	attr_accessor :flow;
+
+	def initialize ##{{{
+		@option = Options.new();
+		@option.gethelp;
+		@flow = @option.selectFlow;
+	end ##}}}
+
+	def getRootFiles ##{
+		rootfiles = [];
+		rootfiles << "#{ENV['PROJ_HOME']}/root.rh";
+		return rootfiles;
 	end ##}
 
 	def run ##{
+		"""
+		run steps:
+		1.loading plugin files, support extra simulator options added here.
+		2.start assemble flow, to generate filest
+		3.call simulator cmd
+		"""
+		getRootFiles.each do |f|
+			puts "loading file: #{f}";
+			rhload f;
+		end
+		@flow.run;
 
 	end ##}
+
 end ##}
