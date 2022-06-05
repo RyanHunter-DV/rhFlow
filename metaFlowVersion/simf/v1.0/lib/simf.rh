@@ -1,0 +1,18 @@
+rhload 'lib/options';
+
+module SIMF ##{
+	attr :app;
+	def self.app; @app ||= Application.new(); end
+	def self.run; app.run; end
+end ## }
+
+class Application ##{
+
+	def initialize ##{
+		@option = 
+	end ##}
+
+	def run ##{
+
+	end ##}
+end ##}

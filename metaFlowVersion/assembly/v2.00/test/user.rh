@@ -1,5 +1,34 @@
-sv.proc.func :testf do |s|
-	s.config :return=>'void'
-	s.config :
+uvm.comp.driver :name=>'rh_axi4_drvBase',:req=>'rh_axi4_trans',:rsp=>'REQ' do
+	resetImpDecl = 'uvm_analysis_imp_rhaxi4_reset#(resetTr_t,rh_axi4_drvBase#(REQ,RSP))'
+	uvm.field 'rh_axi4_configBase'=>'config',:type=>:obj,:flag=>[:allon,:nocompare]
+	uvm.field 'process'=>'mainThread'
+	uvm.field 'uvm_event'=>'resetInactive'
+	uvm.field resetImpDecl=>'resetI',:type=>:obj,:flag=>[:allon,:nocompare]
+
+	uvm.comp.utils
+	uvm.comp.unew
+	uvm.comp.build do
+		rawcode 'resetI=new("resetI",this);'
+		rawcode 'resetInactive=new("ri");'
+	end
+	
+	sv.func :write_reset,:args=>'resetTr_t _t' do
+		code = <<-CODE
+		`uvm_info("DEBUG",$sformatf("reset trans got:\n%s",_t.sprint()),UVM_LOW)
+		case (_t.reset)
+			resetTr_t::inactive: begin
+				`uvm_info("DEBUG","resetInactive triggered",UVM_LOW)
+				resetInactive.trigger();
+			end
+			default: begin
+				// all other actions are treated as reset active
+				`uvm_info("DEBUG","resetInactive reset",UVM_LOW)
+				resetInactive.reset();
+				mainThreadControl();
+			end
+		endcase
+		CODE
+		rawcode code
+	end
 
 end

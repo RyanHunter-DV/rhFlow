@@ -1,0 +1,6 @@
+require 'rhload';
+$LOAD_PATH << "#{ENV['SIMF']}";
+
+rhload 'lib/simf';
+
+SIMF.run;

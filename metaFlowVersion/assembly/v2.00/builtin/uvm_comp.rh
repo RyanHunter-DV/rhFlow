@@ -1,30 +1,29 @@
+## requires loaded at uvm.rh
+
 container :comp,:parent=>:uvm
+
+class UVMCompClass < UVMObjClass; ##{
+
+	def initialize name;
+		super name;
+	end
+
+end ##}
 
 
 
 fp :utils,:container=>:comp do ##{
 	|**opts|
+	## TODO
 	## add code of component's begin/end
 	## extra field utils
 end ##}
 
-fp :declare,:container=>:comp do ##{{{
-	|**opts|
-
-	## opts.each_pair do
-	## 	|t,v|
-	## 	## utils features can be override by calling utils
-	## 	unless @fields.has_key?(v.to_sym)
-	## 		@fields[v.to_sym]={:type=>t.to_sym,:utils=>true,:utils_flag=>:allon};
-	## 	end
-	## 	addcode "#{t.to_s} #{v.to_s};", :raw=>true
-	## end
-
-end ##}}}
 
 fp :driver,:container=>:comp do ##{{{
-	|**opts,&block|
+	|**opts,&b|
 
+	## init key variables
 	name = 'unknown';
 	req  = 'uvm_sequence_item';
 	rsp  = 'req';
@@ -33,10 +32,11 @@ fp :driver,:container=>:comp do ##{{{
 	req  = opts[:req] if opts.has_key?(:req);
 	rsp  = opts[:rsp] if opts.has_key?(:rsp);
 
-
-
-
-
+	## TODO, create instance of UVMCompClass,
+	drv = UVMCompClass.new name;
+	addobjects drv;
+	rawcode drv.classHeadCode;
+	drv.instance_eval &b;
 
 
 end ##}}}

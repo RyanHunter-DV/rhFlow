@@ -1,0 +1,67 @@
+rhload 'container'
+
+class FPClass; ##{
+
+	attr_accessor :insts;
+	attr_accessor :name;
+	attr_accessor :parent;
+	attr_accessor :objects; ## stores uvm_objects of an FP
+
+	def initialize name,c;
+		@name   = name.to_s;
+		@insts  = [];
+		@parent = c;
+		@objects= [];
+	end
+
+	def rawcode code;
+		## TODO, raw sv code can be added by this API, should record caller's position
+	end
+
+end ##}
+
+module FPRegistry; ##{
+
+	@@fplist = {};
+
+	def self.createNewFP n,c=nil; ##{
+		if c.hasfp?(n)
+			puts "Error, fp(#{c.path}.#{n}) already declared";
+			return;
+		end
+		fp = FPClass.new n,c;
+		c.addfp fp if c!=nil;
+		return fp;
+	end ##}
+
+	def self.getContainer n; ##{
+		ContainerRegistry.searchContainerByName n;
+	end ##}
+
+end ##}
+
+
+def fp name,**opts={},&block ##{
+	c = nil;
+	c = FPRegistry.getContainer if opts.has_key?(:container);
+
+	fp = FPRegistry.createNewFP name,c;
+
+	f = -> {
+		define_singleton_method name do
+			|**opts,&b|
+			if &b!=nil
+				fp.instance_exec &block,**opts,&b;
+			else
+				fp.instance_exec &block,**opts;
+			end
+		end
+	}
+	c=self if c==nil;
+
+	c.instance_eval &f;
+
+	## TODO
+
+
+end ##}
