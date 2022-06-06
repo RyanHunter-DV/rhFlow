@@ -1,1 +1,1 @@
-compopt :xlm, '-f xxxx','-sv','-64bit'
+compopt :xlm, '-sv','-64bit','-l xlm.log'
