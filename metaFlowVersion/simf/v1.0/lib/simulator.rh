@@ -1,0 +1,71 @@
+class Xlmwrapper
+
+	attr_accessor :opts;
+	## two types: onestep, threestep
+	attr_accessor :mode;
+	attr_accessor :cmdline;
+
+	def initialize opts
+		@opts = opts;
+		if opts.has_key?(:mode)
+			@mode = opts[:mode];
+		else
+			@mode = :onestep;
+			@cmdline = 'xrun ';
+			@cmdline += opts[:comp].join(' ') if opts.has_key?(:comp);
+			@cmdline += opts[:elab].join(' ') if opts.has_key?(:elab);
+			@cmdline += opts[:sim].join(' ')  if opts.has_key?(:sim);
+		end
+	end
+
+	def publishCmd f,cmd
+		File.delete(f) if File.exists?(f);
+		fh = File.open(f,"w");
+		fh.write(cmd);
+		fh.close
+		File.chmod(777,f)
+	end
+
+	def start path
+		path = File.absolute_path path;
+		runcmd = "";
+		runcmdfile = 'runxlm.cmd';
+		if @mode==:onestep
+			runcmd += @cmdline;
+		end
+
+		publishCmd File.join(path,runcmdfile),runcmd
+		termcmd = "gnome-terminal --title testtmp --working-directory=#{path} -e \"#{runcmd} \""
+		## termcmd = "gnome-terminal --title testtmp --working-directory=#{path} -- \"ls\""
+		puts "cmd: #{termcmd}";
+		system(termcmd);
+		## TODO,
+	end
+
+end
+
+module Simulator
+
+	attr :eda;
+	attr :path;
+
+	def self.eda= e
+		@eda = e;
+	end
+
+	def self.path= p
+		@path=p;
+	end
+
+	def self.run opts
+		case @eda
+		when :xlm
+			xlm = Xlmwrapper.new opts
+			xlm.start @path
+		else
+			puts "unsupported eda: #{@eda}"
+		end
+
+	end
+
+end

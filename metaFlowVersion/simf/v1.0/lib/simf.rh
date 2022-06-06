@@ -4,6 +4,8 @@ module SIMF ##{
 	attr :app;
 	def self.app; @app ||= Application.new(); end
 	def self.run; app.run; end
+	def self.addSimulatorOpt m,opt; app.addOption m,opt; end
+	def self.seteda eda; app.seteda eda; end
 end ## }
 
 class Application ##{
@@ -19,9 +21,13 @@ class Application ##{
 
 	def getRootFiles ##{
 		rootfiles = [];
-		rootfiles << "#{ENV['PROJ_HOME']}/root.rh";
+		rootfiles << "#{ENV['PROJECT_HOME']}/root.rh";
 		return rootfiles;
 	end ##}
+
+	def seteda eda
+		@flow.eda= eda;
+	end
 
 	def run ##{
 		"""
@@ -35,7 +41,17 @@ class Application ##{
 			rhload f;
 		end
 		@flow.run;
-
 	end ##}
 
+	def addOption m,opt
+		@flow.addOption m,opt
+	end
+
 end ##}
+
+def compopt eda,*opts
+	SIMF.seteda eda.to_sym;
+	opts.each do |opt|
+		SIMF.addSimulatorOpt :comp, opt.to_s
+	end
+end

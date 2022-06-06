@@ -9,17 +9,15 @@ class Options; ##{
 	def initialize ##{{{
 		@options = {};
 		@options[:help] = false;
-		@options[:flow] = nil;
+		@options[:flow] = BaseFlow.new;
 		OptionParser.new do |opts|
 			opts.on('-h') do |v|
 				@options[:help]=true;
 			end
 			opts.on('-f','--flow','select flow') do |v|
-				if v != nil
+				if v!=nil && v!=false
 					flow = eval v.to_s+'.new';
 					@options[:flow] = flow;
-				else
-					@options[:flow] = BaseFlow.new;
 				end
 			end
 		end.parse!
