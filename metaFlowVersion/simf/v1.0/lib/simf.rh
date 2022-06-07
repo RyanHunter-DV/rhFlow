@@ -6,6 +6,7 @@ module SIMF ##{
 	def self.run; app.run; end
 	def self.addSimulatorOpt m,opt; app.addOption m,opt; end
 	def self.seteda eda; app.seteda eda; end
+	def self.addfile f; app.addFileToFlow f; end
 end ## }
 
 class Application ##{
@@ -24,6 +25,10 @@ class Application ##{
 		rootfiles << "#{ENV['PROJECT_HOME']}/root.rh";
 		return rootfiles;
 	end ##}
+
+	def addFileToFlow f;
+		@flow.filelist << f;
+	end
 
 	def seteda eda
 		@flow.eda= eda;

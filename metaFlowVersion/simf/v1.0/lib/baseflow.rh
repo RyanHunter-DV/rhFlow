@@ -5,6 +5,8 @@ class BaseFlow ##{
 	attr_accessor :simulatorOpts;
 	attr_accessor :eda;
 	attr_accessor :simpath;
+	attr_accessor :filelist;
+	attr :fl;
 
 	def initialize
 		puts "PLACEHOLDER, calling BaseFlow.new"
@@ -15,13 +17,21 @@ class BaseFlow ##{
 		@eda = :xlm; ## by default
 		@out = "#{ENV['PROJECT_HOME']}/out"
 		@simpath = "#{ENV['PROJECT_HOME']}/out/sim"
+		@filelist= [];
+		@fl = '';
 	end
 
 	def assemble
 		"""
 		for baseflow, assemble is just to get the filelist
 		"""
-		puts "PLACEHOLDER, running assemble"
+		@fl = 'filelist.f';
+		fh = File.open(@simpath+'/'+@fl,'w');
+		@filelist.each do |f|
+			fh.write f;
+		end
+		fh.close;
+		@simulatorOpts[:comp] << "-f #{@fl}";
 	end
 
 	def mkdir p
@@ -55,3 +65,15 @@ class BaseFlow ##{
 	end
 
 end ##}
+
+
+def fileset *files
+
+	path = caller(1)[0];
+	path = path.split(':')[0];
+	path = File.dirname(File.absolute_path(path));
+	files.each do |f|
+		SIMF.addfile File.join(path,f);
+	end
+
+end
