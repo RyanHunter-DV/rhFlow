@@ -28,7 +28,7 @@ class BaseFlow ##{
 		@fl = 'filelist.f';
 		fh = File.open(@simpath+'/'+@fl,'w');
 		@filelist.each do |f|
-			fh.write f;
+			fh.write f+"\n";
 		end
 		fh.close;
 		@simulatorOpts[:comp] << "-f #{@fl}";
