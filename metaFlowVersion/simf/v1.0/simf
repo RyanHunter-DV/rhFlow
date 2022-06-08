@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 require 'rhload';
-$LOAD_PATH << "#{ENV['SIMF']}";
+$LOAD_PATH << File.dirname(File.absolute_path(__FILE__));
 
 rhload 'lib/simf';
 
