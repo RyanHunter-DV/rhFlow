@@ -35,7 +35,8 @@ class Xlmwrapper
 		end
 
 		publishCmd File.join(path,runcmdfile),runcmd
-		termcmd = "gnome-terminal --title testtmp --working-directory=#{path} -- bash -c \"#{runcmd}; bash\""
+		shell = "#{ENV['SHELL']}";
+		termcmd = "gnome-terminal --title testtmp --working-directory=#{path} -- #{shell} -c \"#{runcmd}; #{shell}\""
 		puts "cmd: #{termcmd}";
 		system(termcmd);
 	end
