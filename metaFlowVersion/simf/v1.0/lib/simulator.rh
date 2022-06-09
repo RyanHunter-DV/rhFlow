@@ -36,7 +36,10 @@ class Xlmwrapper
 
 		publishCmd File.join(path,runcmdfile),runcmd
 		shell = "#{ENV['SHELL']}";
-		termcmd = "gnome-terminal --title testtmp --working-directory=#{path} -- #{shell} -c \"#{runcmd}; #{shell}\""
+		termcmd  = "gnome-terminal --title testtmp";
+		termcmd += " --working-directory=#{path}";
+		termcmd += " --geometry=145x35";
+		termcmd += " -- #{shell} -c \"module load xcelium/20.09.012; #{runcmd}; #{shell}\""
 		puts "cmd: #{termcmd}";
 		system(termcmd);
 	end
