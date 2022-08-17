@@ -49,7 +49,16 @@ module Shell ##{
 		end
 	end ##}
 
+	def self.createDir d ##{
+		pd = File.dirname(d);
+		self.createDir(pd) unless Dir.exists?(pd);
+		self.makedir d;
+		return;
+	end ##}
+
 	def self.copy s,t ##{
+		tdir = File.dirname(t);
+		self.createDir(tdir);
 		`cp #{s} #{t}`;
 	end ##}
 

@@ -53,6 +53,7 @@ public
 	end ##}}}
 
 	def need n ##{{{
+		##puts "from need, to find:#{n}"
 		c = ComponentPool.find n;
 		unless c==nil
 			c.elaborate;

@@ -88,11 +88,13 @@ end ##}
 def component n,&block ##{
 	return unless block_given?;
 	n = n.to_s;
+	##puts "from component, to find:#{n}"
 	c = ComponentPool.find(n);
 	if c==nil
 		c = ComponentPool.createAndRegisterNewComponent(n);
 	end
 	location = File.dirname(File.absolute_path(block.source_location[0]));
-	puts "location: #{location}"
+	##puts "location: #{location}"
+	##puts "component(#{n})"
 	c.add location,&block;
 end ##}
