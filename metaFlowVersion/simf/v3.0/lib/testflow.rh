@@ -1,0 +1,56 @@
+class TestFlow < FlowBase ##{
+public
+
+	attr :runs;
+
+	def initialize ##{{{
+		super('testflow');
+		@runs = [];
+	end ##}}}
+
+	def setup
+		setupBasicFlow do ##{
+			setupSimCommand; ## create sim_command
+		end ##}
+		## TODO
+	end
+
+	def addTest t ##{{{
+		@flow.test= t;
+	end ##}}}
+	def addRunProcedures &block ##{{{
+		@runs << block;
+	end ##}}}
+
+	## called by runtest(:testname).run
+	## run from publish to sim
+	def run ##{{{
+		@runs.each do |b|
+			b.call;
+		end
+		@flow.run
+	end ##}}}
+
+	## called by runtest(:testname).sim
+	## directly run sim
+	def sim ##{{{
+		@flow.sim
+	end ##}}}
+private
+
+	def setupBasicFlow &block ##{{{
+		@flow = FlowBase.new('testflow-base');
+		@flow.createContext('test');
+		@flow.define_singleton_method :setupSimCommand do |*userOpts| ##{
+			builtins = [];
+			## TODO, add builtin options
+			@test.simulator.generateCommand :sim,*builtins,*userOpts;
+		end ##}
+		@flow.define_singleton_method :sim do ##{
+			@test.simulator.sim
+		end ##}
+		@flow.createProcedures &block;
+	end ##}}}
+
+
+end ##}

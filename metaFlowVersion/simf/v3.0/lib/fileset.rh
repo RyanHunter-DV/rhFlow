@@ -1,0 +1,36 @@
+class FileSet ##{
+public
+
+	attr_accessor :filelist;
+	attr_accessor :parent;
+	attr_accessor :targets;
+	attr_accessor :incdirs;
+	attr_accessor :source;
+
+	def initialize pdir ##{{{
+		@filelist = '<empty>';
+		@parent=pdir;
+		@targets={};
+		@incdirs=[];
+		@source ='';
+	end ##}}}
+
+	def incdir dir ##{{{
+		@incdirs << dir;
+	end ##}}}
+
+	def file f ##{{{
+		src = File.join(@source,f.to_s);
+		target = File.join(@parent,f.to_s);
+		targets[src] = target;
+		incdir = File.dirname(target);
+		@incdirs<<incdir unless @incdirs.include?(incdir);
+	end ##}}}
+
+	def setCurrentSourcePath p ##{{{
+		@source = p;
+	end ##}}}
+
+private
+
+end ##}

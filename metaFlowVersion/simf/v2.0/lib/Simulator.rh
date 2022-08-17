@@ -1,0 +1,44 @@
+class Simulator ##{{{
+	attr_accessor :publisher;
+	def initialize p #{
+		@publisher = p;
+	end ##}
+
+	def build cn ##{
+	end ##}
+end ##}}}
+
+
+class Xcelium < Simulator ##{{{
+	attr :lib;
+	def initialize p,lib='' ##{
+		super(p);
+		if lib!=''
+			@lib = lib;
+		else
+			@lib = 'ncvlog_lib'
+		end
+	end ##}
+
+	## cn is config name
+	def build cn ##{
+		extra = [];
+		c = ConfigPool.find(cn);
+		publisher.simulator(:xlm);
+		publisher.publish(c,:copy);
+		## TODO, create generateCommand API
+		publisher.generateCommand(c,:xlm,:compile);
+		extra << "-LIBNAME "+@lib;
+		extra << @lib+'.top';
+		extra << '-SNAPSHOT '+@lib+'.'+@lib+':'+@lib;
+		publisher.generateCommand(c,:xlm,:elaborate,*extra);
+	end ##}
+
+	def sim tn ##{
+		extra = [@lib+'.'+@lib+':'+@lib,'-RUN'];
+		t = TestPool.find(tn);
+		publisher.buildSimDir(t,@lib);
+		publisher.generateCommand(t,:xlm,:sim,*extra);
+	end ##}
+
+end ##}}}

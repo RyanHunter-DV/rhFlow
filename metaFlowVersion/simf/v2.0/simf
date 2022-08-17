@@ -1,0 +1,10 @@
+#! /usr/bin/env ruby
+
+require 'rhload';
+$LOAD_PATH << File.dirname(File.absolute_path(__FILE__));
+
+rhload 'lib/MainEntry';
+
+e = MainEntry.new();
+$SIG = e.run();
+exit $SIG;

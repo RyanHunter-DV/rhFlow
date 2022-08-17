@@ -1,0 +1,22 @@
+rhload 'lib/Component'
+rhload 'lib/Config'
+rhload 'lib/Publisher'
+rhload 'lib/Simulator'
+rhload 'lib/Test'
+
+$root = ENV['PROJECT_HOME'];
+unless $root
+	raise "Error, no PROJECT_HOME defined"
+end
+##p = Publisher.new(root);
+##s = Simulator.new(p);
+
+class MainEntry ##{
+
+	def initialize ##{
+	end ##}
+
+	def run ##{
+	end ##}
+
+end ##}

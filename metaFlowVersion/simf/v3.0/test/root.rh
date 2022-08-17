@@ -1,0 +1,5 @@
+rhload '/home/ryan/prj/GitHub/biriscv/src/design/dcache/node.rh'
+config :testConfig,:tool=>:xlm do
+	need :dcache
+	worklib :mylib
+end

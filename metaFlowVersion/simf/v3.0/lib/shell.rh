@@ -1,0 +1,80 @@
+require 'open3'
+module Shell ##{
+
+	@type = :bash;
+
+	## t is used to choose to get the setenv command or
+	## directly run the setenv command
+	## t=:get, will return the command
+	## t=:run, will run this command directly
+	def self.setenv var,val,t=:get ##{
+		line = '';
+		case (@type)
+		when :bash
+			line = 'export '+var+'='+val;
+		when :csh
+			line = 'setenv '+var+' '+val;
+		end
+		case (t)
+		when :get
+			return line;
+		when :run
+			system("#{line}");
+		else
+			$stderr.puts "Error, type(#{t}) of setenv not supported";
+		end
+	end ##}
+
+	def self.getfiles f,l=nil ##{
+		cmd = '';
+		cmd += "cd #{l};" if (l);
+		cmd += "ls #{f}";
+		fs = `#{cmd}`.split("\n");
+		return fs;
+	end ##}
+
+	def self.getAbsoluteFiles f,l=nil ##{
+		rtns = [];
+		fs = self.getfiles f,l
+		fs.each do |f|
+			rtns << File.join(l,f);
+		end
+		return rtns;
+	end ##}
+
+	## support multiple paths as args
+	def self.makedir *paths ##{
+		paths.each do |p|
+			`mkdir #{p}` unless Dir.exists?(p);
+		end
+	end ##}
+
+	def self.copy s,t ##{
+		`cp #{s} #{t}`;
+	end ##}
+
+	def self.exec path,cmd ##{
+		e = "cd #{path};#{cmd}";
+		## puts "shell: #{e}";
+		out,err,st = Open3.capture3(e);
+		puts out;
+		puts err if st.exitstatus != 0;
+		return st.exitstatus
+	end ##}
+
+	def self.generate t=:file,n='<null>',*cnts ##{
+		##puts "DEBUG, generate file: #{n}"
+		##puts "DEBUG, contents: #{cnts}"
+		case (t)
+		when :file
+			fh = File.open(n,'w');
+			cnts.each do |l|
+				fh.write(l+"\n");
+			end
+			fh.close;
+		else
+			$stderr.puts "Error, not support type(#{t})"
+		end
+	end ##}
+
+end ##}

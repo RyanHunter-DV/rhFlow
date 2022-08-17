@@ -1,0 +1,16 @@
+#! /usr/bin/env ruby
+
+require 'rhload';
+$LOAD_PATH << File.dirname(File.absolute_path(__FILE__));
+
+$projectRoot  = ENV['PROJECT_ROOT'];
+$outAnchor    = ENV['OUT_ANCHOR'];
+$projectEntry = ENV['SIMF_ENTRY'];
+
+rhload 'lib/mainentry';
+
+e = MainEntry.new();
+## TODO, will add exception process here
+$SIG = e.run();
+puts "program exists with sig: #{$SIG}";
+exit $SIG;

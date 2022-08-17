@@ -1,0 +1,3 @@
+component :dcache do
+	fileset '*.v','dcache.list'
+end

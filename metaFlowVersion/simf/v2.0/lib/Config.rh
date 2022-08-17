@@ -1,0 +1,73 @@
+class Config < Component ##{
+	attr_accessor :insts;
+
+	def initialize n,l ##{
+		super(n,l)
+		@insts={};
+	end ##}
+
+	## by calling of this API, to instantiate a component to this
+	## config instance
+	def component n ##{
+		c = ComponentPool.find n;
+		@insts[c.name]=c;
+	end ##}
+
+	def compopts t ##{
+		t = t.to_sym;
+		opts=[];
+		opts.append(*@compopts[t]);
+		@insts.each_pair do |k,v|
+			opts.append(*v.compopts[t])
+		end
+		return opts;
+	end ##}
+
+	def elabopts t ##{
+		t = t.to_sym;
+		opts=[];
+		opts.append(*@elabopts[t]);
+		@insts.each_pair do |k,v|
+			opts.append(*v.elabopts[t])
+		end
+		return opts;
+	end ##}
+
+	def simopts t ##{
+		t = t.to_sym;
+		opts=[];
+		opts.append(*@simopts[t]);
+		@insts.each_pair do |k,v|
+			opts.append(*v.simopts[t])
+		end
+		return opts;
+	end ##}
+
+end ##}
+
+module ConfigPool ##{
+	@pool = {};
+
+	def self.register c ##{
+		@pool[c.name.to_sym] = c;
+	end ##}
+
+	def self.find n ##{
+		n = n.to_sym;
+		if @pool.has_key?(n)
+			return @pool[n];
+		else
+			return nil;
+		end
+	end ##}
+end ##}
+
+
+
+def config n,&block ##{
+	return unless block_given?
+	sl = block.source_location;
+	c = Config.new(n,sl[0]);
+	c.instance_eval &block;
+	ConfigPool.register c;
+end ##}

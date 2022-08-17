@@ -1,0 +1,57 @@
+class PublishFlow < FlowBase ##{
+	def initialize ##{{{
+		super('publish');
+	end ##}}}
+
+	def run cn ##{{{
+		c = ConfigPool.find cn;
+		puts "publishflow(:#{c.name}) running ... ..."
+		@flow.config = c;
+		@flow.run
+	end ##}}}
+
+	def setup ##{{{
+		setupBasicFlow do ##{
+			publishCommonPath;
+			@config.insts.each do |c| ##{
+				self.publishComponentPath c.targetPath;
+				self.publishByCopy(c)  if c.publish == :copy;
+				self.publishByAlias(c) if c.publish == :alias;
+				self.publishByTool(c)  if c.publish == :generate;
+			end ##}
+		end ##}
+	end ##}}}
+
+	def setupBasicFlow &block ##{{{
+		@flow = FlowBase.new('publish-base');
+		@flow.createContext('config');
+		@flow.define_singleton_method :publishCommonPath do ##{
+			out = @config.paths[:out];
+			component = @config.paths[:component];
+			config    = @config.paths[:config];
+			Shell.makedir out unless Dir.exists?(out);
+			Shell.makedir component unless Dir.exists?(component);
+			Shell.makedir config unless Dir.exists?(config);
+		end ##}
+		@flow.define_singleton_method :publishComponentPath do |p| ##{
+			## p is the component path to be created
+			Shell.makedir p unless Dir.exists?(p)
+		end ##}
+		@flow.define_singleton_method :publishByCopy do |c| ##{
+			c.files.each_pair do |s,t| ##{
+				Shell.copy s,t;
+			end ##}
+		end ##}
+		@flow.define_singleton_method :publishByAlias do |c| ##{
+			c.files.each_pair do |s,t| ##{
+				Shell.symbol s,t;
+			end ##}
+		end ##}
+		@flow.define_singleton_method :publishByTool do |c| ##{
+			## TODO, place holder, nothing
+			puts "Error, no flow defined";
+		end ##}
+		@flow.createProcedures &block;
+	end ##}}}
+
+end ##}

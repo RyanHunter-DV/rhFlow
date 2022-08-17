@@ -1,0 +1,58 @@
+class Test ##{
+	attr_accessor :name;
+	attr_accessor :simopts;
+	attr :config;
+
+	def initialize n ##{
+		@name   = n.to_s;
+		@simopts= {};
+		@config = nil;
+	end ##}
+
+	def simopt t,*opt ##{
+		t=t.to_sym;
+		@simopts[t]=[] unless @simopts.has_key?(t)
+		opts.each do |o|
+			@simopts[t] << o;
+		end
+	end ##}
+
+	def simopts t=:xlm ##{
+		t=t.to_sym;
+		opts = [];
+		opts = @config.simopts(t);
+		opts.append(*@simopts[t]);
+		return opts;
+	end ##}
+
+	def config cn ##{
+		cn = cn.to_sym;
+		c = ConfigPool.find cn;
+		@config = c;
+	end ##}
+
+end ##}
+
+module TestPool ##{
+	@pool = {};
+
+	def self.register t ##{
+		@pool[t.name.to_sym] = t;
+	end ##}
+
+	def self.find n ##{
+		n = n.to_sym;
+		if @pool.has_key?(n)
+			return @pool[n];
+		else
+			return nil;
+		end
+	end ##}
+end ##}
+
+def test tn,&block ##{
+	return unless block_given?
+	t = Test.new(tn);
+	t.instance_eval &block;
+	TestPool.register t;
+end ##}

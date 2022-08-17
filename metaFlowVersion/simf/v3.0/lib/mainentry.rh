@@ -1,0 +1,68 @@
+rhload 'shell';
+rhload 'options';
+rhload 'fileset';
+rhload 'simulator';
+rhload 'component';
+rhload 'config';
+rhload 'test';
+rhload 'flowbase';
+rhload 'publishflow';
+rhload 'assembleflow';
+rhload 'buildflow';
+rhload 'testflow';
+
+class MainEntry ##{{{
+
+public
+	attr :publishflow;
+	attr :assembleflow;
+	attr :buildflow;
+	attr :testflow;
+	attr :option;
+
+	def initialize
+		@option = Options.new();
+		@publishflow = PublishFlow.new;
+		@assembleflow= AssembleFlow.new;
+		@buildflow   = BuildFlow.new;
+		@testflow    = TestFlow.new;
+		@publishflow.setup;
+		@assembleflow.setup;
+		@buildflow.setup;
+		@testflow.setup;
+		## TODO
+	end
+
+	def run ##{{{
+		sig = 0;
+		rhload $projectEntry;
+		sig = eval @option.evaluation;
+		sig = 0 if sig==true;
+		sig = -1 unless sig.is_a?(Integer)
+		return sig;
+		## TODO
+	end ##}}}
+
+	## cn is the name of config, the buildflow can be called by
+	## users by -e evaluation.
+	def buildflow cn ##{{{
+		@publishflow.run cn;  ## run publishflow
+		@assembleflow.run cn; ## run assembleflow
+		@buildflow.set cn;
+		return @buildflow;
+	end ##}}}
+
+	## tn is the name of testname
+	def runtest tn ##{{{
+		t = TestPool.find tn;
+		@testflow.addTest t;
+		@testflow.addRunProcedures do
+			buildflow(t.config.name).run;
+		end
+		return @testflow;
+	end ##}}}
+
+
+private
+
+end ##}}}

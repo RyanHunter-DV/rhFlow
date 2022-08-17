@@ -1,0 +1,3 @@
+export PROJECT_ROOT=/home/ryan/prj/GitHub/rhFlow/metaFlowVersion/simf/v3.0/test
+export OUT_ANCHOR=$PROJECT_ROOT/out
+export SIMF_ENTRY=$PROJECT_ROOT/root.rh

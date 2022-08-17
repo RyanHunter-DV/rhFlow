@@ -1,0 +1,36 @@
+class FlowBase ##{
+public
+
+	attr_accessor :name;
+	attr_accessor :flow;
+	attr_accessor :procedures;
+
+	def initialize n ##{{{
+		@name = n;
+		@flow = nil;
+		@procedures = [];
+	end ##}}}
+
+	def run ##{{{
+		@procedures.each do |p|
+			self.instance_eval &p;
+		end
+	end ##}}}
+
+	def createProcedures &p ##{{{
+		@procedures << p;
+	end ##}}}
+
+	def createContext n,d=nil ##{{{
+		n=n.to_sym;
+		self.instance_variable_set('@'+n.to_s,d);
+		self.define_singleton_method n do
+			self.instance_variable_get('@'+n.to_s);
+		end
+		set = (n.to_s+'=').to_sym;
+		self.define_singleton_method set do |v|
+			self.instance_variable_set('@'+n.to_s,v);
+		end
+	end ##}}}
+
+end ##}
