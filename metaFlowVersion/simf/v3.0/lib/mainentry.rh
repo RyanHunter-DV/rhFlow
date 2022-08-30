@@ -46,6 +46,7 @@ public
 	## cn is the name of config, the buildflow can be called by
 	## users by -e evaluation.
 	def buildflow cn ##{{{
+		puts "buildflow called"
 		@publishflow.run cn;  ## run publishflow
 		@assembleflow.run cn; ## run assembleflow
 		@buildflow.set cn;
@@ -57,7 +58,8 @@ public
 		t = TestPool.find tn;
 		@testflow.addTest t;
 		@testflow.addRunProcedures do
-			buildflow(t.config.name).run;
+			## puts "config: #{t.config}"
+			self.buildflow(t.config.name).run;
 		end
 		return @testflow;
 	end ##}}}

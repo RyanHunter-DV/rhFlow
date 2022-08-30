@@ -25,8 +25,10 @@ public
 		end
 	end ##}}}
 
-	def config n ##{{{
+	def config n=nil ##{{{
+		return @config if n==nil;
 		c = ConfigPool.find n.to_s;
+		##puts "set config: #{c}"
 		@config = c;
 	end ##}}}
 
@@ -69,4 +71,5 @@ def test n,&block ##{
 	if c==nil
 		c = TestPool.createAndRegisterNewTest n;
 	end
+	c.instance_eval &block;
 end ##}

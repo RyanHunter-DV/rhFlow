@@ -4,26 +4,33 @@ public
 	attr_accessor :name;
 	attr_accessor :paths;
 	attr_accessor :cmds;
+	attr_accessor :worktop;
 
 	attr :bits;
 	attr :logs;
 	attr :libpath;
 	attr :worklib;
-	attr :worktop;
 	attr :access;
 	attr :snapshot;
 
 	def initialize n,b,s ##{{{
 		@name = n.to_s;
-		@libpath = './';
-		@worklib = 'default_worklib';
+		@libpath = "./:#{ENV['CDS_INST_DIR']}/tools/inca/lib";
+		@libpath += ":#{ENV['CDS_INST_DIR']}/tools/lib";
+		@libpath += ":#{ENV['CDS_INST_DIR']}/tools/lib/64bit";
+		@worklib = 'ncvlog_lib';
 		@snapshot= @worklib+'.'+@worklib+':'+@worklib;
 		@worktop = 'top';
 		@access  = '+RWC';
 		initPaths;
 		@bits = 64;
 		@paths[:build] = b.to_s;
-		@paths[:sim]   = s.to_s;
+		if (@name=='xlm')
+			## if using xlm, use the sim path equals to build path
+			@paths[:sim]   = b.to_s;
+		else
+			@paths[:sim]   = s.to_s;
+		end
 		@logs = {};
 		@logs[:compile]= 'default_compile.log';
 		@logs[:elab]   = 'default_elab.log';
@@ -41,12 +48,17 @@ public
 
 	def generateCommand t=:compile,*opts ##{{{
 		cmd = [];
-		f=File.join(@paths[:build],@cmdfiles[t]);
+		f   = '';
 		case (t)
 		when :compile
+			f=File.join(@paths[:build],@cmdfiles[t]);
 			allocateCompileCmds;
 		when :elaborate
+			f=File.join(@paths[:build],@cmdfiles[t]);
 			allocateElaborateCmds;
+		when :sim
+			f=File.join(@paths[:sim],@cmdfiles[t]);
+			allocateSimCmds;
 		end
 		@cmds[t].each do |arg|
 			cmd << arg; ## get base cmd
@@ -80,8 +92,15 @@ public
 	def elaborate ##{{{
 		p   = @paths[:build];
 		cmd = 'source ./'+ @cmdfiles[:elaborate];
-		## TODO, rtn = Shell.exec p,cmd;
-		return 0;
+		rtn = Shell.exec p,cmd;
+		return rtn;
+	end ##}}}
+
+	def sim ##{{{
+		p   = @paths[:sim];
+		cmd = 'source ./'+@cmdfiles[:sim];
+		rtn = Shell.exec p,cmd;
+		return rtn;
 	end ##}}}
 
 private
@@ -120,15 +139,32 @@ private
 		return if @name == 'vcs';
 		cmds = [];
 		default = ENV['LD_LIBRARY_PATH'];
-		default = '' if default==nil;
+		if default==nil
+			default = '';
+		else
+			default = ':'+default;
+		end
 		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath+default)+';';
 		cmds << 'xmelab';
 		cmds << '-64BIT' if @bits==64;
-		cmds << "-LIBNAME #{@worklib} #{@worklib}.#{@worktop}";
+		cmds << "-LIBNAME #{@worklib}";
 		cmds << "-LOGFILE #{@logs[:elab]}";
 		cmds << "-access #{@access}";
+		cmds << "#{@worklib}.#{@worktop}";
 		cmds << "-SNAPSHOT #{@snapshot}";
 		@cmds[:elaborate] = cmds;
+	end ##}}}
+	def allocateSimCmds ##{{{
+		cmds = [];
+		default = ENV['LD_LIBRARY_PATH'];
+		default = '' if default==nil;
+		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath+default)+';';
+		cmds << 'xmsim';
+		cmds << '-64BIT' if @bits==64;
+		cmds << '-RUN';
+		cmds << "-LOGFILE #{@logs[:sim]}";
+		cmds << "#{@snapshot}";
+		@cmds[:sim] = cmds;
 	end ##}}}
 	def initCmdfiles ##{{{
 		@cmdfiles={};

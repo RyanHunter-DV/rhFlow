@@ -10,7 +10,8 @@ public
 
 	def setup
 		setupBasicFlow do ##{
-			setupSimCommand; ## create sim_command
+			self.setupSimCommand; ## create sim_command
+			self.sim;
 		end ##}
 		## TODO
 	end
@@ -44,6 +45,7 @@ private
 		@flow.define_singleton_method :setupSimCommand do |*userOpts| ##{
 			builtins = [];
 			## TODO, add builtin options
+			puts "generating sim commands"
 			@test.simulator.generateCommand :sim,*builtins,*userOpts;
 		end ##}
 		@flow.define_singleton_method :sim do ##{

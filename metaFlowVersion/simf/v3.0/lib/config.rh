@@ -10,6 +10,7 @@ public
 	attr :compopts;
 	attr :elabopts;
 	attr :simopts;
+	attr :top;
 
 	def initialize n ##{{{
 		@name     = n;
@@ -17,6 +18,7 @@ public
 		@simulator= nil;
 		@insts    = [];
 		@filelist = n+'.list';
+		@top      = 'top'; ## default
 		initConfigPaths;
 		initSimulatorOpts;
 	end ##}}}
@@ -79,6 +81,14 @@ public
 			@simopts[t] << opt;
 		end
 	end ##}}}
+	def top tn ##{
+		@top = tn.to_s;
+	end ##}
+
+	def elaborate ##{
+		## called after the instance of manual block
+		@simulator.worktop = @top;
+	end ##}
 
 	def storeAndExecuteLocalBlock &block ##{{{
 		@block = block;
@@ -118,6 +128,7 @@ module ConfigPool ##{
 	@pool = {};
 
 	def self.register c ##{{{{
+		##puts "register config: #{c}"
 		@pool[c.name.to_sym] = c;
 	end ##}}}
 
@@ -161,4 +172,5 @@ def config n,opts={},&block ##{
 		c.tool :xlm; ## default
 	end
 	c.storeAndExecuteLocalBlock &block;
+	c.elaborate;
 end ##}
