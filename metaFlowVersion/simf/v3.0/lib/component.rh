@@ -35,6 +35,10 @@ class Component ##{
 		@publish = t.to_sym;
 	end ##}}}
 
+	## add incdir to specific filelist
+	def incdir dir ##{{{
+		@fileset.incdir dir;
+	end ##}}}
 	## if l != nil, then assign a new filelist name to current component
 	## attention that one component can only have one filelist. But can have
 	## multiple files, and auto incdirs for all paths

@@ -13,6 +13,7 @@ public
 
 	def simopt t=:all,*opts ##{{{
 		t = t.to_sym;
+		puts "opts: #{opts}"
 		if t==:all
 			opts.each do |opt|
 				@simopts[:vcs] << opt;
@@ -20,9 +21,11 @@ public
 			end
 		else
 			opts.each do |opt|
+				puts "add opt: #{opt}"
 				@simopts[t] << opt;
 			end
 		end
+		exit 0
 	end ##}}}
 
 	def config n=nil ##{{{
