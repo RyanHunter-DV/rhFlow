@@ -46,9 +46,17 @@ private
 			builtins = [];
 			## TODO, add builtin options
 			puts "generating sim commands"
+			userOpts.push(*(@test.simopts[@test.simulator.name.to_sym]));
+			puts "user opts:#{userOpts}";
 			@test.simulator.generateCommand :sim,*builtins,*userOpts;
 		end ##}
 		@flow.define_singleton_method :sim do ##{
+			builtins = [];
+			userOpts = [];
+			puts "generating sim commands"
+			userOpts.push(*(@test.simopts[@test.simulator.name.to_sym]));
+			## puts "user opts:#{userOpts}";
+			@test.simulator.generateCommand :sim,*builtins,*userOpts;
 			@test.simulator.sim
 		end ##}
 		@flow.createProcedures &block;
