@@ -57,6 +57,7 @@ private
 			userOpts.push(*(@test.simopts[@test.simulator.name.to_sym]));
 			## puts "user opts:#{userOpts}";
 			@test.simulator.generateCommand :sim,*builtins,*userOpts;
+			puts "sim start"
 			@test.simulator.sim
 		end ##}
 		@flow.createProcedures &block;
