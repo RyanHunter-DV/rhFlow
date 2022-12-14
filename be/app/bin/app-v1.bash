@@ -2,7 +2,8 @@
 # echo "app-v1 called, params: $@"
 
 ## get the root dir of app*
-cdir=`dirname $0 | xargs realpath `
+## cdir=`dirname $0 | xargs realpath `
+cdir=$APPHOME
 pdir=`dirname $cdir`
 
 ## process options by calling ../accessory/__optionProcess__.py
@@ -23,9 +24,8 @@ if [ ! -e $appConfig ]; then
 fi
 ## app.config exists, now loading the config file
 setupCommands=`${pdir}/accessory/__appConfigProcess__.rb ${appConfig} ${cmd}`
-echo "load: $setupCommands"
+## echo "load: $setupCommands"
 if [ ! -z "${setupCommands}" ]; then
-	echo "processing"
 	eval $setupCommands
 fi
 

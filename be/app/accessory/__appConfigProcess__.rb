@@ -16,7 +16,15 @@ def __processBashCommands__ vars,cmdtype ##{{{
 		if cmdtype=='load'
 			l = "export #{var}=#{val}"
 		else
-			l = "unset #{var}"
+			if var=='PATH'
+				op = ENV['PATH'];
+				## puts "op: #{op}";
+				ov = val.sub(/:\$PATH/,'');
+				## puts "ov: #{ov}";
+				l = "export PATH=#{op.sub(ov,'')}";
+			else
+				l = "unset #{var}"
+			end
 		end
 		cmds << l;
 	end
@@ -33,7 +41,7 @@ def main() ##{{{
 	vars = {};
 	xmlp = XmlProcessor.new();
 
-	xmlp.loadSource("#{cdir}/testapp.config");
+	xmlp.loadSource(configf);
 	while (xmlp.has('env-var')) do
 		vars[xmlp.pop('env-var')] = xmlp.pop('env-val');
 		## puts "vars: #{vars}"

@@ -23,6 +23,7 @@ def __processBashCommands__(raws) ##{{{
 		## unload
 		shellcmds << 'cmd="unload"';
 		shellcmds << "tool=\"#{tool}\"";
+		shellcmds << 'version="current"';
 	##}
 	else ##{
 		puts "Error, not support command(#{cmd}) ";
