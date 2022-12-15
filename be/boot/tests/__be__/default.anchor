@@ -1,0 +1,2 @@
+app load xcelium/current
+export STEM=$PROJECT_HOME
