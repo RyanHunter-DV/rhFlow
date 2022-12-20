@@ -17,8 +17,10 @@ fi
 ## 1.clearing the env by start a new terminal
 nterm="/usr/bin/gnome-terminal"
 echo $project
-termopts="--title \"[booted] ${project}\" --hide-menubar --geometry=240x40+40+40"
-logincmd="source ${BEHOME}/setup.sh ${BEHOME};source ${BEHOME}/boot/bin/__bootinNewTerminal__.${SHELLTYPE} ${envfile} ${workhome};${SHELLTYPE}"
+termopts="--title \"[booted] ${project}\" --hide-menubar --geometry=120x40+40+40"
+setupcmd="source ${BEHOME}/setup.sh ${BEHOME}"
+bootcmd="source ${BEHOME}/boot/bin/__bootinNewTerminal__.${SHELLTYPE} ${envfile} ${workhome}"
+logincmd="${setupcmd};${bootcmd};${SHELLTYPE}"
 
 echo "booting project env with new terminal"
 fullcmd="${nterm} ${termopts} -- ${SHELLTYPE} -c \"${logincmd}\""
