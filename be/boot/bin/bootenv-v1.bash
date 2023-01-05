@@ -3,7 +3,7 @@ workhome=`realpath .`
 project=`basename ${workhome}`
 ## the processed arguments are
 ## envview=xxx
-argumentCommands=`${pdir}/accessory/__optionProcess__.rb $@`
+argumentCommands=`${pdir}/accessory/__optionProcess__.rb ${SHELLTYPE} $@`
 eval $argumentCommands
 # for test, echo "envview: $envview"
 
