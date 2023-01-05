@@ -17,16 +17,21 @@ endif
 ## using gnome-terminal by default, others are not supported in current version
 ## 1.clearing the env by start a new terminal
 set nterm = "/usr/bin/gnome-terminal"
-echo $project
-set termopts = "--title \"[booted] ${project}\" --hide-menubar --geometry=120x40+40+40"
-set setupcmd = "source ${BEHOME}/setup.sh ${BEHOME}"
+#echo $project
+# set termopts = "--title \"[booted] ${project}\" --hide-menubar --geometry=120x40+40+40"
+set termopts = (--title \")
+set termopts = ($termopts \(booted\)${project})
+set termopts = ($termopts \" --hide-menubar --geometry=120x40+40+40)
+echo ${termopts}
+set setupcmd = "source ${BEHOME}/setup.csh ${BEHOME}"
 set bootcmd  = "source ${BEHOME}/boot/bin/__bootinNewTerminal__.csh ${envfile} ${workhome}"
 set logincmd = "${setupcmd};${bootcmd};${SHELLTYPE}"
 
 echo "booting project env with new terminal"
-set fullcmd = "${nterm} ${termopts} -- ${SHELLTYPE} -c \"${logincmd}\""
+set fullcmd = (${nterm} ${termopts} -- ${SHELLTYPE} -c)
+set fullcmd = ($fullcmd \"${logincmd}\")
 # for test, echo "test version:"
-echo ${fullcmd}
+##echo ${fullcmd}
 eval ${fullcmd}
 
 ## exit 0
