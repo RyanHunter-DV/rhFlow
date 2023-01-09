@@ -56,7 +56,7 @@ class SimulatorBase
 		flist = "#{@bf.outConfigs["#{c.name}.build"]}/#{@filelist[:name]}";
 		Shell.generate(:file,flist,*(@filelist[:content]));
 	end ##}}}
-    def build n,**opts={} ##{{{
+    def build n,**opts ##{{{
         """
         run build by xcelium flow, i.e. xcelium.build(:configName)
         cn is the config name
