@@ -125,11 +125,11 @@ class CompileException < ExceptionBase
 		@extMsg = msg if msg!='';
 	end ##}}}
 end
-class BuildException < ExceptionBase
+class SimException < ExceptionBase
 	def initialize msg='' ##{{{
 		super();
 		@exitSig=10;
-		@eFlag  ='BUILDE';
+		@eFlag  ='SIME';
 		@elevel =:ERROR;
 		@extMsg = msg if msg!='';
 	end ##}}}
