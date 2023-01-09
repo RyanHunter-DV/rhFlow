@@ -115,6 +115,15 @@ class SimulatorBase
 		rtns = Shell.exec(@bf.outConfigs[flag],cmd);
 		raise CompileException.new(", call simulator(elaborate) failed(#{rtns[0]})") if rtns[1]!=0;
 	end ##}}}
+	def runSim test ##{{{
+		flag = "#{test.config.name}.sim";
+		puts "#{@symbol}.simulation ......";
+		cmd  = "source ./#{@cmdfiles[:sim]}";
+		@debug.print("path: #{@bf.outConfigs[flag]}");
+		@debug.print("cmd: #{cmd}");
+		rtns = Shell.exec(@bf.outConfigs[flag],cmd);
+		raise CompileException.new(", call simulator(simulation) failed(#{rtns[0]})") if rtns[1]!=0;
+	end ##}}}
 	def generateCompileCommand t ##{{{
 		"""
 		collecting user options for compile, from config, component
@@ -181,9 +190,11 @@ class SimulatorBase
 		"""
 		begin
 			test  = @context.findlocal(:test,tn);
-			raise SimException.new("test(#{tn}) not found") if test==nil;
+			raise SimException.new(", test(#{tn}) not found") if test==nil;
 			generateSimCommand(test);
 			runSim(test);
+		rescue SimException => e
+			e.process("simulation failed");
 		end
 	end ##}}}
 	def generateSimCommand test ##{{{
