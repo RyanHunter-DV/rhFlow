@@ -12,6 +12,7 @@ class Config
 	attr_accessor :filelist;
 	attr_accessor :precompopts; ## opts that before filelist
 	attr_accessor :compopts; ## normal opts, will after filelist
+	attr_accessor :worktop;
 
 	def __initfields__ ##{{{
 		@name = '';
@@ -21,8 +22,9 @@ class Config
 		@compopts={};
 		@context=nil;
 		@debug=nil;
-		@simulator = :xlm; ## default
+		@simulator= :xlm; ## default
 		@filelist = nil;
+		@worktop  = '';
 	end ##}}}
 	def initialize n,d ##{{{
 		__initfields__;
@@ -83,7 +85,13 @@ class Config
 		compopts[eda].append(*opts);
 		return;
 	end ##}}}
-
+	def worktop n=nil ##{{{
+		"""
+		if n==nil or '', then return @worktop, else set @worktop
+		"""
+		return @worktop if not n;
+		@worktop = n.to_s;
+	end ##}}}
 
 end
 

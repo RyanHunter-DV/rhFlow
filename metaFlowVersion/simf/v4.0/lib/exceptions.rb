@@ -8,7 +8,7 @@ class ExceptionBase < Exception ##{{{
 
     ## supports error level
     ## :WARNING, :ERROR, :FATAL
-    attr :elevel;
+    attr_accessor :elevel;
 	attr :extMsg;
 
     def initialize ##{
