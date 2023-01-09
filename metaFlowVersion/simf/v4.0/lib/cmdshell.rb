@@ -17,7 +17,7 @@ module Shell ##{
 		end
 		case (t)
 		when :get
-			puts "debug line: #{line}";
+			## puts "debug line: #{line}";
 			return line;
 		when :run
 			system("#{line}");

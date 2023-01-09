@@ -98,7 +98,7 @@ class Config
 		"""
 		if n==nil or '', then return @worktop, else set @worktop
 		"""
-		return @worktop if not n;
+		return @worktop unless n;
 		@worktop = n.to_s;
 	end ##}}}
 
