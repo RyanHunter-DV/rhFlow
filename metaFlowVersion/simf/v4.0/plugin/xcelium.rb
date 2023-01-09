@@ -62,8 +62,7 @@ class Xcelium < SimulatorBase ##{{{
 		Shell.makedir(File.join(@bf.outConfigs[buildflag],@worklib));
 	end ##}}}
 	def __syncUserConfigs__ config ##{{{
-		puts "config.worktop: #{config.worktop}"
-		@worktop = config.worktop if config.worktop;
+		@worktop = config.worktop if config.worktop!='';
 		#TODO, other user configs can be added here
 	end ##}}}
 	def preRunCompile config ##{{{
