@@ -53,6 +53,17 @@ class Xcelium < SimulatorBase ##{{{
 		cmds << "-SNAPSHOT #{@snapshot}";
 		return cmds;
 	end ##}}}
+
+	def __builtinSimCmd__ ##{{{
+		cmds = [];
+		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath)+';';
+		cmds << 'xmsim';
+		cmds << '-64BIT';
+		cmds << '-RUN';
+		cmds << "-LOGFILE #{@logfile[:sim]}";
+		cmds << "#{@snapshot}";
+		return cmds;
+	end ##}}}
 	def __buildWorklib__ config ##{{{
 		buildflag = "#{config.name}.build";
 		hdl = File.join(@bf.outConfigs[buildflag],'hdl.var');
