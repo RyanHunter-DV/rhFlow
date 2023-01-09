@@ -11,12 +11,13 @@ module Shell ##{
 		line = '';
 		case (@type)
 		when :bash
-			line = 'export '+var+'='+val;
+			line = "export #{var}=#{val}:$#{var}";
 		when :csh
-			line = 'setenv '+var+' '+val;
+			line = "setenv #{var} #{val}:$#{var}";
 		end
 		case (t)
 		when :get
+			puts "debug line: #{line}";
 			return line;
 		when :run
 			system("#{line}");

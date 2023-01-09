@@ -43,7 +43,7 @@ class Xcelium < SimulatorBase ##{{{
 	end ##}}}
 	def __builtinElabCmd__ ##{{{
 		cmds = [];
-		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath+default)+';';
+		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath)+';';
 		cmds << 'xmelab';
 		cmds << '-64BIT'
 		cmds << "-LIBNAME #{@worklib}";
