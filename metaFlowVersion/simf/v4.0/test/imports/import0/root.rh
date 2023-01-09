@@ -1,0 +1,8 @@
+component :I0Comp do
+	puts "load component"
+end
+context :Import0Context do
+	puts "context loaded"
+	puts "self: #{self}"
+	component :I0Comp
+end

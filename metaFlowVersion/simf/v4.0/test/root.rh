@@ -1,0 +1,10 @@
+rhload 'src/node'
+test :test do
+	config :testConfig
+end
+context :testContext do
+	component :rtl
+	component :env
+	config :testConfig
+	test :test
+end
