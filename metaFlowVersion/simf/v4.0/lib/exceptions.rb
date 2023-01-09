@@ -125,3 +125,12 @@ class CompileException < ExceptionBase
 		@extMsg = msg if msg!='';
 	end ##}}}
 end
+class BuildException < ExceptionBase
+	def initialize msg='' ##{{{
+		super();
+		@exitSig=10;
+		@eFlag  ='BUILDE';
+		@elevel =:ERROR;
+		@extMsg = msg if msg!='';
+	end ##}}}
+end
