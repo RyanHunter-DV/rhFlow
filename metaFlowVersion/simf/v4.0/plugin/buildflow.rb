@@ -115,18 +115,11 @@ class Buildflow ##{{{
 		end
 		config.filelist= @filelist;
 	end ##}}}
-	def run cn ##{{{
+	def run config ##{{{
 		"""
 		to run the build flow,
 		"""
-		begin
-			raise BuildException.new(", no context set") if @context==nil;
-			config = @context.findlocal(:config,cn);
-			raise BuildException.new(", no config(#{cn}) in context(#{@context.name})") if config==nil;
-			__buildComponents__(config);
-			__buildConfig__(config);
-		rescue BuildException => e
-			e.process("buildflow failed");
-		end
+		__buildComponents__(config);
+		__buildConfig__(config);
 	end ##}}}
 end ##}}}

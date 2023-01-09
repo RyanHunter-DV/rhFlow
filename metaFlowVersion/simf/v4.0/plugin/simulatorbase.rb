@@ -70,7 +70,11 @@ class SimulatorBase
 			else
 				cn = n 
 			end
-        	@bf.run(cn);
+			raise BuildException.new(", no context set") if @context==nil;
+			config = @context.findlocal(:config,cn);
+			raise BuildException.new(", no config(#{cn}) in context(#{@context.name})") if config==nil;
+        	@bf.run(config);
+			generateFilelist(config);
 		rescue BuildException => e
 			e.process("build failed");
 		end
@@ -84,7 +88,6 @@ class SimulatorBase
 			test  = @context.findlocal(:test,tn);
 			raise CompileException.new(", test(:#{tn}) not found") if test==nil;
 			## build(test.config.name);
-			generateFilelist(test.config);
 			generateCompileCommand(test);
 			runCompile(test);
 			if @symbol == :xlm
