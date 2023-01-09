@@ -13,6 +13,7 @@ class Config
 	attr_accessor :precompopts; ## opts that before filelist
 	attr_accessor :compopts; ## normal opts, will after filelist
 	attr_accessor :elabopts; ## normal opts, will after filelist
+	attr_accessor :simopts; ## normal opts, will after filelist
 	attr_accessor :worktop;
 
 	def __initfields__ ##{{{
@@ -22,6 +23,7 @@ class Config
 		@precompopts={};
 		@compopts={};
 		@elabopts={};
+		@simopts ={};
 		@context=nil;
 		@debug=nil;
 		@simulator= :xlm; ## default
@@ -92,6 +94,12 @@ class Config
 		eda = eda.to_sym;
 		@elabopts[eda]=[] unless @elabopts.has_key?(eda);
 		@elabopts[eda].append(*opts);
+		return;
+	end ##}}}
+	def simopt eda,*opts,**args ##{{{
+		eda = eda.to_sym;
+		simopts[eda]=[] unless simopts.has_key?(eda);
+		simopts[eda].append(*opts);
 		return;
 	end ##}}}
 	def worktop n=nil ##{{{

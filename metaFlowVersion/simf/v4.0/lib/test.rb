@@ -2,6 +2,7 @@ class Test
 	attr_accessor :body;
 	attr_accessor :context;
 	attr_accessor :name;
+	attr_accessor :simopts;
 
 	attr :config;
 
@@ -10,6 +11,7 @@ class Test
 		@context=nil;
 		@config =nil;
 		@name = n.to_s;
+		@simopts={};
 	end ##}}}
 	def addBody b ##{{{
 		loc = b.source_location.join(',');
@@ -45,6 +47,12 @@ class Test
 		c = @context.findlocal(:config,n);
 		raise TestEvalException.new("config(#{n}) not found in context(#{@context.name})") if c==nil;
 		@config = c;
+	end ##}}}
+	def simopt eda,*opts,**args ##{{{
+		eda = eda.to_sym;
+		simopts[eda]=[] unless simopts.has_key?(eda);
+		simopts[eda].append(*opts);
+		return;
 	end ##}}}
 end
 
