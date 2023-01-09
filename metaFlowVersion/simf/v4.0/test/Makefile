@@ -7,6 +7,8 @@ simonly := 'xcelium.sim(:test)'
 
 all:
 	../simf ${debug} -e ${build}
+build:
+	../simf ${debug} -e ${build}
 comp:
 	../simf ${debug} -e ${compile}
 sim:
