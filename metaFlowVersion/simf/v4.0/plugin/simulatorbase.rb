@@ -139,27 +139,27 @@ class SimulatorBase
 		flag = "#{test.config.name}.build";
 		puts "#{@symbol}.compile ......";
 		cmd  = "source ./#{@cmdfiles[:comp]}";
-		@debug.print("path: #{@bf.outConfigs[flag]}");
+		@debug.print("path: #{@outConfigs[flag]}");
 		@debug.print("cmd: #{cmd}");
-		rtns = Shell.exec(@bf.outConfigs[flag],cmd);
+		rtns = Shell.exec(@outConfigs[flag],cmd);
 		raise CompileException.new(", call simulator(compile) failed(#{rtns[0]})") if rtns[1]!=0;
 	end ##}}}
 	def runElaborate test ##{{{
 		flag = "#{test.config.name}.build";
 		puts "#{@symbol}.elaborate ......";
 		cmd  = "source ./#{@cmdfiles[:elab]}";
-		@debug.print("path: #{@bf.outConfigs[flag]}");
+		@debug.print("path: #{@outConfigs[flag]}");
 		@debug.print("cmd: #{cmd}");
-		rtns = Shell.exec(@bf.outConfigs[flag],cmd);
+		rtns = Shell.exec(@outConfigs[flag],cmd);
 		raise CompileException.new(", call simulator(elaborate) failed(#{rtns[0]})") if rtns[1]!=0;
 	end ##}}}
 	def runSim test ##{{{
 		flag = "#{test.config.name}.sim";
 		puts "#{@symbol}.simulation ......";
 		cmd  = "source ./#{@cmdfiles[:sim]}";
-		@debug.print("path: #{@bf.outConfigs[flag]}");
+		@debug.print("path: #{@outConfigs[flag]}");
 		@debug.print("cmd: #{cmd}");
-		rtns = Shell.exec(@bf.outConfigs[flag],cmd);
+		rtns = Shell.exec(@outConfigs[flag],cmd);
 		raise CompileException.new(", call simulator(simulation) failed(#{rtns[0]})") if rtns[1]!=0;
 	end ##}}}
 	def generateCompileCommand t ##{{{
