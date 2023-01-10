@@ -119,10 +119,14 @@ class SimulatorBase
 			raise CompileException.new(", test(:#{tn}) not found") if test==nil;
 			## build(test.config.name);
 			__setupDirs__(test.config);
+			@debug.print("call generateCompileCommand");
 			generateCompileCommand(test);
+			@debug.print("call runCompile");
 			runCompile(test);
 			if @symbol == :xlm
+				@debug.print("call generateElaborateCommand");
 				generateElaborateCommand(test);
+				@debug.print("call runElaborate");
 				runElaborate(test);
 			end
 		rescue CompileException => e
@@ -176,9 +180,11 @@ class SimulatorBase
 		## for now, all filelist option are the same among different simulators
 		cmds.append("-f #{@filelist[:name]}"); 
 		cmds.append(*compopts);
+		cmd = cmds.join(' ');
 		flag = "#{t.config.name}.build";
 		cmdf = "#{@outConfigs[flag]}/#{@cmdfiles[:comp]}";
-		Shell.generate(:file,cmdf,cmds.join(' '));
+		@debug.print("generateCompileCommand: #{cmd}");
+		Shell.generate(:file,cmdf,cmd);
 	end ##}}}
 	def generateElaborateCommand t ##{{{
 		elabopts    = [];

@@ -63,3 +63,5 @@ compopt :vcs,'-XFLAG mmm','-ACCESS rwc',:pre=>true
 compopt :all,'-XFLAG mmm','-ACCESS rwc',:pre=>true
 compopt :xlm,'-XFLAG mmm'
 
+arr = []
+puts arr.methods
