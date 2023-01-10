@@ -75,7 +75,7 @@ class SimulatorBase
 		@outComps[:root] = "#{@outAnchor}/components";
 		config.comps.each_pair do |inst,comp|
 			compdir = "#{comp.name}-#{inst}";
-			@outComps[compdir] = @outComps[:root]+'/'+compdir;
+			comp.outpath= @outComps[:root]+'/'+compdir;
 		end
 		@outConfigs[:root] = "#{@outAnchor}/configs";
 		@outConfigs[config.name]= "#{@outConfigs[:root]}/#{config.name}";

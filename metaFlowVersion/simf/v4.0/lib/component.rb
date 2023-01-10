@@ -7,6 +7,7 @@ class Component ##{{{
 	attr_accessor :elabopts;
 	attr_accessor :simopts;
 	attr_accessor :filesets;
+	attr_accessor :outpath;
 
 	def initialize n ##{{{
 		@name    =n;
@@ -16,6 +17,7 @@ class Component ##{{{
 		@elabopts={};
 		@simopts ={};
 		@filesets=[];
+		@outpath ='';
 	end ##}}}
 	
 	def addBody b ##{{{

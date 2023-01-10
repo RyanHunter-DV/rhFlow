@@ -33,13 +33,19 @@ class Buildflow ##{{{
 		dirs.each do |d|
 			fd += '/'+d;
 			if not Dir.exists?(fd)
-				@debug.print("create dir: #{fd}");
-				Shell.makedir(fd);
+				begin
+					@debug.print("create dir: #{fd}");
+					rtns = Shell.makedir(fd);
+					raise OtherCmdException.new(", makedir failed(#{rtns[0]})") if rtns[1]!=0;
+				rescue OtherCmdException => e
+					e.process("shell command failed")
+				end
 			end
 		end
 		return;
 	end ##}}}
 	def debugfilelist ##{{{
+		@debug.print("start debugging filelist");
 		@filelist[:incdir].each do |i|
 			@debug.print("filelist[:incdir]-> #{i}");
 		end
@@ -95,9 +101,20 @@ class Buildflow ##{{{
 		## TODO, 	Shell.makedir(@outComps[compdir]);
 		## TODO, 	__publishcomponent__(comp,@outComps[compdir]);
 		## TODO, end
-		Shell.makedir(@out);
-		@outComps.each_pair do |k,dir|
-			Shell.makedir(dir);
+		begin
+			rtns = Shell.makedir(@out);
+			raise OtherCmdException.new(", build out failed(#{rtns[0]})") if rtns[1]!=0;
+			@debug.print("building component root dir(#{@outComps[:root]})");
+			rtns = Shell.makedir(@outComps[:root]);
+			raise OtherCmdException.new(", build out failed(#{rtns[0]})") if rtns[1]!=0;
+			config.comps.each_pair do |inst,comp|
+				@debug.print("building component in (#{comp.outpath})");
+				rtns = Shell.makedir(comp.outpath);
+				raise OtherCmdException.new(", build out failed(#{rtns[0]})") if rtns[1]!=0;
+				__publishcomponent__(comp,comp.outpath);
+			end
+		rescue OtherCmdException => e
+			e.process("buildComponents failed");
 		end
 		debugfilelist;
 	end ##}}}
