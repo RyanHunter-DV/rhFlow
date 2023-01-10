@@ -1,4 +1,4 @@
-class Config
+class Configs
 
 	attr_accessor :name;
 	attr_accessor :body;
@@ -128,7 +128,7 @@ module ConfigPool
 		n = n.to_s;
 		if not @pool.has_key?(n)
 			if create==true
-				@pool[n] = Config.new(n,@debug);
+				@pool[n] = Configs.new(n,@debug);
 			else
 				return nil;
 			end
