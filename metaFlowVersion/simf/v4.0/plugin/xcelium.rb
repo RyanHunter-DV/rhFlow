@@ -66,11 +66,11 @@ class Xcelium < SimulatorBase ##{{{
 	end ##}}}
 	def __buildWorklib__ config ##{{{
 		buildflag = "#{config.name}.build";
-		hdl = File.join(@bf.outConfigs[buildflag],'hdl.var');
-		cds = File.join(@bf.outConfigs[buildflag],'cds.lib');
+		hdl = File.join(@outConfigs[buildflag],'hdl.var');
+		cds = File.join(@outConfigs[buildflag],'cds.lib');
 		Shell.generate(:file,hdl,"DEFINE WORK #{@worklib}");
 		Shell.generate(:file,cds,"DEFINE #{@worklib} ./#{@worklib}");
-		Shell.makedir(File.join(@bf.outConfigs[buildflag],@worklib));
+		Shell.makedir(File.join(@outConfigs[buildflag],@worklib));
 	end ##}}}
 	def __syncUserConfigs__ config ##{{{
 		@worktop = config.worktop if config.worktop!='';

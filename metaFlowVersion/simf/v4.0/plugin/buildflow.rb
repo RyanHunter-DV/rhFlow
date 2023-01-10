@@ -9,8 +9,10 @@ class Buildflow ##{{{
 	attr_accessor :filelist;
 	attr_accessor :outComps;
 	attr_accessor :outConfigs;
+	attr_accessor :out;
 
 	def initialize ctxt,d
+		@out = '';
 		@context   = ctxt;
 		@debug     = d;
 		@filelist  = {};
@@ -84,15 +86,18 @@ class Buildflow ##{{{
 		"""
 		to build all components from source to out anchor.
 		"""
-		out = File.absolute_path("#{$projectRoot}/#{$outAnchor}");
-		@outComps[:root] = "#{out}/components";
-		Shell.makedir(out,@outComps[:root]);
-		config.comps.each_pair do |inst,comp|
-			compdir = "#{comp.name}-#{inst}";
-			@outComps[compdir] = @outComps[:root]+'/'+compdir;
-			@debug.print("building component in (#{@outComps[compdir]})");
-			Shell.makedir(@outComps[compdir]);
-			__publishcomponent__(comp,@outComps[compdir]);
+		## TODO, out = File.absolute_path("#{$projectRoot}/#{$outAnchor}");
+		## TODO, @outComps[:root] = "#{out}/components";
+		## TODO, config.comps.each_pair do |inst,comp|
+		## TODO, 	compdir = "#{comp.name}-#{inst}";
+		## TODO, 	@outComps[compdir] = @outComps[:root]+'/'+compdir;
+		## TODO, 	@debug.print("building component in (#{@outComps[compdir]})");
+		## TODO, 	Shell.makedir(@outComps[compdir]);
+		## TODO, 	__publishcomponent__(comp,@outComps[compdir]);
+		## TODO, end
+		Shell.makedir(@out);
+		@outComps.each_pair do |k,dir|
+			Shell.makedir(dir);
 		end
 		debugfilelist;
 	end ##}}}
@@ -102,10 +107,10 @@ class Buildflow ##{{{
 		build dir: out/config/<config>/build
 		"""
 		out = File.absolute_path("#{$projectRoot}/#{$outAnchor}");
-		@outConfigs[:root] = "#{out}/configs";
-		@outConfigs[config.name]= "#{@outConfigs[:root]}/#{config.name}";
-		@outConfigs["#{config.name}.build"]= @outConfigs[config.name]+'/build';
-		@outConfigs["#{config.name}.sim"]  = @outConfigs[config.name]+'/sim';
+		## TODO, @outConfigs[:root] = "#{out}/configs";
+		## TODO, @outConfigs[config.name]= "#{@outConfigs[:root]}/#{config.name}";
+		## TODO, @outConfigs["#{config.name}.build"]= @outConfigs[config.name]+'/build';
+		## TODO, @outConfigs["#{config.name}.sim"]  = @outConfigs[config.name]+'/sim';
 		begin
 			@debug.print("makdir: #{@outConfigs[:root]}, #{@outConfigs[config.name]}");
 			rtns = Shell.makedir(@outConfigs[:root],@outConfigs[config.name],@outConfigs["#{config.name}.build"]);

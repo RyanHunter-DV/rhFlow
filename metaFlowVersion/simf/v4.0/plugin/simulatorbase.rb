@@ -9,6 +9,10 @@ class SimulatorBase
 	attr :logfile;
 	attr :cmdfiles;
 
+	attr :outAnchor;
+	attr :outComps;
+	attr :outConfigs;
+	attr :dirset;
 
 	def __initLogs__ ##{{{
 		@logfile={};
@@ -22,6 +26,12 @@ class SimulatorBase
 		@cmdfiles[:elab] = 'elaborate_command';
 		@cmdfiles[:sim]  = 'sim_command';
 	end ##}}}
+	def __initOuts__ ##{{{
+		@outAnchor = '';
+		@outComps  = {};
+		@outConfigs= {};
+		@dirset = false;
+	end ##}}}
 	def initialize s,ctx,d ##{{{
 		@symbol = s.to_sym;
         @context = ctx;
@@ -31,6 +41,7 @@ class SimulatorBase
 		@filelist[:name] = 'default.list';
 		@filelist[:content] = [];
 		@optformat = {}; ## option formatter for different simulaotr, set by its subclass
+		__initOuts__;
 		__initLogs__;
 		__initCmds__;
 	end ##}}}
@@ -53,8 +64,23 @@ class SimulatorBase
 		c.filelist[:file].each do |f|
 			@filelist[:content] << f;
 		end
-		flist = "#{@bf.outConfigs["#{c.name}.build"]}/#{@filelist[:name]}";
+		flist = "#{@outConfigs["#{c.name}.build"]}/#{@filelist[:name]}";
 		Shell.generate(:file,flist,*(@filelist[:content]));
+	end ##}}}
+
+	def __setupDirs__ config ##{{{
+		return if @dirset;
+		@dirset = true;
+		@outAnchor = File.absolute_path("#{$projectRoot}/#{$outAnchor}");
+		@outComps[:root] = "#{@outAnchor}/components";
+		config.comps.each_pair do |inst,comp|
+			compdir = "#{comp.name}-#{inst}";
+			@outComps[compdir] = @outComps[:root]+'/'+compdir;
+		end
+		@outConfigs[:root] = "#{@outAnchor}/configs";
+		@outConfigs[config.name]= "#{@outConfigs[:root]}/#{config.name}";
+		@outConfigs["#{config.name}.build"]= @outConfigs[config.name]+'/build';
+		@outConfigs["#{config.name}.sim"]  = @outConfigs[config.name]+'/sim';
 	end ##}}}
     def build n,**opts ##{{{
         """
@@ -73,6 +99,10 @@ class SimulatorBase
 			raise BuildException.new(", no context set") if @context==nil;
 			config = @context.findlocal(:config,cn);
 			raise BuildException.new(", no config(#{cn}) in context(#{@context.name})") if config==nil;
+			__setupDirs__(config);
+			@bf.outConfigs= @outConfigs;
+			@bf.outComps= @outComps;
+			@bf.out= @outAnchor;
         	@bf.run(config);
 			generateFilelist(config);
 		rescue BuildException => e
@@ -88,6 +118,7 @@ class SimulatorBase
 			test  = @context.findlocal(:test,tn);
 			raise CompileException.new(", test(:#{tn}) not found") if test==nil;
 			## build(test.config.name);
+			__setupDirs__(test.config);
 			generateCompileCommand(test);
 			runCompile(test);
 			if @symbol == :xlm
@@ -146,7 +177,7 @@ class SimulatorBase
 		cmds.append("-f #{@filelist[:name]}"); 
 		cmds.append(*compopts);
 		flag = "#{t.config.name}.build";
-		cmdf = "#{@bf.outConfigs[flag]}/#{@cmdfiles[:comp]}";
+		cmdf = "#{@outConfigs[flag]}/#{@cmdfiles[:comp]}";
 		Shell.generate(:file,cmdf,cmds.join(' '));
 	end ##}}}
 	def generateElaborateCommand t ##{{{
@@ -159,7 +190,7 @@ class SimulatorBase
 		cmds.append(*__builtinElabCmd__);
 		cmds.append(*elabopts);
 		flag = "#{t.config.name}.build";
-		cmdf = "#{@bf.outConfigs[flag]}/#{@cmdfiles[:elab]}";
+		cmdf = "#{@outConfigs[flag]}/#{@cmdfiles[:elab]}";
 		Shell.generate(:file,cmdf,cmds.join(' '));
 	end ##}}}
 	def __getopts__ t,o,s ##{{{
@@ -194,6 +225,7 @@ class SimulatorBase
 		begin
 			test  = @context.findlocal(:test,tn);
 			raise SimException.new(", test(#{tn}) not found") if test==nil;
+			__setupDirs__(test.config);
 			generateSimCommand(test);
 			runSim(test);
 		rescue SimException => e
@@ -213,7 +245,7 @@ class SimulatorBase
 		cmds.append(*simopts);
 
 		flag = "#{test.config.name}.sim";
-		cmdf = "#{@bf.outConfigs[flag]}/#{@cmdfiles[:sim]}";
+		cmdf = "#{@outConfigs[flag]}/#{@cmdfiles[:sim]}";
 		Shell.generate(:file,cmdf,cmds.join(' '));
 	end ##}}}
 	def run tn ##{{{
