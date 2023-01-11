@@ -8,6 +8,7 @@ class SimulatorBase
 	attr :filelist;
 	attr :logfile;
 	attr :cmdfiles;
+	attr :eflag;
 
 	attr :outAnchor;
 	attr :outComps;
@@ -159,8 +160,8 @@ class SimulatorBase
 		cmd  = "source ./#{@cmdfiles[:sim]}";
 		@debug.print("path: #{@outConfigs[flag]}");
 		@debug.print("cmd: #{cmd}");
-		rtns = Shell.exec(@outConfigs[flag],cmd);
-		raise SimException.new(", call simulator(simulation) failed(#{rtns[0]})") if rtns[1]!=0;
+		rtns = Shell.edasim(@outConfigs[flag],cmd,@eflag);
+		raise SimException.new(", simulation failed, errors:\n#{*rtns[:errors]}") if rtns[:sig]!=0;
 	end ##}}}
 	def generateCompileCommand t ##{{{
 		"""

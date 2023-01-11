@@ -29,8 +29,12 @@ class Xcelium < SimulatorBase ##{{{
 			e.process("use default libpath(./)");
 		end
 	end ##}}}
+	def __setupErrorFlags__ ##{{{
+		@eflag = ['*E,'];
+	end ##}}}
     def initialize ctx,d ##{{{
 		super(:xlm,ctx,d);
+		__setupErrorFlags__;
 		__setupOptionFormats__;
 		__setuplibpath__;
 		@worklib = 'ncvlog_lib';

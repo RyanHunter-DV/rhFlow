@@ -84,6 +84,29 @@ module Shell ##{
 		puts out if visible;
 		return [err.chomp!,st.exitstatus]
 	end ##}
+	def __processSimOutputs__ outs,eflags ##{{{
+		rtns = {:sig=>0,:errors=>[]};
+		outs.each do |line|
+			eflags.each do |eflag|
+				p = Regexp.new("^#{eflag}");
+				rtns[:errors] << line if p.match(line);
+			end
+		end
+		rtns[:sig] = 1 unless (rtns[:errors].empty?);
+		return rtns;
+	end ##}}}
+	def self.edasim path,cmd,eflag ##{{{
+		"""
+		run sim and process the outputs according to elfag
+		"""
+		eflags = ['UVM_ERROR ','UVM_FATAL ']; ## builtin for all simulator
+		eflags.append(*eflag);
+
+		e = "cd #{path};#{cmd}";
+		out,err,st = Open3.capture3(e);
+		rtns = __processSimOutputs__(out,eflags);
+		return rtns;
+	end ##}}}
 
 	def self.generate t=:file,n='<null>',*cnts ##{
 		##puts "DEBUG, generate file: #{n}"
