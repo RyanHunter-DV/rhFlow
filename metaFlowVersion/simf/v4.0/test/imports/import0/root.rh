@@ -1,5 +1,6 @@
 component :I0Comp do
 	puts "load component"
+	fileset '*.v'
 end
 context :Import0Context do
 	puts "context loaded"

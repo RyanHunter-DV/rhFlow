@@ -12,7 +12,7 @@ class Component ##{{{
 	def initialize n ##{{{
 		@name    =n;
 		@body    ={};
-		@requires={};
+		@requires=[];
 		@compopts={};
 		@elabopts={};
 		@simopts ={};
@@ -25,14 +25,37 @@ class Component ##{{{
 		@body[loc] = b;
 	end ##}}}
 
+	def requirenest pool ##{{{
+		"""
+		method to return all requires within from this component, this component's
+		requires, and the requires' requires ...
+		return as a hash that stores all unique name indexed objects
+		rnest = {:name=>'',:obj=>component}
+		"""
+		rnest = {};
+		pool.each do |required|
+			next if (rnest.has_key?(required[:name]));
+			rnest[:name] = required[:obj];
+			subrnest = self.requirenest(required[:obj].requires);
+			subrnest.each_pair do |n,o|
+				next if rnest.has_key?(n);
+				rnest[n] = o;
+			end
+		end
+		return rnest;
+	end ##}}}
+
 	def finalize ##{{{
 		"""
 		- get all required components,and then evalute it
 		"""
-		@requires.each_pair do |fn,opts|
+		@requires.each do |required|
+			fn = required[:name];
+			puts "component(#{@name}) required component(#{fn})";
 			c = Context.find(:component,fn);
 			raise ComponentEvalException.new("required component(#{fn}) not found") if c==nil;
 			c.evaluate;
+			required[:obj] = c;
 		end
 	end ##}}}
 	def evaluate ##{{{
@@ -64,7 +87,12 @@ class Component ##{{{
 	############################################
 	def required n,**opts ##{{{
 		opts[:version]='default' if not opts.has_key?(:version);
-		@requires[n.to_s] = opts;
+		required = {
+			:name => n.to_s,
+			:opts => opts,
+			:obj  => nil
+		};
+		@requires << required;
 		return;
 	end ##}}}
 	def compopt t,*opts ##{{{

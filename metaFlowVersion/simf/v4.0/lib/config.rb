@@ -79,6 +79,12 @@ class Configs
 		instname = c.name;
 		instname = opts[:as] if opts.has_key?(:as);
 		@comps[instname.to_s] = c;
+		rnest = c.requirenest(c.requires);
+		rnest.each_pair do |n,o|
+			rcompname = c.name+'-required-'+n.to_s;
+			next if (@comps.has_key?(rcompname));
+			@comps[rcompname] = o;
+		end
 		return;
 	end ##}}}
 
