@@ -236,7 +236,9 @@ class SimulatorBase
 			runSim(test);
 		rescue SimException => e
 			e.process("simulation failed");
+			return e.exitSig;
 		end
+		return 0;
 	end ##}}}
 	def generateSimCommand test ##{{{
 		simopts = [];
