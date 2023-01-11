@@ -141,7 +141,7 @@ class SimulatorBase
 		cmd  = "source ./#{@cmdfiles[:comp]}";
 		@debug.print("path: #{@outConfigs[flag]}");
 		@debug.print("cmd: #{cmd}");
-		rtns = Shell.exec(@outConfigs[flag],cmd);
+		rtns = Shell.exec(@outConfigs[flag],cmd,false);
 		raise CompileException.new(", call simulator(compile) failed(#{rtns[0]})") if rtns[1]!=0;
 	end ##}}}
 	def runElaborate test ##{{{
