@@ -7,7 +7,7 @@ rhload 'lib/exceptions.rb';
 rhload 'lib/mainentry.rb';
 
 $projectRoot  = ENV['PROJECT_ROOT'];
-$outAnchor    = ENV['OUT_ANCHOR'] || './out';
+$outAnchor    = ENV['OUT_ANCHOR'] || "#{$projectRoot}/out";
 $projectEntry = ENV['SIMF_ENTRY'];
 $topContext   = ENV['SIMF_CONTEXT'];
 

@@ -71,7 +71,7 @@ class SimulatorBase
 	def __setupDirs__ config ##{{{
 		return if @dirset;
 		@dirset = true;
-		@outAnchor = File.absolute_path("#{$projectRoot}/#{$outAnchor}");
+		@outAnchor = File.absolute_path($outAnchor);
 		@outComps[:root] = "#{@outAnchor}/components";
 		config.comps.each_pair do |inst,comp|
 			compdir = "#{comp.name}-#{inst}";
