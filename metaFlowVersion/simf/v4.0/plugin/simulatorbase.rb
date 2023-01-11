@@ -172,14 +172,14 @@ class SimulatorBase
 
 		compopts.append(*__getopts__(:comp,t.config,@symbol));
 		compopts.append(*__getopts__(:comp,t.config,:all));
-		t.config.comps.each do |comp|
+		t.config.comps.each_value do |comp|
 			compopts.append(*__getopts__(:comp,comp,@symbol));
 			compopts.append(*__getopts__(:comp,comp,:all));
 		end
 
 		precompopts.append(*__getPreCompopts__(t.config,@symbol));
 		precompopts.append(*__getPreCompopts__(t.config,:all));
-		t.config.comps.each do |comp|
+		t.config.comps.each_value do |comp|
 			precompopts.append(*__getPreCompopts__(comp,@symbol));
 			precompopts.append(*__getPreCompopts__(comp,:all));
 		end
@@ -201,7 +201,7 @@ class SimulatorBase
 
 		elabopts.append(*__getopts__(:elab,t.config,@symbol));
 		elabopts.append(*__getopts__(:elab,t.config,:all));
-		t.config.comps.each do |comp|
+		t.config.comps.each_value do |comp|
 			elabopts.append(*__getopts__(:elab,comp,@symbol));
 			elabopts.append(*__getopts__(:elab,comp,:all));
 		end
@@ -261,7 +261,7 @@ class SimulatorBase
 		simopts.append(*__getopts__(:sim,test,:all));
 		simopts.append(*__getopts__(:sim,test.config,@symbol));
 		simopts.append(*__getopts__(:sim,test.config,:all));
-		test.config.comps.each do |comp|
+		test.config.comps.each_value do |comp|
 			simopts.append(*__getopts__(:sim,comp,@symbol));
 			simopts.append(*__getopts__(:sim,comp,:all));
 		end
