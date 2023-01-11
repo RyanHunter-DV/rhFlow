@@ -31,11 +31,12 @@ class Component ##{{{
 		requires, and the requires' requires ...
 		return as a hash that stores all unique name indexed objects
 		rnest = {:name=>'',:obj=>component}
+		rnest = {'name'=>obj}
 		"""
 		rnest = {};
 		pool.each do |required|
 			next if (rnest.has_key?(required[:name]));
-			rnest[:name] = required[:obj];
+			rnest[required[:name]] = required[:obj];
 			subrnest = self.requirenest(required[:obj].requires);
 			subrnest.each_pair do |n,o|
 				next if rnest.has_key?(n);
