@@ -247,7 +247,7 @@ class SimulatorBase
 		simopts.append(*__getopts__(:sim,test.config,@symbol));
 		simopts.append(*__getopts__(:sim,test.config,:all));
 
-		cmds.append(*__builtinSimCmd__);
+		cmds.append(*__builtinSimCmd__(test.config));
 		cmds.append(*simopts);
 
 		flag = "#{test.config.name}.sim";

@@ -53,6 +53,12 @@ module Shell ##{
 		end
 		return ['',0];
 	end ##}
+	def self.link path,src,link ##{{{
+		cmd = "cd #{path};link -s #{src} #{link}";
+		out,err,st = Open3.capture3(cmd);
+		return [err,st.exitstatus] if st.exitstatus!=0;
+		return ['',0];
+	end ##}}}
 
 	def self.createDir d ##{
 		pd = File.dirname(d);

@@ -19,7 +19,7 @@ class Xcelium < SimulatorBase ##{{{
 			@libpath[:comp] += ":#{ENV['CDS_INST_DIR']}/tools/lib";
 			@libpath[:comp] += ":#{ENV['CDS_INST_DIR']}/tools/lib/64bit";
 
-			@libpath[:sim] = "../build:#{ENV['CDS_INST_DIR']}/tools/inca/lib";
+			@libpath[:sim] = "./:#{ENV['CDS_INST_DIR']}/tools/inca/lib";
 			@libpath[:sim] += ":#{ENV['CDS_INST_DIR']}/tools/lib";
 			@libpath[:sim] += ":#{ENV['CDS_INST_DIR']}/tools/lib/64bit";
 		rescue EnvException => e
@@ -60,7 +60,24 @@ class Xcelium < SimulatorBase ##{{{
 		return cmds;
 	end ##}}}
 
-	def __builtinSimCmd__ ##{{{
+	def __preparelibs__ config ##{{{
+		"""
+		for xlm, need link the libs from build dir to sim dir
+		"""
+		simflag   = "#{config.name}/sim";
+		buildflag = "#{config.name}/build";
+		begin
+			srcfiles = ["hdl.var","cds.lib","#{@worklib}"];
+			srcfiles.each do |sf|
+				sffull = "#{@outConfigs[buildflag]}/#{sf}";
+				rtns = Shell.link(@outConfigs[simflag],sffull,sf);
+				raise OtherCmdException.new("link(#{sf}) failed(#{rtns[0]})") if rtns[1]!=0;
+			end
+		rescue OtherCmdException => e
+			e.process();
+		end
+	end ##}}}
+	def __builtinSimCmd__ config ##{{{
 		cmds = [];
 		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath[:sim])+';';
 		cmds << 'xmsim';
@@ -68,6 +85,7 @@ class Xcelium < SimulatorBase ##{{{
 		cmds << '-RUN';
 		cmds << "-LOGFILE #{@logfile[:sim]}";
 		cmds << "#{@snapshot}";
+		__preparelibs__(config);
 		return cmds;
 	end ##}}}
 	def __buildWorklib__ config ##{{{
