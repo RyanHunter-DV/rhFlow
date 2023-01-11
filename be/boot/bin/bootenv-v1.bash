@@ -4,8 +4,10 @@ project=`basename ${workhome}`
 ## the processed arguments are
 ## envview=xxx
 argumentCommands=`${pdir}/accessory/__optionProcess__.rb ${SHELLTYPE} $@`
+## echo $argumentCommands
 eval $argumentCommands
-# for test, echo "envview: $envview"
+## echo "test envview: $envview"
+## echo "test newterm: $newterm"
 
 envfile="${workhome}/__be__/${envview}.anchor"
 if [ ! -e ${envfile} ]; then
@@ -16,14 +18,20 @@ fi
 ## using gnome-terminal by default, others are not supported in current version
 ## 1.clearing the env by start a new terminal
 nterm="/usr/bin/gnome-terminal"
-echo $project
+echo "project: ${project}"
 termopts="--title \"[booted] ${project}\" --hide-menubar --geometry=120x40+40+40"
 setupcmd="source ${BEHOME}/setup.sh ${BEHOME}"
 bootcmd="source ${BEHOME}/boot/bin/__bootinNewTerminal__.${SHELLTYPE} ${envfile} ${workhome}"
 logincmd="${setupcmd};${bootcmd};${SHELLTYPE}"
+localcmd="${setupcmd};${bootcmd};"
 
-echo "booting project env with new terminal"
-fullcmd="${nterm} ${termopts} -- ${SHELLTYPE} -c \"${logincmd}\""
+if [ ${newterm} == 1 ]; then
+	echo "booting project env with new terminal"
+	fullcmd="${nterm} ${termopts} -- ${SHELLTYPE} -c \"${logincmd}\""
+else
+	echo "booting project env with local terminal"
+	fullcmd="${localcmd}"
+fi
 # for test, echo "test version:"
 echo ${fullcmd}
 eval ${fullcmd}
