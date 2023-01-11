@@ -54,7 +54,8 @@ module Shell ##{
 		return ['',0];
 	end ##}
 	def self.link path,src,link ##{{{
-		cmd = "cd #{path};link -S #{src} #{link}";
+		cmd = "cd #{path};ln -s #{src} #{link}";
+		## @debug.print("cmd: cd #{path};ln -s #{src} #{link}");
 		out,err,st = Open3.capture3(cmd);
 		return [err,st.exitstatus] if st.exitstatus!=0;
 		return ['',0];
