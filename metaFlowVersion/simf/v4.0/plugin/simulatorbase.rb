@@ -252,6 +252,7 @@ class SimulatorBase
 			e.process("simulation failed");
 			return e.exitSig;
 		end
+		puts "Simulation Passed, Test: #{test.name}";
 		return 0;
 	end ##}}}
 	def generateSimCommand test ##{{{
