@@ -84,12 +84,20 @@ module Shell ##{
 		puts out if visible;
 		return [err.chomp!,st.exitstatus]
 	end ##}
+	def self.isFakeReport line ##{{{
+		fake = false;
+		fake = true if /UVM_ERROR +: +0/.match(line);
+		fake = true if /UVM_FATAL +: +0/.match(line);
+		return fake;
+	end ##}}}
 	def self.__processSimOutputs__ outs,eflags ##{{{
 		rtns = {:sig=>0,:errors=>[]};
 		outs.each do |line|
 			eflags.each do |eflag|
 				p = Regexp.new("^#{eflag}");
-				rtns[:errors] << line if p.match(line);
+				if p.match(line)
+					rtns[:errors] << line unless self.isFakeReport(line);
+				end
 			end
 		end
 		rtns[:sig] = 1 unless (rtns[:errors].empty?);
@@ -104,7 +112,7 @@ module Shell ##{
 
 		e = "cd #{path};#{cmd}";
 		out,err,st = Open3.capture3(e);
-		rtns = self.__processSimOutputs__(out,eflags);
+		rtns = self.__processSimOutputs__(out.split("\n"),eflags);
 		return rtns;
 	end ##}}}
 
