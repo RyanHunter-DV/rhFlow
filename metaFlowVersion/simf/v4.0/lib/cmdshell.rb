@@ -55,6 +55,7 @@ module Shell ##{
 	end ##}
 	def self.link path,src,link ##{{{
 		cmd = "cd #{path};ln -s #{src} #{link}";
+		return ['',0] if File.exists?("#{path}/#{link}");
 		## @debug.print("cmd: cd #{path};ln -s #{src} #{link}");
 		out,err,st = Open3.capture3(cmd);
 		return [err,st.exitstatus] if st.exitstatus!=0;
