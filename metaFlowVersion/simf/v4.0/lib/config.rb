@@ -137,7 +137,7 @@ module ConfigPool
 	end ##}}}
 end
 
-def config n,tool=nil,&block ##{{{
+def config n,**opts,&block ##{{{
 	"""
 	example of a config:
 	config :configname do
@@ -151,6 +151,6 @@ def config n,tool=nil,&block ##{{{
 	end
 	"""
 	c = ConfigPool.find(n,true);
-	c.simulator= tool.to_sym if tool;
+	c.simulator= opts[:tool].to_sym if opts.has_key?(:tool);
 	c.addBody(block);
 end ##}}}
