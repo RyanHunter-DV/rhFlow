@@ -71,7 +71,7 @@ class Buildflow ##{{{
 			@filelist[:incdir] << incdir if not @filelist[:incdir].include?(incdir);
 			realfs = Shell.find(t,File.basename(sf),'-maxdepth 1');
 			realfs.each do |rf|
-				@filelist[:file] << rf;
+				@filelist[:file] << rf if not @filelist[:file].include?(rf);
 			end
 		rescue OtherCmdException => e
 			e.process("shell command failed");
