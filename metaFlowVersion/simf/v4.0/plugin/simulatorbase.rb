@@ -161,7 +161,7 @@ class SimulatorBase
 		@debug.print("path: #{@outConfigs[flag]}");
 		@debug.print("cmd: #{cmd}");
 		rtns = Shell.edasim(@outConfigs[flag],cmd,@eflag);
-		raise SimException.new(", simulation failed, errors:\n #{*(rtns[:errors])}") if rtns[:sig]!=0;
+		raise SimException.new(", simulation failed, errors:\n #{rtns[:errors].join("\n")}") if rtns[:sig]!=0;
 	end ##}}}
 	def generateCompileCommand t ##{{{
 		"""
