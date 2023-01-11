@@ -1,6 +1,6 @@
 build:= 'xcelium.build(:testConfig)'
-debug:= -d
-#debug:=
+## debug:= -d
+debug:=
 compile:= 'xcelium.compile(:test)'
 simulation:= 'xcelium.run(:test)'
 simonly := 'xcelium.sim(:test)'

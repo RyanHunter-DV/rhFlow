@@ -263,5 +263,6 @@ class SimulatorBase
 		build(tn,:usetest=>true);
 		compile(tn);
 		sim(tn);
+		return 0;
 	end ##}}}
 end
