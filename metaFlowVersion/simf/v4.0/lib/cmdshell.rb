@@ -84,7 +84,7 @@ module Shell ##{
 		puts out if visible;
 		return [err.chomp!,st.exitstatus]
 	end ##}
-	def __processSimOutputs__ outs,eflags ##{{{
+	def self.__processSimOutputs__ outs,eflags ##{{{
 		rtns = {:sig=>0,:errors=>[]};
 		outs.each do |line|
 			eflags.each do |eflag|
@@ -104,7 +104,7 @@ module Shell ##{
 
 		e = "cd #{path};#{cmd}";
 		out,err,st = Open3.capture3(e);
-		rtns = __processSimOutputs__(out,eflags);
+		rtns = self.__processSimOutputs__(out,eflags);
 		return rtns;
 	end ##}}}
 
