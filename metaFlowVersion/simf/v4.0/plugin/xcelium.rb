@@ -12,14 +12,20 @@ class Xcelium < SimulatorBase ##{{{
 		@optformat[:incdir] = '-incdir ';
 	end ##}}}
 	def __setuplibpath__ ##{{{
+		@libpath={};
 		begin
 			raise EnvException.new(", env(CDS_INST_DIR) not set") if not ENV['CDS_INST_DIR'];
-			@libpath = "./:#{ENV['CDS_INST_DIR']}/tools/inca/lib";
-			@libpath += ":#{ENV['CDS_INST_DIR']}/tools/lib";
-			@libpath += ":#{ENV['CDS_INST_DIR']}/tools/lib/64bit";
+			@libpath[:comp] = "./:#{ENV['CDS_INST_DIR']}/tools/inca/lib";
+			@libpath[:comp] += ":#{ENV['CDS_INST_DIR']}/tools/lib";
+			@libpath[:comp] += ":#{ENV['CDS_INST_DIR']}/tools/lib/64bit";
+
+			@libpath[:sim] = "../build:#{ENV['CDS_INST_DIR']}/tools/inca/lib";
+			@libpath[:sim] += ":#{ENV['CDS_INST_DIR']}/tools/lib";
+			@libpath[:sim] += ":#{ENV['CDS_INST_DIR']}/tools/lib/64bit";
 		rescue EnvException => e
 			e.elevel= :WARNING;
-			@libpath = './';
+			@libpath[:comp] = './';
+			@libpath[:sim]  = './';
 			e.process("use default libpath(./)");
 		end
 	end ##}}}
@@ -43,7 +49,7 @@ class Xcelium < SimulatorBase ##{{{
 	end ##}}}
 	def __builtinElabCmd__ ##{{{
 		cmds = [];
-		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath)+';';
+		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath[:comp])+';';
 		cmds << 'xmelab';
 		cmds << '-64BIT'
 		cmds << "-LIBNAME #{@worklib}";
@@ -56,7 +62,7 @@ class Xcelium < SimulatorBase ##{{{
 
 	def __builtinSimCmd__ ##{{{
 		cmds = [];
-		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath)+';';
+		cmds << Shell.setenv('LD_LIBRARY_PATH',@libpath[:sim])+';';
 		cmds << 'xmsim';
 		cmds << '-64BIT';
 		cmds << '-RUN';
