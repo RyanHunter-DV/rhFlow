@@ -160,7 +160,7 @@ class SimulatorBase
 		@debug.print("path: #{@outConfigs[flag]}");
 		@debug.print("cmd: #{cmd}");
 		rtns = Shell.exec(@outConfigs[flag],cmd);
-		raise CompileException.new(", call simulator(simulation) failed(#{rtns[0]})") if rtns[1]!=0;
+		raise SimException.new(", call simulator(simulation) failed(#{rtns[0]})") if rtns[1]!=0;
 	end ##}}}
 	def generateCompileCommand t ##{{{
 		"""
