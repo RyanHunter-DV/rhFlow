@@ -78,7 +78,6 @@ class Configs
 		c.evaluate;
 		instname = c.name;
 		instname = opts[:as] if opts.has_key?(:as);
-		@comps[instname.to_s] = c;
 		rnest = c.requirenest(c.requires);
 		rnest.each_pair do |n,o|
 			@debug.print("setup require name, base(#{c.name}),required(#{n.to_s})");
@@ -86,6 +85,7 @@ class Configs
 			next if (@comps.has_key?(rcompname));
 			@comps[rcompname] = o;
 		end
+		@comps[instname.to_s] = c;
 		return;
 	end ##}}}
 
