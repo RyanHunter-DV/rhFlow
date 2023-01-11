@@ -123,14 +123,17 @@ class Buildflow ##{{{
 		build dirs for configs, and setup filelist for that config
 		build dir: out/config/<config>/build
 		"""
-		out = File.absolute_path("#{$projectRoot}/#{$outAnchor}");
+		## TODO, out = File.absolute_path("#{$projectRoot}/#{$outAnchor}");
 		## TODO, @outConfigs[:root] = "#{out}/configs";
 		## TODO, @outConfigs[config.name]= "#{@outConfigs[:root]}/#{config.name}";
 		## TODO, @outConfigs["#{config.name}.build"]= @outConfigs[config.name]+'/build';
 		## TODO, @outConfigs["#{config.name}.sim"]  = @outConfigs[config.name]+'/sim';
 		begin
 			@debug.print("makdir: #{@outConfigs[:root]}, #{@outConfigs[config.name]}");
-			rtns = Shell.makedir(@outConfigs[:root],@outConfigs[config.name],@outConfigs["#{config.name}.build"]);
+			build = "#{@outConfigs[config.name]}/build";
+			sim   = "#{@outConfigs[config.name]}/sim";
+			@debug.print("makdir: #{build}, #{sim}");
+			rtns = Shell.makedir(@outConfigs[:root],@outConfigs[config.name],build,sim);
 			raise OtherCmdException.new(",makedir failed(#{rtns[0]})",rtns[1]) if rtns[1]!=0;
 		rescue OtherCmdException => e
 			e.process("build config failed");
