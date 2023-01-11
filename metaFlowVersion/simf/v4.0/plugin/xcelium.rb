@@ -64,12 +64,14 @@ class Xcelium < SimulatorBase ##{{{
 		"""
 		for xlm, need link the libs from build dir to sim dir
 		"""
-		simflag   = "#{config.name}/sim";
-		buildflag = "#{config.name}/build";
+		simflag   = "#{config.name}.sim";
+		buildflag = "#{config.name}.build";
 		begin
 			srcfiles = ["hdl.var","cds.lib","#{@worklib}"];
 			srcfiles.each do |sf|
 				sffull = "#{@outConfigs[buildflag]}/#{sf}";
+				@debug.print("link for src: #{sffull}");
+				@debug.print("link for target: #{@outConfigs[simflag]}");
 				rtns = Shell.link(@outConfigs[simflag],sffull,sf);
 				raise OtherCmdException.new("link(#{sf}) failed(#{rtns[0]})") if rtns[1]!=0;
 			end
