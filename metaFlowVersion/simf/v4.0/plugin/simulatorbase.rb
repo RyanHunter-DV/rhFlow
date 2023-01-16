@@ -230,9 +230,11 @@ class SimulatorBase
 		return opts;
 	end ##}}}
 	def __getPreCompopts__ o,s ##{{{
-		opts = [];
-		return opts if not o.compopts.has_key?(s);
-		o.precompopts[s].each do |opt|
+		opts   =[];
+		srcopts={};
+		srcopts = o.precompopts;
+		return opts if not srcopts.has_key?(s);
+		srcopts[s].each do |opt|
 			opts << opt;
 		end
 		return opts;

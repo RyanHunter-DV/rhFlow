@@ -98,21 +98,15 @@ class Component ##{{{
 		@requires << required;
 		return;
 	end ##}}}
-	def compopt t,*opts ##{{{
-		t = t.to_sym;
-		@compopts[t] = [] if not @compopts.has_key?(t);
-		opts.each do |opt|
-			@compopts[t] << opt;
-		end
+	def compopt eda,*opts,**args ##{{{
+		eda = eda.to_sym;
+		compopts = @compopts;
+		compopts = @precompopts if args.has_key?(:pre);
+		compopts[eda]=[] unless compopts.has_key?(eda);
+		compopts[eda].append(*opts);
+		return;
 	end ##}}}
 
-	def precompopt t,*opts ##{{{
-		t = t.to_sym;
-		@precompopts[t] = [] if not @precompopts.has_key?(t);
-		opts.each do |opt|
-			@precompopts[t] << opt;
-		end
-	end ##}}}
 	def elabopt t,*opts ##{{{
 		t = t.to_sym;
 		@elabopts[t] = [] if not @elabopts.has_key?(t);
