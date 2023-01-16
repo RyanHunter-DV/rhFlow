@@ -190,6 +190,7 @@ class SimulatorBase
 		## for now, all filelist option are the same among different simulators
 		cmds.append("-f #{@filelist[:name]}"); 
 		cmds.append(*compopts);
+		cmds.uniq!;
 		cmd = cmds.join(' ');
 		flag = "#{t.config.name}.build";
 		cmdf = "#{@outConfigs[flag]}/#{@cmdfiles[:comp]}";
