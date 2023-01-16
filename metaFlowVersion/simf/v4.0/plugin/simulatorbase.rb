@@ -212,6 +212,7 @@ class SimulatorBase
 		cmds.append(*elabopts);
 		flag = "#{t.config.name}.build";
 		cmdf = "#{@outConfigs[flag]}/#{@cmdfiles[:elab]}";
+		cmds.uniq!;
 		Shell.generate(:file,cmdf,cmds.join(' '));
 	end ##}}}
 	def __getopts__ t,o,s ##{{{
@@ -276,6 +277,7 @@ class SimulatorBase
 
 		flag = "#{test.config.name}.sim";
 		cmdf = "#{@outConfigs[flag]}/#{@cmdfiles[:sim]}";
+		cmds.uniq!;
 		Shell.generate(:file,cmdf,cmds.join(' '));
 	end ##}}}
 	def run tn ##{{{
