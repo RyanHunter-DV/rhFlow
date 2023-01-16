@@ -4,6 +4,7 @@ class Component ##{{{
 	attr_accessor :name;
 	attr_accessor :requires;
 	attr_accessor :compopts;
+	attr_accessor :precompopts;
 	attr_accessor :elabopts;
 	attr_accessor :simopts;
 	attr_accessor :filesets;
@@ -14,6 +15,7 @@ class Component ##{{{
 		@body    ={};
 		@requires=[];
 		@compopts={};
+		@precompopts={};
 		@elabopts={};
 		@simopts ={};
 		@filesets=[];
@@ -101,6 +103,14 @@ class Component ##{{{
 		@compopts[t] = [] if not @compopts.has_key?(t);
 		opts.each do |opt|
 			@compopts[t] << opt;
+		end
+	end ##}}}
+
+	def precompopt t,*opts ##{{{
+		t = t.to_sym;
+		@precompopts[t] = [] if not @precompopts.has_key?(t);
+		opts.each do |opt|
+			@precompopts[t] << opt;
 		end
 	end ##}}}
 	def elabopt t,*opts ##{{{
