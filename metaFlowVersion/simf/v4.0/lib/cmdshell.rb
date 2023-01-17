@@ -105,10 +105,15 @@ module Shell ##{
 	end ##}}}
 
 	def self.edasimSub path,cmd,eflag ##{{{
-		eflags = ['UVM_ERROR ','UVM_FATAL ']; ## builtin for all simulator
-		eflags.append(*eflag);
-		e = "cd #{path};#{cmd}";
-		out,err,st = Open3.capture3(e);
+		begin
+			eflags = ['UVM_ERROR ','UVM_FATAL ']; ## builtin for all simulator
+			eflags.append(*eflag);
+			e = "cd #{path};#{cmd}";
+			out,err,st = Open3.capture3(e);
+		rescue SignalException => e
+			puts "edasimSub get terminate signal,kill all subs"
+			Process.kill("TERM",0);
+		end
 		rtns = self.__processSimOutputs__(out.split("\n"),eflags);
 		return rtns;
 	end ##}}}
