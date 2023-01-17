@@ -103,16 +103,34 @@ module Shell ##{
 		rtns[:sig] = 1 unless (rtns[:errors].empty?);
 		return rtns;
 	end ##}}}
+
+	def edasimSub path,cmd,eflag ##{{{
+		eflags = ['UVM_ERROR ','UVM_FATAL ']; ## builtin for all simulator
+		eflags.append(*eflag);
+		e = "cd #{path};#{cmd}";
+		out,err,st = Open3.capture3(e);
+		rtns = self.__processSimOutputs__(out.split("\n"),eflags);
+		return rtns;
+	end ##}}}
+
+	def edasimMain pid ##{{{
+		begin
+			Process.wait(pid);
+		rescue SignalException => e
+			puts "get SignalException, terminate simulation";
+			Process.kill("TERM",pid);
+		end
+	end ##}}}
 	def self.edasim path,cmd,eflag ##{{{
 		"""
 		run sim and process the outputs according to elfag
 		"""
-		eflags = ['UVM_ERROR ','UVM_FATAL ']; ## builtin for all simulator
-		eflags.append(*eflag);
-
-		e = "cd #{path};#{cmd}";
-		out,err,st = Open3.capture3(e);
-		rtns = self.__processSimOutputs__(out.split("\n"),eflags);
+		pid = Process.fork;
+		if pid == nil
+			rtns = self.edasimSub(path,cmd,eflag);
+		else
+			self.edasimMain(pid);
+		end
 		return rtns;
 	end ##}}}
 
