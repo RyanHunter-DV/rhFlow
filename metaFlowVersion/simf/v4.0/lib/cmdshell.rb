@@ -104,7 +104,7 @@ module Shell ##{
 		return rtns;
 	end ##}}}
 
-	def edasimSub path,cmd,eflag ##{{{
+	def self.edasimSub path,cmd,eflag ##{{{
 		eflags = ['UVM_ERROR ','UVM_FATAL ']; ## builtin for all simulator
 		eflags.append(*eflag);
 		e = "cd #{path};#{cmd}";
@@ -113,7 +113,7 @@ module Shell ##{
 		return rtns;
 	end ##}}}
 
-	def edasimMain pid ##{{{
+	def self.edasimMain pid ##{{{
 		begin
 			Process.wait(pid);
 		rescue SignalException => e
