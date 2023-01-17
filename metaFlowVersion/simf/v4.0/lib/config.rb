@@ -97,7 +97,7 @@ class Configs
 		compopts[eda].append(*opts);
 		return;
 	end ##}}}
-	def elabopt eda,*opt,**args ##{{{
+	def elabopt eda,*opts,**args ##{{{
 		eda = eda.to_sym;
 		@elabopts[eda]=[] unless @elabopts.has_key?(eda);
 		@elabopts[eda].append(*opts);
