@@ -110,4 +110,8 @@ class Xcelium < SimulatorBase ##{{{
 		__syncUserConfigs__(config);
 		__buildWorklib__(config);
 	end ##}}}
+	def convertSeedOption seed ##{{{
+		rtn = "-SV_SEED #{seed}";
+		return rtn;
+	end ##}}}
 end ##}}}

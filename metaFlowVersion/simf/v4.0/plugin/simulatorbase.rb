@@ -242,15 +242,18 @@ class SimulatorBase
 		return opts;
 	end ##}}}
 
-	def sim tn ##{{{
+	def convertSeedOption seed; end
+	def sim tn,seed='random' ##{{{
 		"""
 		sim assume that compile has already passed
 		"""
 		begin
 			test  = @context.findlocal(:test,tn);
+			seedopt = '';
+			seedopt = convertSeedOption(seed) if seed!='random';
 			raise SimException.new(", test(#{tn}) not found") if test==nil;
 			__setupDirs__(test.config);
-			generateSimCommand(test);
+			generateSimCommand(test,seedopt);
 			runSim(test);
 		rescue SimException => e
 			e.process("simulation failed");
@@ -259,10 +262,11 @@ class SimulatorBase
 		puts "Simulation Passed, Test: #{test.name}";
 		return 0;
 	end ##}}}
-	def generateSimCommand test ##{{{
+	def generateSimCommand test,seedopt ##{{{
 		simopts = [];
 		cmds = [];
 
+		simopts << seedopt if seedopt!='';
 		simopts.append(*__getopts__(:sim,test,@symbol));
 		simopts.append(*__getopts__(:sim,test,:all));
 		simopts.append(*__getopts__(:sim,test.config,@symbol));
@@ -280,13 +284,13 @@ class SimulatorBase
 		cmds.uniq!;
 		Shell.generate(:file,cmdf,cmds.join(' '));
 	end ##}}}
-	def run tn ##{{{
+	def run tn,seed='random' ##{{{
 		"""
 		build -> compile -> sim
 		"""
 		build(tn,:usetest=>true);
 		compile(tn);
-		sim(tn);
+		sim(tn,seed);
 		return 0;
 	end ##}}}
 end

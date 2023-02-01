@@ -10,6 +10,7 @@ class Options; ##{{{
         @options[:sync] = false;
         @options[:debug]= false;
         @options[:eval] = '';
+        ## @options[:seed] = '';
     end ##}}}
 
 	def initialize ##{{{
@@ -21,6 +22,9 @@ class Options; ##{{{
             opts.on('-s','--sync','sync up reqquired components') do |v| #{
                 @options[:sync] = true;
             end #}
+            ## opts.on('-S','--seed=SEED','specify seed for simulation') do |v| #{
+            ##     @options[:seed] = v;
+            ## end #}
 			opts.on('-e','--eval=execmd','evaluation') do |v| #{
 				@options[:eval] = v;
 			end #}

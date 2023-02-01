@@ -1,9 +1,10 @@
 build:= 'xcelium.build(:testConfig)'
 ## debug:= -d
 debug:=
+seed := 222000
 compile:= 'xcelium.compile(:test)'
-simulation:= 'xcelium.run(:test)'
-simonly := 'xcelium.sim(:test)'
+simulation:= 'xcelium.run(:test,${seed})'
+simonly := 'xcelium.sim(:test,${seed})'
 
 all:
 	../simf ${debug} -e ${build}
