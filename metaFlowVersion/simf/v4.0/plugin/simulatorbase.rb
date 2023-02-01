@@ -250,7 +250,7 @@ class SimulatorBase
 		begin
 			test  = @context.findlocal(:test,tn);
 			seedopt = '';
-			seedopt = convertSeedOption(seed) if seed!='random';
+			seedopt = convertSeedOption(seed); ## by default config to random
 			raise SimException.new(", test(#{tn}) not found") if test==nil;
 			__setupDirs__(test.config);
 			generateSimCommand(test,seedopt);
