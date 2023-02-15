@@ -2,8 +2,10 @@
 def main()
 	sig = 0;
 	shell = File.basename(ENV['SHELL']);
-	if shell=='sh'
+	if shell=='sh'||shell=='bash'
+		puts "Note, using shell: #{shell}";
 	elsif shell=='csh'
+		puts "Note, using shell: #{shell}";
 	else
 		puts "Error, unsupported shell type: #{shell}";
 		return 1;
