@@ -1,0 +1,19 @@
+#! /usr/bin/env ruby
+def main()
+	sig = 0;
+	shell = File.basename(ENV['SHELL']);
+	if shell=='sh'
+	elsif shell=='csh'
+	else
+		puts "Error, unsupported shell type: #{shell}";
+		return 1;
+	end
+
+	return sig;
+end
+
+
+
+SIG = main();
+exit SIG;
+
