@@ -1,11 +1,61 @@
 #! /usr/bin/env ruby
+
+require 'open3';
+$toolHome = File.dirname(File.absolute_path(__FILE__));
+$LOAD_PATH << $toolHome;
+require 'lib/shellSyntax.rb'
+require 'lib/appInstaller.rb'
+
+class InstallException < Exception
+	attr_accessor :message;
+
+	def initialize m
+		@message = m;
+	end
+	def process
+		puts "Error, #{@message}";
+		exit 3;
+	end
+end
+
+def __builddir__(d)
+	out,err,st = Open3.capture3("mkdir #{d}");
+	raise InstallException.new("dir(#{d}) build failed:\n\t- #{err}") if st.exitstatus!=0;
+end
+
+def appInstall(shell,behome)
+	puts "start installing app to #{behome}";
+	apphome = File.join(behome,'app');
+	__builddir__(apphome);
+	ai = AppInstaller.new(shell,apphome);
+	ai.install();
+end
+
+def install(shell)
+	puts "start installing be... ...";
+	behome = '/home/'+ENV['USER'];
+	print "choose your install location,'*/be' will be automatically created(#{behome}): ";
+	l = STDIN.readline().chomp;
+	if l!=''
+		behome = File.absolute_path(File.join(l,'be'));
+	else
+		behome = File.join(behome,'be');
+	end
+	__builddir__(behome);
+	appInstall(shell,behome);
+end
+
 def main()
 	sig = 0;
-	shell = File.basename(ENV['SHELL']);
-	if shell=='sh'||shell=='bash'
-		puts "Note, using shell: #{shell}";
-	elsif shell=='csh'
-		puts "Note, using shell: #{shell}";
+	# shell = File.basename(ENV['SHELL']);
+	shell = 'bash'; ## for test only
+	if shell=='sh'||shell=='bash'||shell=='csh'
+		puts "using shell: #{shell}";
+		begin
+			install(shell);
+		rescue InstallException => e
+			e.process();
+		end
 	else
 		puts "Error, unsupported shell type: #{shell}";
 		return 1;
