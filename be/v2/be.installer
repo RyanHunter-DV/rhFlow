@@ -4,7 +4,9 @@ require 'open3';
 $toolHome = File.dirname(File.absolute_path(__FILE__));
 $LOAD_PATH << $toolHome;
 require 'lib/shellSyntax.rb'
+require 'lib/installer.rb'
 require 'lib/appInstaller.rb'
+require 'lib/bootInstaller.rb'
 
 class InstallException < Exception
 	attr_accessor :message;
@@ -30,6 +32,13 @@ def appInstall(shell,behome)
 	ai = AppInstaller.new(shell,apphome);
 	ai.install();
 end
+def bootInstall(shell,behome) ##{{{
+	puts "start installing boot to #{behome}";
+	boothome = File.join(behome,'boot');
+	__builddir__(boothome);
+	bi = BootInstaller.new(shell,boothome);
+	bi.install();
+end ##}}}
 
 def install(shell)
 	puts "start installing be... ...";
@@ -43,6 +52,7 @@ def install(shell)
 	end
 	__builddir__(behome);
 	appInstall(shell,behome);
+	bootInstall(shell,behome);
 end
 
 def main()
