@@ -66,10 +66,14 @@ class AppInstaller
 		cnts << %Q|\tmkdir -p ${apphome}/tools/${tool}|;
 		cnts << %Q|\tmkdir -p ${apphome}/tools/${tool}/${version}|;
 		cnts << %Q|\ttouch ${apphome}/tools/${tool}/${version}/app.config|;
+		currentlink = "${apphome}/tools/${tool}/current"
+		cnts << @syntax.condition("! -e #{currentlink}","\t");
+		cnts << %Q|\t\tln -s ${apphome}/tools/${tool}/${version} #{currentlink}|;
+		cnts << @syntax.conditione("\t");
 		cnts << @syntax.conditione();
 		cnts << @syntax.condition('! -e $appConfig');
 		cnts << %Q|\techo "Error, no app.config file found for: ${appConfig}"|;
-		cnts << %Q|\techo "you can setup your config through: app setup <tool>/<version>"|;
+		cnts << %Q|\techo "you can setup your config through: app setup ${tool}/${version}"|;
 		cnts << %Q|\treturn 3|;
 		cnts << @syntax.conditione();
 

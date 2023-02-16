@@ -67,5 +67,6 @@ end
 
 
 SIG = main();
+puts "installation completed" if SIG==0;
 exit SIG;
 
