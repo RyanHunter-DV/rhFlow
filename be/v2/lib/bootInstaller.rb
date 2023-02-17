@@ -46,7 +46,7 @@ class BootInstaller < Installer
 
 		cnts << @syntax.condition('${newterm} == 1');
 		cnts << %Q|\techo "booting project env with new terminal"|;
-		cnts << "\t"+%q|fullcmd="${nterm} ${termopts} -- ${SHELLTYPE} -c \"${logincmd}\""|;
+		cnts << "\t"+%q|fullcmd="${nterm} ${termopts} -- ${SHELLTYPE} -l -c \"${logincmd}\""|;
 		cnts << %Q|else|;
 		cnts << %Q|\techo "booting project env with local terminal"|;
 		cnts << %Q|\tfullcmd="${localcmd}"|;
@@ -63,8 +63,9 @@ class BootInstaller < Installer
 		cnts << @syntax.setvar('envfile','$1');
 		cnts << @syntax.setvar('workhome','$2');
 		cnts << @syntax.setenv('PROJECT_HOME','${workhome}');
-		cnts << %Q|shopt -s expand_aliase| if @shell=='bash'; ## for bash only
-		cnts << @syntax.alias('app',File.join($apphome,"bin/appShell.#{@shell}"));
+		cnts << %Q|shopt -s expand_aliases| if @shell=='bash'; ## for bash only
+		appshell = File.join($apphome,"bin/appShell.#{@shell}");
+		cnts << @syntax.alias('app',"source #{appshell}");
 		cnts << @syntax.setvar('info',%q(`cat ${envfile} | sed -e 's/$/;/'`));
 		cnts << @syntax.setvar('cmdl',%q|"${info}"|);
 		cnts << %q|eval ${cmdl}|;
