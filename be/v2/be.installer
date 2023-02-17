@@ -20,6 +20,8 @@ class InstallException < Exception
 	end
 end
 
+$apphome ='';
+$boothome='';
 def __builddir__(d)
 	out,err,st = Open3.capture3("mkdir #{d}");
 	raise InstallException.new("dir(#{d}) build failed:\n\t- #{err}") if st.exitstatus!=0;
@@ -27,16 +29,16 @@ end
 
 def appInstall(shell,behome)
 	puts "start installing app to #{behome}";
-	apphome = File.join(behome,'app');
-	__builddir__(apphome);
-	ai = AppInstaller.new(shell,apphome);
+	$apphome = File.join(behome,'app');
+	__builddir__($apphome);
+	ai = AppInstaller.new(shell,$apphome);
 	ai.install();
 end
 def bootInstall(shell,behome) ##{{{
 	puts "start installing boot to #{behome}";
-	boothome = File.join(behome,'boot');
-	__builddir__(boothome);
-	bi = BootInstaller.new(shell,boothome);
+	$boothome = File.join(behome,'boot');
+	__builddir__($boothome);
+	bi = BootInstaller.new(shell,$boothome);
 	bi.install();
 end ##}}}
 

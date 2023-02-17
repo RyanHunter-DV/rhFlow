@@ -41,7 +41,7 @@ class BootInstaller < Installer
 		cnts << @syntax.setvar('termopts',%q|"--title \"[booted] ${project}\" --hide-menubar --geometry=120x40+40+40"|);
 		cnts << @syntax.setvar('setupcmd',%Q|"export SHELLTYPE=#{@shell}"|);
 		cnts << @syntax.setvar('bootcmd',%Q|"source ${boothome}/bin/__bootinNewTerminal__.${SHELLTYPE} ${envfile} ${workhome}"|);
-		cnts << @syntax.setvar('logincmd',%q|"${setupcmd};${bootcmd};${SHELLTYPE}"|);
+		cnts << @syntax.setvar('logincmd',%q|"${setupcmd};${bootcmd};exec bash"|);
 		cnts << @syntax.setvar('localcmd',"${bootcmd};");
 
 		cnts << @syntax.condition('${newterm} == 1');
@@ -63,6 +63,8 @@ class BootInstaller < Installer
 		cnts << @syntax.setvar('envfile','$1');
 		cnts << @syntax.setvar('workhome','$2');
 		cnts << @syntax.setenv('PROJECT_HOME','${workhome}');
+		cnts << %Q|shopt -s expand_aliase| if @shell=='bash'; ## for bash only
+		cnts << @syntax.alias('app',File.join($apphome,"bin/appShell.#{@shell}"));
 		cnts << @syntax.setvar('info',%q(`cat ${envfile} | sed -e 's/$/;/'`));
 		cnts << @syntax.setvar('cmdl',%q|"${info}"|);
 		cnts << %q|eval ${cmdl}|;

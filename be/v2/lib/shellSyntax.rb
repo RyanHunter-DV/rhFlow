@@ -5,6 +5,15 @@ class ShellSyntax
 		@shell = _s.to_sym;
 	end
 
+	def alias a,s,indent=''
+		code = '';
+		if @shell==:bash
+			code = "alias #{a}='#{s}'";
+		elsif @shell==:csh
+			code = "alias #{a} '#{s}'";
+		end
+		return indent+code;
+	end
 	def setvar var,val,indent=''
 		code = '';
 		if @shell==:bash
