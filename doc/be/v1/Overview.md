@@ -6,3 +6,11 @@ The install program will let user to choose things like:
 ## programs installed
 - app, the app program.
 - bootenv, used for project booting up.
+
+# Plan
+- add be.install program for installation
+- rebuild the app, bootenv program so that it can be installed.
+
+details:
+- [[be.install]]
+- 
