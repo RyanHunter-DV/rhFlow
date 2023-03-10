@@ -5,6 +5,7 @@ $libPath  = File.join(File.dirname($thisPath),"lib_v1");
 $LOAD_PATH << $libPath;
 
 require 'seq.rb'
+require 'builder.rb'
 
 def loadSource()
 	seq :SimpleTestSeq0,:BaseSeq do
