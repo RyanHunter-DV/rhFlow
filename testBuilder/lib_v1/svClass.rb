@@ -1,22 +1,21 @@
-require 'svSyntax.rb'
+# require 'svSyntax.rb'
 require 'svMethod.rb'
 require 'svField.rb'
+require 'svFile.rb'
 
-class SVClass
-	attr_accessor :sv;
+class SVClass < SVFile
+	# attr_accessor :sv;
 
 	attr_accessor :classname;
 	attr_accessor :basename;
-	attr_accessor :debug;
-
 	attr_accessor :methods;
 	attr_accessor :fields;
 
 	def initialize(cn,bn,d,uvmct = :component)
+		super(cn,d);
 		@classname = cn;
 		@basename  = bn;
-		@debug = d;
-		@sv = SVSyntax.new();
+		# @sv = SVSyntax.new();
 		@methods={};@fields={};
 		builtins(uvmct);
 	end
@@ -45,6 +44,19 @@ class SVClass
 	def builtins(ct)
 		constructor(ct);
 		phases() if ct==:component;
+	end
+	def code(u)
+		return self.send(u.to_sym);
+	end
+
+	# return code to declare a class
+	def declareClass()
+		code = %Q|class #{@classname} extends #{@basename}|;
+		return [code];
+	end
+
+	def declareEnd()
+		return ['endclass'];
 	end
 
 end

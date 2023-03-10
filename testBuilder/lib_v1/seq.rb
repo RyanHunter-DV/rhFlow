@@ -36,8 +36,8 @@ class Seq < SVClass
 
 	def publish(path)
 		cnts = [];
-		cnts.append(*sv.filemacro);
-		cnts.append(*code(:declare)); #TODO
+		cnts.append(*filemacro);
+		cnts.append(*code(:declareClass)); #TODO
 		@fields.each_value do |f|
 			cnts << "\t"+f.code(:instance);
 		end
@@ -51,12 +51,14 @@ class Seq < SVClass
 		@methods.each_value do |m|
 			cnts << "\t"+m.code(:prototype);
 		end
-		cnts << "endclass"; #TBD
+		cnts.append(*code(:declareEnd));
 
 		# building body code
 		@methods.each_value do |m|
 			cnts.append(*m.code(:body));
 		end
-		@fop.buildfile(path,@filename,cnts);
+		cnts.append(*filemacroend);
+		@rootpath= path;
+		buildfile(cnts);
 	end
 end

@@ -49,7 +49,6 @@ class Test < SVClass
 	# current only support flow of :sim, this is a placeholder for later features
 	attr_accessor :seqs;
 	attr_accessor :env;
-	attr_accessor :fop;
 	attr_accessor :starts;
 
 	def initialize(tn,b,d)
@@ -57,7 +56,6 @@ class Test < SVClass
 		super(tn,b.classname,d);
 		@seqs={};@starts={};
 		@env = EnvInst.new();
-		@fop = FileOperator.new();
 		setupflow;
 	end
 
@@ -87,16 +85,17 @@ class Test < SVClass
 
 	## publish call from Builder ##{{{
 
-	def publish
+	def publish(path)
 		codes = [];
-		codes.append(*sv.filemacro(@typename));
-		codes.append(*sv.declareClass(@typename,@base.typename));
+		codes.append(*filemacro(@typename));
+		codes.append(*declareClass(@typename,@base.typename));
 		@methods.each_value do |m|
 			codes.append(*m.code(:prototype));
 		end
-		codes.append(sv.declareClassEnd);
-		codes.append(sv.filemacroend);
-		@fop.buildfile(codes);
+		codes.append(declareClassEnd);
+		codes.append(filemacroend);
+		@rootpath= path;
+		buildfile(codes);
 	end
 
 	##}}}
