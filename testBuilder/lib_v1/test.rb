@@ -1,4 +1,3 @@
-require 'fileOperator.rb'
 require 'svClass.rb'
 # storing sequence instance information for the test
 class SeqInst
