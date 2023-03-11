@@ -1,6 +1,7 @@
 require 'debugger.rb'
 require 'exceptions.rb'
 require 'options.rb'
+require 'builder.rb'
 
 class MainEntry
 
@@ -16,6 +17,10 @@ class MainEntry
 	def run ##{{{
 		sig = 0;
 		begin
+			Builder.setup(@options[:path],@debug);
+			Builder.loadSource(@options[:entry]);
+			Builder.finalize();
+			Builder.publish();
 		rescue RunException => e
 			sig = e.process
 		end
