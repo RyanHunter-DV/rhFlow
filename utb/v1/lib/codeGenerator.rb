@@ -44,4 +44,20 @@ class CodeGenerator
 	def declareModuleEnd ##{{{
 		return ['endmodule'];
 	end ##}}}
+
+	def moduleInstance(m) ##{{{
+		codes=[];
+		index=0;
+		codes << %Q|#{m.name} #{m.instname}(|;
+		m.connections.each_pair do |s,t|
+			index+=1;
+			if index==m.portnum
+				codes << %Q|\t.#{s}(#{t})|;
+			else
+				codes << %Q|\t.#{s}(#{t}),|;
+			end
+		end
+		codes << ')';
+		return codes;
+	end ##}}}
 end

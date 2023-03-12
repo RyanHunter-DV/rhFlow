@@ -34,8 +34,16 @@ class Builder
 	def self.publish ##{{{
 		@top.publish(@rootpath);
 	end ##}}}
+
+	def self.loadSource(f) ##{{{
+		rhload f;
+	end ##}}}
+
+	def self.finalize ##{{{
+		
+	end ##}}}
 end
 
 def top(&block) ##{{{
-	Builder.createTop(block);	
+	Builder.createTop(&block);	
 end ##}}}

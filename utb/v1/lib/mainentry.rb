@@ -8,7 +8,7 @@ class MainEntry
 	attr_accessor :debug;
 	attr_accessor :options;
 
-	attr sig;
+	attr :sig;
 	def initialize
 		@debug = Debugger.new(true);
 		@sig=0;

@@ -24,8 +24,10 @@ class Clock
 
 	# according to clock name in ruby view, return the signal name in SV view
 	def signal(n) ##{{{
+		n=n.to_s;
+		@debug.print("finding signal(#{n})");
 		return '' unless map.has_key?(n);
-		return map[n][:signal];
+		return %Q|#{@ifInst}.#{map[n][:signal]}|;
 	end ##}}}
 	def interface ##{{{
 		return @ifType;
