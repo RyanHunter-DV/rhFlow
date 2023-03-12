@@ -8,23 +8,29 @@ class MainEntry
 	attr_accessor :debug;
 	attr_accessor :options;
 
+	attr sig;
 	def initialize
 		@debug = Debugger.new(true);
-		o = Options.new();
-		@options = o.options;
+		@sig=0;
+		begin
+			o = Options.new(@debug);
+			@options = o.options;
+		rescue RunException => e
+			@sig = e.process;
+		end
 	end
 
 	def run ##{{{
-		sig = 0;
+		return @sig if @sig!=0;
 		begin
 			Builder.setup(@options[:path],@debug);
 			Builder.loadSource(@options[:entry]);
 			Builder.finalize();
 			Builder.publish();
 		rescue RunException => e
-			sig = e.process
+			@sig = e.process;
 		end
-		return sig;
+		return @sig;
 	end ##}}}
 
 end

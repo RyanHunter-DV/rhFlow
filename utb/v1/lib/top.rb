@@ -78,7 +78,7 @@ class Top
 			codes << cg.interfaceInst(tname,iname,ports);
 			vhier = vi.fullHierarchy;
 			# config: type, first hier, second hier, name, field
-			configCodes << cg.config("virtual #{tname}",'null',"#{vhier}","top.#{iname}",iname);
+			configCodes << cg.configset("virtual #{tname}",'null',"#{vhier}","top.#{iname}",iname);
 		end
 		configCodes << 'end';
 		codes.append(*configCodes);
@@ -100,6 +100,7 @@ class Top
 
 		codes.append(*cg.declareModuleEnd);
 		codes.append(*cg.filemacroEnd);
+		return codes;
 	end ##}}}
 
 	def publish(rootpath) ##{{{
