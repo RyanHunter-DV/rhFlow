@@ -1,6 +1,7 @@
 require 'debugger.rb'
 require 'exceptions.rb'
 require 'options.rb'
+require 'builder.rb'
 
 
 class MainEntry
@@ -8,23 +9,29 @@ class MainEntry
 	attr_accessor :debug;
 	attr_accessor :options;
 
-	attr :optionH;
-	def initialize
-		@debug = Debugger.new(true);
-		@optionH = Options.new();
-		@options = @optionH.options;
-		CommandPanel.setup(@options,@debug);
-	end
+	attr :sig;
+
+	def initialize ##{{{
+		@sig = 0;
+		begin
+			@debug = Debugger.new(true);
+			o = Options.new(@debug);
+			@options = o.options;
+		rescue RunException => e
+			@sig = e.process;
+		end
+	end ##}}}
 
 	def run ##{{{
-		sig = 0;
 		begin
-			@optionH.parse;
-			CommandPanel.send(@options[:cmd]); # process cmd
+			Builder.setup(@options[:path],@debug);
+			Builder.loadSource(@options[:entry]);
+			Builder.finalize;
+			Builder.publish;
 		rescue RunException => e
-			sig = e.process
+			@sig = e.process;
 		end
-		return sig;
+		return @sig;
 	end ##}}}
 
 end
