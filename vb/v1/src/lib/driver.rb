@@ -3,6 +3,7 @@ require 'codeGenerator.rb'
 class Driver
 	attr_accessor :classname;
 	attr_accessor :basename;
+	attr_accessor :filename;
 	attr_accessor :fields;
 	attr_accessor :methods;
 
@@ -14,6 +15,7 @@ class Driver
 	def initialize(proj,ext,d) ##{{{
 		@debug = d;@path  = './';
 		@classname = "#{proj}#{ext.capitalize}Driver";
+		@filename = @classname+'.svh';@filename[0..0].downcase!;
 		@basename = 'uvm_driver#(REQ,RSP)';
 		@params=[];@tparams=[];
 		@fields=[];@methods=[];
@@ -59,6 +61,16 @@ class Driver
 	def publish(root) ##{{{
 		codes = [];
 		cg = CodeGenerator.new(@debug);
-		codes.append(*cg.filemacro(@classname));
+
+		codes.append(*cg.filemacro(@filename));
+		codes.append(*cg.declareClass(@classname,@tparams.join(','),@params.join(','),@basename));
+
+		# MARK
+
+		codes.append(*cg.declareClassEnd);
+		codes.append(*cg.filemacroEnd);
+
+		puts "test for publish driver";
+		puts codes;
 	end ##}}}
 end

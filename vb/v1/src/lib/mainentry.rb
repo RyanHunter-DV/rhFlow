@@ -23,6 +23,7 @@ class MainEntry
 	end ##}}}
 
 	def run ##{{{
+		return @sig if @sig!=0;
 		begin
 			Builder.setup(@options[:path],@debug);
 			Builder.loadSource(@options[:entry]);
