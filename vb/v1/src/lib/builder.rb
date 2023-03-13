@@ -22,6 +22,9 @@ module Builder
 		rhload e;
 	end ##}}}
 	def self.finalize ##{{{
+		@drivers.each do |drv|
+			drv.finalize;
+		end
 		#TODO
 	end ##}}}
 

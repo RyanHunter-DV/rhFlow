@@ -1,4 +1,26 @@
 project :ResetGen
-driver '' do
-	
+driver 'ext' do
+	tparam 'REQ=ResetGenTrans','RSP=REQ'
+	task 'mainProcess','','virtual' do
+		<<-CODE.gsub(/^\s+\-/,'')
+		-codeline;
+		-expression;
+		-expression2;
+		-if (is_active) begin
+		-	$display("hello");
+		-else begin
+		-	$display("world");
+		-end
+		CODE
+	end
+	run do
+		<<-CODE.gsub(/^\s+\-/,'')
+		-fork
+		-	mainProcess();
+		-	begin
+		-		resetDetector;
+		-	end
+		-join
+		CODE
+	end
 end
