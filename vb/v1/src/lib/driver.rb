@@ -1,24 +1,14 @@
 require 'codeGenerator.rb'
 
-class Driver
-	attr_accessor :classname;
-	attr_accessor :basename;
-	attr_accessor :filename;
-	attr_accessor :fields;
-	attr_accessor :methods;
+class Driver < SVClass
 
-	attr :debug;
 	attr :path; # extra path for this driver
-	attr :params;
-	attr :tparams;
 
 	def initialize(proj,ext,d) ##{{{
-		@debug = d;@path  = './';
-		@classname = "#{proj}#{ext.capitalize}Driver";
-		@filename = @classname+'.svh';@filename[0..0].downcase!;
+		@path  = './';
+		cn = "#{proj}#{ext.capitalize}Driver";
+		super(cn,d);
 		@basename = 'uvm_driver#(REQ,RSP)';
-		@params=[];@tparams=[];
-		@fields=[];@methods=[];
 	end ##}}}
 
 	# set extra path for this driver
@@ -26,9 +16,6 @@ class Driver
 		@path = p;
 	end ##}}}
 
-	def base(bn) ##{{{
-		@basename = bn;
-	end ##}}}
 
 	def param(*args) ##{{{
 		@params.append(*args);
