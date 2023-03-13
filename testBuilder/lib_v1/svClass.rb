@@ -11,7 +11,7 @@ class SVClass < SVFile
 	attr_accessor :methods;
 	attr_accessor :fields;
 
-	def initialize(cn,bn,d,uvmct = :component)
+	def initialize(cn,bn,d,uvmct=:component)
 		super(cn,d);
 		@classname = cn;
 		@basename  = bn;

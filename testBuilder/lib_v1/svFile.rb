@@ -8,10 +8,11 @@ class SVFile
 
 	# tn->typename, or classname
 	def initialize(tn,d,ext='.svh')
+		@debug =d;
 		@rootpath = '';
+		@debug.print("tn: #{tn}");
 		@filename = tn;@filename[0..0].downcase!;
 		@filename += ext;
-		@debug =d;
 		@fop = FileOperator.new();
 	end
 

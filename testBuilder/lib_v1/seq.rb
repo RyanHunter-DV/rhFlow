@@ -61,4 +61,7 @@ class Seq < SVClass
 		@rootpath= path;
 		buildfile(cnts);
 	end
+
+	def finalize
+	end
 end
