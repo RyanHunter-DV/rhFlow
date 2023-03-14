@@ -1,7 +1,11 @@
+
 require 'svParams.rb'
 require 'svField.rb'
 require 'svMethod.rb'
 require 'fileOperator.rb'
+require 'codeGenerator.rb'
+
+
 class SVClass
 	attr_accessor :classname;
 	attr_accessor :basename;
@@ -11,6 +15,7 @@ class SVClass
 	attr_accessor :params;
 	attr_accessor :tparams;
 	attr_accessor :uvmtype;
+	attr_accessor :utils;
 
 	attr :debug;
 	attr :fop;
@@ -20,7 +25,7 @@ class SVClass
 		@filename = @classname+'.svh';
 		@filename[0..0]=@filename[0..0].downcase;
 		@debug.print("filename: #{@filename}");
-		@fields={};@methods={};
+		@fields={};@methods={};@utils={};
 		builtins;
 	end ##}}}
 
@@ -32,6 +37,41 @@ class SVClass
 			phaseBuiltin('run');
 		end
 	end ##}}}
+	# FIXME, need update for more detailed features
+	def getUtilsFieldType(t,ft,it='') ##{{{
+		r='';
+		if t==:scalar
+			r='int' if /^int/=~ft or /^bit/=~ft or /^logic/=~ft;
+		elsif t==:class
+			r='object';
+		elsif t==:darray
+			r = 'array_';
+			r+='int' if /^int/=~ft or /^bit/=~ft or /^logic/=~ft;
+		elsif t==:sarray
+			r='sarray_';
+			r+='int' if /^int/=~ft or /^bit/=~ft or /^logic/=~ft;
+		elsif t==:queue
+			r='queue_';
+			r+='int' if /^int/=~ft or /^bit/=~ft or /^logic/=~ft;
+		elsif t==:aarray
+			r='aa_';
+			r+='int_' if /^int/=~ft or /^bit/=~ft or /^logic/=~ft;
+			r+='int' if /^int/=~it or /^bit/=~it or /^logic/=~it;
+			r+='string' if /^string/=~it;
+		else
+			return 'unknown'
+		end
+		return r;
+	end ##}}}
+	def setupUtilsFields ##{{{
+		@utils['utils_field']=[];
+		@fields.each_pair do |n,f|
+			t = getUtilsFieldType(f.type,f.fieldtype,f.indextype);
+			nf = SVField.new(:raw,@debug,%Q|`uvm_field_#{t}(#{f.name},UVM_ALL_ON)|);
+			@utils['utils_field'] << nf;
+		end
+		return;
+	end ##}}}
 	def setupUtils ##{{{
 		line = %Q|`uvm_#{@uvmtype}_utils_begin(#{@classname}|;
 		params = '';
@@ -40,10 +80,13 @@ class SVClass
 		line+= %Q|#(#{params})| if params!='';
 		line+= ')';
 		f = SVField.new(:raw,@debug,line);
-		@fields['utils_begin'] = f;
+		@utils['utils_begin'] = f;
+
+		setupUtilsFields;
+
 		line = %Q|`uvm_#{@uvmtype}_utils_end|;
 		f = SVField.new(:raw,@debug,line);
-		@fields['utils_end'] = f;
+		@utils['utils_end'] = f;
 	end ##}}}
 	# setup constructor
 	def newBuiltin ##{{{
@@ -86,8 +129,26 @@ class SVClass
 	# format:
 	# field :scalar, 'int', 'ia'
 	def field(t,*args) ##{{{
+		@debug.print("*args: #{args}");
 		f = SVField.new(t,@debug,*args);
-		@fields << f;
+		@fields[f.name] = f;
+	end ##}}}
+
+	def scalar(ft,vn) ##{{{
+		vn=vn.to_s;ft=ft.to_s;
+		field(:scalar,ft,vn);
+	end ##}}}
+	def sarray(ft,vn,s) ##{{{
+		field(:sarray,ft,vn,s);
+	end ##}}}
+	def darray(ft,vn) ##{{{
+		field(:darray,ft,vn);
+	end ##}}}
+	def aarray(ft,vn,it) ##{{{
+		field(:aarray,ft,vn,it);
+	end ##}}}
+	def queue(ft,vn) ##{{{
+		field(:queue,ft,vn);
 	end ##}}}
 
 	# format:
@@ -96,13 +157,16 @@ class SVClass
 		@debug.print("task called: #{n}");
 		m = SVMethod.new(:task,@debug,@classname,n,a);
 		m.qualifier= q if q!='';
-		@debug.print("to call block: #{block.source_location}");
-		#code = self.instance_eval &block;
-		code = block.call;
-		@debug.print("get code: #{code}");
-		codes = code.split("\n");
-		codes.map!{|l| "\t"+l;};
-		m.procedure(codes.join("\n"));
+		if block_given?
+			@debug.print("to call block: #{block.source_location}");
+			#code = self.instance_eval &block;
+			code = block.call;
+			@debug.print("get code: #{code}");
+			codes = code.split("\n");
+			codes.map!{|l| "\t"+l;};
+			m.procedure(codes.join("\n"));
+		end
+
 		@debug.print("getting method: #{n}");
 		@methods[n.to_s] = m;
 	end ##}}}
@@ -136,6 +200,12 @@ class SVClass
 		@fields.each_value do |f|
 			codes.append(*(f.code(:instance).map!{|l| "\t"+l;}));
 		end
+		codes.append(*@utils['utils_begin'].code(:instance).map!{|l|"\t"+l;});
+		@utils['utils_field'].each do |f|
+			codes.append(*(f.code(:instance).map!{|l| "\t\t"+l;}));
+		end
+		codes.append(*@utils['utils_end'].code(:instance).map!{|l|"\t"+l;});
+
 		@methods.each_value do |m|
 			codes.append(*(m.code(:prototype).map!{|l| "\t"+l;}));
 		end
