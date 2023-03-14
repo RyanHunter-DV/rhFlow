@@ -1,3 +1,28 @@
+"""
+A ruby class create while user defined a new test, through the test command, so this class should support all commands within the test commands.
+### user configurations
+*SeqTypeNamedAPIs(n,&block)*
+These methods are declared while in declaring 'Seq', by `Test.define_method :SeqTypeName ...` in 'Builder' module.
+Example of this: [[Features#prepare sequences]].
+*env*
+Users can setup config by calling like `env.config('xxxx','xxx')`.
+the env API provided by every 'Test' class, which returns an object of 'Env' class, in which has database such as config.
+details extended: [[#Env]]. Example: [[Features#env configurations]].
+*start(flow,*seqs)*
+To start sequence, if given arg has multiple sequences, then those sequences will be started parallelly with 'fork-join'.
+Each time call the start will start the sequence with serial ordering.
+Examples: [[Features#start sequences]].
+- flow -> a flow will be specified that where current sequence will be prepared and started.
+
+
+### for publishing
+*finalize*
+1. arrange build_phase codes, according to the env's configurations
+*publish*
+call to publish test, requires information:
+- the test name and its base name;
+- virtual tasks defined by flow;
+"""
 require 'svClass.rb'
 # storing sequence instance information for the test
 class SeqInst
