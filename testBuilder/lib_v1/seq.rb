@@ -1,8 +1,22 @@
-# by using this can declare a sequence object which stores and has ability to build
-# a sequence file
-# key features of this object:
-# - setup user configurations;
-# - publish sequence;
+"""
+by using this can declare a sequence object which stores and has ability to build
+a sequence file
+# key features of this object
+## setup user configurations
+*rand*
+specify a random field of this seq.
+*body*
+return a here-doc that can be added to the sequence's body method directly.
+*finalize*
+## publish a sequence
+*publish*
+call to publish sequence codes, requires information:
+- the sequence name;
+- base, the base sequence name where this derived from;
+- fields of this sequence, which are random qualified;
+- body executions;
+"""
+
 require 'svClass.rb'
 class Seq < SVClass
 	attr_accessor :pseqr;

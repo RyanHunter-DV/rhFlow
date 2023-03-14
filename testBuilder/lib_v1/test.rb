@@ -44,7 +44,7 @@ class Test < SVClass
 
 	attr_accessor :base;
 	# instantiated sequences
-	# seqs[<flowname>] = <seqinstance>
+	# seqs[<instname>] = <seqinstance>
 	# current only support flow of :sim, this is a placeholder for later features
 	attr_accessor :seqs;
 	attr_accessor :env;
@@ -76,8 +76,9 @@ class Test < SVClass
 	def prepareSeq(tn,n,&block)
 		si = SeqInst.new(tn,n,@debug);
 		si.instance_eval &block;
-		@seqs[:test_sim] << si;
+		@seqs[n.to_s] << si;
 	end
+
 
 	##}}}
 
@@ -99,9 +100,10 @@ class Test < SVClass
 
 	##}}}
 	
-	def start(*seqs)
-		parallel = Array.new(*seqs);
-		@starts << parallel;
+	def start(flow,*seqs)
+		parallel = seqs.join(',');
+		@starts[flow.to_s] = [] unless @starts.has_key?(flow.to_s);
+		@starts[flow.to_s] << parallel;
 	end
 
 	# 1. arrange build_phase codes
@@ -109,50 +111,65 @@ class Test < SVClass
 	def finalize
 		@methods['build_phase'].procedure(env.configCode.join("\n"));
 		@methods.delete('run_phase');
-		# arrange flow codes
-		@seqs.each_pair do |flowname,seqs|
-			flowname=flowname.to_s;
-			flow = @methods[flowname];
-			flowCodeArrangement(flow,seqs);
+		@starts.each_pair do |flowname,seqs|
+			flowCodeArrangement(f,seqs);
 		end
 	end
 
-	def flowCodeArrangement(f,seqs)
-		# sequence declaration
-		codes = [];
-		seqs.each do |s|
-			codes << %Q|\t#{s.typename} #{s.instname};|;
-		end
-		f.procedure(codes.join("\n"));
+	def flowCodeArrangement(f,seqs) ##{{{
+		seqDeclaration(f,seqs);
+		seqSetup(f,seqs);
+		seqStart(f,seqs);
+	end ##}}}
 
-		# sequence randomization and constraint setup
+	def seqDeclaration(f,seqs) ##{{{
+		codes = [];
+		seqs.each do |sline|
+			splitted = sline.split(',');
+			splitted.each do |sn|
+				next unless @seqs.has_key?(sn);
+				s = @seqs[sn];
+				codes << %Q|\t#{s.typename} #{s.instname};|;
+			end
+		end
+		@methods[f.to_s].procedure(codes.join("\n"));
+	end ##}}}
+	def seqSetup(f,seqs) ##{{{
 		codes=[];
-		seqs.each do |s|
-			csts = s.constraints;
-			csts.map!{|item| "\t#{item}"};
-			codes.append(*csts);
-			codes << "\t#{s.instname}.randomize() with {";
-			csts = s.randoms;
-			csts.map!{|item| "\t\t#{item}"};
-			codes.append(*csts);
-			codes << "\t};";
+		seqs.each do |sline|
+			splitted = sline.split(',');
+			splitted.each do |sn|
+				next unless @seqs.has_key?(sn);
+				s = @seqs[sn];
+				csts = s.constraints;
+				csts.map!{|item| "\t#{item}"};
+				codes.append(*csts);
+				codes << "\t#{s.instname}.randomize() with {";
+				csts = s.randoms;
+				csts.map!{|item| "\t\t#{item}"};
+				codes.append(*csts);
+				codes << "\t};";
+			end
 		end
-		f.procedure(codes.join("\n"));
-
-		# sequence starting with from @starts
+		@methods[f.to_s].procedure(codes.join("\n"));
+	end ##}}}
+	def seqStart(f,seqs) ##{{{
 		codes = [];
-		@starts.each do |p|
-			len = p.length;
+		seqs.each do |sline|
+			splitted = sline.split(',');
+			len = splitted.length;
 			l = '';
 			l += "\tfork\n" if len>1;
-			p.each do |s|
+			splitted.each do |sn|
+				next unless @seqs.has_key?(sn);
+				s = @seqs[sn];
 				l+= "\t" if len>1;
 				l+= "\t#{s.instname}.start(#{s.seqr});"
 			end
 			l += "\tjoin" if len>1;
 			codes << l;
 		end
-		f.procedure(codes.join("\n"));
-	end
+		@methods[f.to_s].procedure(codes.join("\n"));	
+	end ##}}}
 
 end
