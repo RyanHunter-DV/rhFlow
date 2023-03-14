@@ -21,8 +21,8 @@ require 'svClass.rb'
 class Seq < SVClass
 	attr_accessor :pseqr;
 	def initialize(cn,bn,d)
-		super(cn,bn,d,:object);
-		@pseqr = '';
+		super(cn,:object,d);
+		@pseqr = '';@basename = bn;
 		setupbody;
 	end
 
@@ -49,33 +49,12 @@ class Seq < SVClass
 	end
 
 	def publish(path)
-		cnts = [];
-		cnts.append(*filemacro);
-		cnts.append(*code(:declareClass)); #TODO
-		@fields.each_value do |f|
-			cnts << "\t"+f.code(:instance);
-		end
-		# util
-		cnts << %Q|\t`uvm_object_utils_begin(#{@classname})|;
-		@fields.each_value do |f|
-			cnts << "\t"+f.code(:utils);
-		end
-		cnts << %Q|\t`uvm_object_utils_end|;
-		cnts << "\t`uvm_declare_p_sequencer(#{@pseqr})" if @pseqr;
-		@methods.each_value do |m|
-			cnts << "\t"+m.code(:prototype);
-		end
-		cnts.append(*code(:declareEnd));
+		cnts = publishCode;
+		buildfile(path,cnts);
 
-		# building body code
-		@methods.each_value do |m|
-			cnts.append(*m.code(:body));
-		end
-		cnts.append(*filemacroend);
-		@rootpath= path;
-		buildfile(cnts);
 	end
 
 	def finalize
+		finalizeSVClass;
 	end
 end

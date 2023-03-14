@@ -1,61 +1,70 @@
+# A class storing SV methods,
+# # APIs
+# - code(:prototype), return sv code of its prototype
+# - code(:body), return sv code for method declaration
 class SVMethod
 
-	attr :procedures; # expressions within a method
-	attr :type; #:func or :task
-	attr :rtn; # return type
 
-	attr_accessor :args; # string represent argument
-	attr_accessor :name;
-	# virtual,local,static etc. specified by user
+	attr_accessor :type; #:task,:func
 	attr_accessor :qualifier;
-	attr_accessor :container; # the class name who owns this method
-	#t->type,n->name,a->args,r->return
-	def initialize(t,n,a,r='void')
+	attr_accessor :returnType;
+	attr_accessor :name;
+	attr_accessor :args;
+	attr_accessor :container;
+
+	attr :debug;
+	attr :procedures;
+
+	def initialize(t,d,cn='',*args) ##{{{
 		@type = t.to_sym;
+		@container=cn;
+		@type = :function if @type==:func;
+		@debug= d; @returnType='void'
+		message = "#{@type}Setup".to_sym;
+		self.send(message,*args);
+		@procedures=[];
+	end ##}}}
+
+	def procedure(p) ##{{{
+		@procedures << p;
+	end ##}}}
+
+	# for task: n->name, a->args
+	def taskSetup(n,a) ##{{{
 		@name = n.to_s;
 		@args = a.to_s;
-		@rtn  = r.to_s if @type==:func;
-		@procedures=[];
-	end
+	end ##}}}
+	def functionSetup(n,a,r='void') ##{{{
+		@name = n.to_s;
+		@args = a.to_s;
+		@returnType=r.to_s;
+	end ##}}}
 
-	def procedure(l)
-		@procedures << l;
-	end
-	# add code segment to procedures
-	# def segmentlines
-	# 	# each of segment input is a long string which has manually defined codes,
-	# 	# no need for extra operations
-	# 	@procedures << lines;
-	# end
 
-	#:prototype,:body
-	def code(u=:prototype)
-		return self.send(u.to_sym);
-	end
-
-	def body
-		cnts = [];
-		if @type==:func
-			line+="function #{@rtn}";
-		else
-			line+='task';
+	# code, return code according to the input usage
+	# return of code is array type.
+	def code(u) ##{{{
+		message = "#{u}Code".to_sym;
+		return self.send(message);
+	end ##}}}
+	def prototypeCode ##{{{
+		c = %Q|extern #{@qualifier} #{@type}|;
+		c+= %Q| #{@returnType}| if @type==:function;
+		c+= %Q| #{@name}(#{@args});|;
+		return [c];
+	end ##}}}
+	def bodyCode ##{{{
+		codes=[];
+		c = %Q|#{@type}|;
+		c+= %Q| #{@returnType}| if @type==:function;
+		c+= %Q| #{@container}::| if @container;
+		c+= %Q|#{@name}(#{@args});|;
+		codes << c;
+		@procedures.each do |p|
+			codes << p;
 		end
-		line+=" #{@container}::" if @container;
-		line+="#{@name}(#{@args});"
-		cnts << line;
-		cnts.append(*@procedures) unless @procedures.empty?;
-		return cnts;
-	end
-
-	def prototype
-		line = "extern #{@qualifier}";
-		if @type==:func
-			line+= " function #{@rtn}"
-		else
-			line+= " task";
-		end
-		line+="#{@name}(#{@args});";
-		return line;
-	end
+		codes << %Q|end#{@type}|;
+		return codes;
+	end ##}}}
 
 end

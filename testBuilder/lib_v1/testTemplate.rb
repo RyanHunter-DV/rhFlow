@@ -24,17 +24,16 @@ class TestTemplate < SVClass
 	attr_accessor :flows;
 
 	def initialize(tn,d)
-		super(tn,'uvm_test',d)
+		super(tb,:component,d);
+		@basename = 'uvm_test';
 		@flows=[];
 	end
 
 	# vtask command, to setup flow for running
 	def vtask(n,args='')
 		n=n.to_s;
-		m = SVMethod.new(:task,n,args);
-		m.qualifier= 'virtual';
-		@methods[n] = m;
-		@flows << m;
+		task(n,args,'virtual');
+		@flows << @methods[n];
 	end
 
 	# run command, which will process the returned code from block
@@ -45,8 +44,8 @@ class TestTemplate < SVClass
 	end
 
 	def publish(path)
-		codes = [];
-		#TODO
+		codes = publishCode;
+		buildfile(path,codes);
 	end
 
 end

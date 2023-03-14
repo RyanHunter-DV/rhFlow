@@ -77,7 +77,8 @@ class Test < SVClass
 
 	def initialize(tn,b,d)
 		@base = b;
-		super(tn,b.classname,d);
+		super(tn,:component,d);
+		@basename = b.classname;
 		@seqs={};@starts={};
 		@env = EnvInst.new();
 		setupflow;
@@ -111,16 +112,8 @@ class Test < SVClass
 	## publish call from Builder ##{{{
 
 	def publish(path)
-		codes = [];
-		codes.append(*filemacro(@typename));
-		codes.append(*declareClass(@typename,@base.typename));
-		@methods.each_value do |m|
-			codes.append(*m.code(:prototype));
-		end
-		codes.append(declareClassEnd);
-		codes.append(filemacroend);
-		@rootpath= path;
-		buildfile(codes);
+		codes = publishCode;
+		buildfile(path,codes);
 	end
 
 	##}}}
@@ -134,6 +127,7 @@ class Test < SVClass
 	# 1. arrange build_phase codes
 	# 2. remove run_phase in pre-defined
 	def finalize
+		finalizeSVClass
 		@methods['build_phase'].procedure(env.configCode.join("\n"));
 		@methods.delete('run_phase');
 		@starts.each_pair do |flowname,seqs|

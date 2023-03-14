@@ -1,62 +1,165 @@
-# require 'svSyntax.rb'
-require 'svMethod.rb'
+
+require 'svParams.rb'
 require 'svField.rb'
-require 'svFile.rb'
-
-class SVClass < SVFile
-	# attr_accessor :sv;
-
+require 'svMethod.rb'
+require 'fileOperator.rb'
+class SVClass
 	attr_accessor :classname;
 	attr_accessor :basename;
-	attr_accessor :methods;
+	attr_accessor :filename;
 	attr_accessor :fields;
+	attr_accessor :methods;
+	attr_accessor :params;
+	attr_accessor :tparams;
+	attr_accessor :uvmtype;
 
-	def initialize(cn,bn,d,uvmct=:component)
-		super(cn,d);
-		@classname = cn;
-		@basename  = bn;
-		# @sv = SVSyntax.new();
-		@methods={};@fields={};
-		builtins(uvmct);
-	end
+	attr :debug;
+	attr :fop;
 
-	def constructor(ct)
-		a = %Q|string name = "#{@classname}"|;
-		a+= %Q|,uvm_component parent=null| if ct==:component;
-		m = SVMethod.new(:func,'new',a,'');
+	def initialize(cn,uvmt=:object,d) ##{{{
+		@debug=d;@uvmtype=uvmt;@classname=cn;
+		@filename = @classname+'.svh';
+		@filename[0..0]=@filename[0..0].downcase;
+		@debug.print("filename: #{@filename}");
+		@fields={};@methods={};
+		builtins;
+	end ##}}}
+
+	def builtins ##{{{
+		newBuiltin;
+		if @uvmtype==:component
+			phaseBuiltin('build');
+			phaseBuiltin('connect');
+			phaseBuiltin('run');
+		end
+	end ##}}}
+	def setupUtils ##{{{
+		line = %Q|`uvm_#{@uvmtype}_utils_begin(#{@classname}|;
+		params = '';
+		params += "#{@tparams.params.join(',')}" if @tparams;
+		params += "#{@params.params.join(',')}" if @params;
+		line+= %Q|#(#{params})| if params!='';
+		line+= ')';
+		f = SVField.new(:raw,@debug,line);
+		@fields['utils_begin'] = f;
+		line = %Q|`uvm_#{@uvmtype}_utils_end|;
+		f = SVField.new(:raw,@debug,line);
+		@fields['utils_end'] = f;
+	end ##}}}
+	# setup constructor
+	def newBuiltin ##{{{
+		a = %Q|string name="#{@classname}"|;
+		a+= %Q|,uvm_component parent=null| if @uvmtype==:component;
+		m = SVMethod.new(:func,@debug,@classname,'new',a,'');
+		c = %Q|\tsuper.new(name|;
+		c+= %Q|,parent| if @uvmtype==:component;
+		c+= %Q|);|;
+		m.procedure(c);
 		@methods['new'] = m;
-	end
-
-	def phases()
-		phase('build',:func);
-		phase('connect',:func);
-		phase('run',:task);
-	end
-
-	def phase(n,t)
-		mn = "#{n}_phase";
-		m = SVMethod.new(t,n,'uvm_phase phase');
+	end ##}}}
+	def phaseBuiltin(pn) ##{{{
+		t = :func;
+		t = :task if pn=='run';
+		mn = "#{pn}_phase";
+		m = SVMethod.new(t,@debug,@classname,"#{pn}_phase",'uvm_phase phase');
 		m.qualifier= 'virtual';
-		m.procedure("super.#{mn}(phase);");
+		m.procedure(%Q|\tsuper.#{mn}(phase);|);
 		@methods[mn] = m;
-	end
+	end ##}}}
 
-	def builtins(ct)
-		constructor(ct);
-		phases() if ct==:component;
-	end
-	def code(u)
-		return self.send(u.to_sym);
-	end
+	def base(bn) ##{{{
+		@basename = bn;
+	end ##}}}
+	def param(*args) ##{{{
+		@params = SVParams.new(:param,@debug) unless @params;
+		args.each do |pair|
+			@params.add(pair);
+		end
+	end ##}}}
+	def tparam(*args) ##{{{
+		@tparams = SVParams.new(:tparam,@debug) unless @tparams;
+		args.each do |pair|
+			@tparams.add(pair);
+		end
+	end ##}}}
 
-	# return code to declare a class
-	def declareClass()
-		code = %Q|class #{@classname} extends #{@basename}|;
-		return [code];
-	end
+	# fields commands {
+	# format:
+	# field :scalar, 'int', 'ia'
+	def field(t,*args) ##{{{
+		f = SVField.new(t,@debug,*args);
+		@fields << f;
+	end ##}}}
 
-	def declareEnd()
-		return ['endclass'];
-	end
+	# format:
+	# task 'name','args'
+	def task(n,a,q='',&block) ##{{{
+		@debug.print("task called: #{n}");
+		m = SVMethod.new(:task,@debug,@classname,n,a);
+		m.qualifier= q if q!='';
+		@debug.print("to call block: #{block.source_location}");
+		#code = self.instance_eval &block;
+		if block_given?
+			code = block.call;
+			@debug.print("get code: #{code}");
+			codes = code.split("\n");
+			codes.map!{|l| "\t"+l;};
+			m.procedure(codes.join("\n"));
+		end
 
+		@debug.print("getting method: #{n}");
+		@methods[n.to_s] = m;
+	end ##}}}
+
+	# format:
+	# func 'name','args','rtn',[q], &block
+	def func(n,a,r,q='',&block) ##{{{
+		m = SVMethod.new(:func,@debug,@classname,n,a);
+		m.qualifier= q if q!='';
+		code = block.call;
+		@debug.print("get code: #{code}");
+		codes = code.split("\n");
+		codes.map!{|l| "\t"+l;};
+		m.procedure(codes.join("\n"));
+		@debug.print("getting method: #{n}");
+		@methods[n.to_s] = m;
+	end ##}}}
+
+	# }
+
+	def publishCode ##{{{
+		codes = [];
+		cg = CodeGenerator.new(@debug);
+
+		codes.append(*cg.filemacro(@filename));
+		tps = '';ps='';
+		tps = @tparams.pairs.join(',') if @tparams;
+		ps  = @params.pairs.join(',') if @params;
+		codes.append(*cg.declareClass(@classname,tps,ps,@basename));
+
+		@fields.each_value do |f|
+			codes.append(*(f.code(:instance).map!{|l| "\t"+l;}));
+		end
+		@methods.each_value do |m|
+			codes.append(*(m.code(:prototype).map!{|l| "\t"+l;}));
+		end
+
+		codes.append(*cg.declareClassEnd);
+		codes << "\n\n";
+
+		@methods.each_value do |m|
+			codes.append(*m.code(:body));
+		end
+
+		codes.append(*cg.filemacroEnd);
+
+		return codes;
+	end ##}}}
+	def buildfile(path,cnts) ##{{{
+		@fop = FileOperator.new(path,@filename,@debug,:create=>true);
+		@fop.writeContents(cnts);
+	end ##}}}
+	def finalizeSVClass ##{{{
+		setupUtils;
+	end ##}}}
 end
