@@ -1,3 +1,4 @@
+require 'rhload.rb'
 require 'debugger.rb'
 require 'seq.rb'
 require 'test.rb'
@@ -68,6 +69,10 @@ module Builder
 	def self.buildpath(p)
 		@sh.builddir(p);
 	end
+
+	def self.loadSource(entry) ##{{{
+		rhload entry;
+	end ##}}}
 end
 
 def test(tn,bn,&block)

@@ -27,11 +27,10 @@ class Seq < SVClass
 	end
 
 	# user called method to define a random field of this seq
-	def rand(t,v)
-		t=t.to_s; v=v.to_s;
-		f = SVField.new(:scalar,t,v);
-		f.qualifier= 'rand';
-		@fields[v] = f;
+	def randscalar(ft,v)
+		ft=ft.to_s; v=v.to_s;
+		field(:scalar,ft,v);
+		@fields[v].qualifier= 'rand';
 	end
 	# executed by seq declaration, 
 	# get execution code for body customized by users.
@@ -42,10 +41,7 @@ class Seq < SVClass
 	end
 
 	def setupbody
-		m = SVMethod.new(:task,'body','');
-		m.qualifier= 'virtual';
-		@methods['body'] = m;
-		return;
+		task('body','','virtual');
 	end
 
 	def publish(path)

@@ -3,6 +3,9 @@ require 'svParams.rb'
 require 'svField.rb'
 require 'svMethod.rb'
 require 'fileOperator.rb'
+require 'codeGenerator.rb'
+
+
 class SVClass
 	attr_accessor :classname;
 	attr_accessor :basename;
@@ -88,7 +91,7 @@ class SVClass
 	# field :scalar, 'int', 'ia'
 	def field(t,*args) ##{{{
 		f = SVField.new(t,@debug,*args);
-		@fields << f;
+		@fields[f.name] = f;
 	end ##}}}
 
 	# format:
@@ -97,9 +100,9 @@ class SVClass
 		@debug.print("task called: #{n}");
 		m = SVMethod.new(:task,@debug,@classname,n,a);
 		m.qualifier= q if q!='';
-		@debug.print("to call block: #{block.source_location}");
-		#code = self.instance_eval &block;
 		if block_given?
+			@debug.print("to call block: #{block.source_location}");
+			#code = self.instance_eval &block;
 			code = block.call;
 			@debug.print("get code: #{code}");
 			codes = code.split("\n");
