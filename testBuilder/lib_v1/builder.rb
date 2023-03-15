@@ -58,10 +58,22 @@ module Builder
 		@seqs.each_value do |s|
 			s.finalize;
 		end
+		@templates.each_value do |s|
+			s.finalize;
+		end
+		@tests.each_value do |s|
+			s.finalize;
+		end
 	end
 	def self.publish
 		self.buildpath(@rootpath);
 		@seqs.each_value do |s|
+			s.publish(@rootpath);
+		end
+		@templates.each_value do |s|
+			s.publish(@rootpath);
+		end
+		@tests.each_value do |s|
 			s.publish(@rootpath);
 		end
 	end

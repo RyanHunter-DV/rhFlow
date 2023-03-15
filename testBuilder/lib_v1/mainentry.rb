@@ -1,22 +1,38 @@
-require "exceptions.rb"
-require "builder.rb"
+require 'exceptions.rb'
+require 'builder.rb'
+require 'options.rb'
 
 #TODO
 class MainEntry
 
+	attr_accessor :debug;
+	attr_accessor :options;
+
+	attr :sig;
 	def initialize
+		@sig=0;
+		begin
+			@debug = Debugger.new(true);
+			o= Options.new();
+			@options = o.options;
+		rescue RunException => e
+			@sig = e.process;
+		end
 	end
 
-	def run
-		sig = 0;
+	def run ##{{{
+		return @sig if @sig!=0;
 		begin
-			Builder.setup(xxx)
-			Builder.loadSource(file)
-			Builder.finalize(xxx)
-			Builder.publish(xxx)
+			Builder.setup(@options[:path]);
+			Builder.loadSource(@options[:entry]);
+			Builder.finalize;
+			Builder.publish;
 		rescue RunException => e
-			e.process;
+			@sig = e.process
 		end
-		return sig;
-	end
+		return @sig;
+	end ##}}}
+
+
+
 end
