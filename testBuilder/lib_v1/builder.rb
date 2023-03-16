@@ -39,7 +39,7 @@ module Builder
 		setm = tn.to_sym;
 		Test.define_method setm do |n,&block|
 			#TODO, establish test.rb first
-			self.prepareSeq(setm.to_s,n,block);
+			self.prepareSeq(setm.to_s,n,&block);
 		end
 		@seqs[tn] = s;
 	end

@@ -13,7 +13,7 @@ class MainEntry
 		@sig=0;
 		begin
 			@debug = Debugger.new(true);
-			o= Options.new();
+			o= Options.new(@debug);
 			@options = o.options;
 		rescue RunException => e
 			@sig = e.process;
