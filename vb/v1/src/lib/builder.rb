@@ -14,9 +14,9 @@ module Builder
 	attr_accessor :trans;
 	attr_accessor :agents;
 	attr_accessor :envs;
+	attr_accessor :project;
 
 	attr :debug;
-	attr :project;
 
 	def self.setup(p,d) ##{{{
 		@path = p;@debug= d;

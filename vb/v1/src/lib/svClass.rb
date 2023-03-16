@@ -134,6 +134,10 @@ class SVClass
 		@fields[f.name] = f;
 	end ##}}}
 
+	def svclass(ft,vn) ##{{{
+		vn=vn.to_s;ft=ft.to_s;
+		field(:class,ft,vn);
+	end ##}}}
 	def scalar(ft,vn) ##{{{
 		vn=vn.to_s;ft=ft.to_s;
 		field(:scalar,ft,vn);

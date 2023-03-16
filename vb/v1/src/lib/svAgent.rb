@@ -5,9 +5,11 @@ class SVAgent < SVClass
 
 	attr :path; # extra path for this driver
 
+	attr :project;
 	def initialize(proj,ext,d) ##{{{
 		@path  = './';
-		cn = "#{proj}#{ext.capitalize}Agent";
+		@project = proj;
+		cn = "#{@project}#{ext.capitalize}Agent";
 		super(cn,:component,d);
 		@basename = 'uvm_agent';
 	end ##}}}
