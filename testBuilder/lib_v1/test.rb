@@ -24,6 +24,7 @@ call to publish test, requires information:
 - virtual tasks defined by flow;
 """
 require 'svClass.rb'
+require 'envInst.rb'
 # storing sequence instance information for the test
 class SeqInst
 
@@ -80,13 +81,13 @@ class Test < SVClass
 		super(tn,:component,d);
 		@basename = b.classname;
 		@seqs={};@starts={};
-		@env = EnvInst.new();
+		@env = EnvInst.new('tbEnv',d);
 		setupflow;
 	end
 
 	def setupflow
 		@base.flows.each do |f|
-			m = SVMethod.new(:task,f.name,f.args);
+			m = SVMethod.new(:task,@debug,@classname,f.name,f.args);
 			m.qualifier= f.qualifier;
 			@methods[f.name] = m;
 		end
@@ -102,7 +103,7 @@ class Test < SVClass
 	def prepareSeq(tn,n,&block)
 		si = SeqInst.new(tn,n,@debug);
 		si.instance_eval &block;
-		@seqs[n.to_s] << si;
+		@seqs[n.to_s] = si;
 	end
 
 
@@ -131,7 +132,7 @@ class Test < SVClass
 		@methods['build_phase'].procedure(env.configCode.join("\n"));
 		@methods.delete('run_phase');
 		@starts.each_pair do |flowname,seqs|
-			flowCodeArrangement(f,seqs);
+			flowCodeArrangement(flowname,seqs);
 		end
 	end
 
@@ -183,7 +184,7 @@ class Test < SVClass
 				next unless @seqs.has_key?(sn);
 				s = @seqs[sn];
 				l+= "\t" if len>1;
-				l+= "\t#{s.instname}.start(#{s.seqr});"
+				l+= "\t#{s.instname}.start(#{s.seqr});\n"
 			end
 			l += "\tjoin" if len>1;
 			codes << l;

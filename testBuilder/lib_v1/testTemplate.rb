@@ -23,11 +23,17 @@ class TestTemplate < SVClass
 
 	attr_accessor :flows;
 
+	attr :userRunFlow;
 	def initialize(tn,d)
-		super(tb,:component,d);
+		super(tn,:component,d);
 		@basename = 'uvm_test';
 		@flows=[];
+		testloopSetup;
 	end
+
+	def testloopSetup ##{{{
+		scalar('int','testloop','10');
+	end ##}}}
 
 	# vtask command, to setup flow for running
 	def vtask(n,args='')
@@ -39,10 +45,22 @@ class TestTemplate < SVClass
 	# run command, which will process the returned code from block
 	def run(&block)
 		code = block.call;
-		@methods['run_phase'].procedure(code);
+		@userRunFlow = code;
+		#@methods['run_phase'].procedure(code);
 		return;
 	end
 
+	def finalize ##{{{
+		finalizeSVClass;
+		# setup run flow
+		codes = [];
+		codes << %Q|for (int loop=0;loop<testloop;loop++) begin|;
+		codes.append(*@userRunFlow.split("\n")) if @userRunFlow;
+		codes << 'end';
+		codes.map!{|l| "\t"+l;};
+		runf = @methods['run_phase'];
+		runf.procedure(codes.join("\n"));
+	end ##}}}
 	def publish(path)
 		codes = publishCode;
 		buildfile(path,codes);
