@@ -14,17 +14,18 @@ module Builder
 	attr_accessor :trans;
 	attr_accessor :agents;
 	attr_accessor :envs;
-	attr_accessor :project;
 
 	attr :debug;
+	attr :project;
 
 	def self.setup(p,d) ##{{{
 		@path = p;@debug= d;
 		@drivers=[];@monitors=[];@seqrs=[];@trans=[];
 		@agents=[];@envs=[];
 	end ##}}}
-	def self.project(p) ##{{{
-		@project = p;
+	def self.project(p=nil) ##{{{
+		@project = p if p;
+		return @project;
 	end ##}}}
 	def self.loadSource(e) ##{{{
 		rhload e;
