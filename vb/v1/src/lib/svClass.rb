@@ -178,7 +178,7 @@ class SVClass
 	# format:
 	# func 'name','args','rtn',[q], &block
 	def func(n,a,r,q='',&block) ##{{{
-		m = SVMethod.new(:func,@debug,@classname,n,a);
+		m = SVMethod.new(:func,@debug,@classname,n,a,r);
 		m.qualifier= q if q!='';
 		code = block.call;
 		@debug.print("get code: #{code}");
