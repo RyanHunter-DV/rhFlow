@@ -42,6 +42,7 @@ class SVClass
 		r='';
 		if t==:scalar
 			r='int' if /^int/=~ft or /^bit/=~ft or /^logic/=~ft;
+			r='real' if /^real/=~ft or /^time/=~ft;
 		elsif t==:class
 			r='object';
 		elsif t==:darray
@@ -58,21 +59,23 @@ class SVClass
 			r+='int_' if /^int/=~ft or /^bit/=~ft or /^logic/=~ft;
 			r+='int' if /^int/=~it or /^bit/=~it or /^logic/=~it;
 			r+='string' if /^string/=~it;
-		else
-			return 'unknown'
 		end
+		r = nil if r=='';
 		return r;
 	end ##}}}
 	def setupUtilsFields ##{{{
 		@utils['utils_field']=[];
 		@fields.each_pair do |n,f|
 			t = getUtilsFieldType(f.type,f.fieldtype,f.indextype);
-			nf = SVField.new(:raw,@debug,%Q|`uvm_field_#{t}(#{f.name},UVM_ALL_ON)|);
-			@utils['utils_field'] << nf;
+			if t
+				nf = SVField.new(:raw,@debug,%Q|`uvm_field_#{t}(#{f.name},UVM_ALL_ON)|);
+				@utils['utils_field'] << nf;
+			end
 		end
 		return;
 	end ##}}}
 	def setupUtils ##{{{
+		@debug.print("setupUtils for : #{@classname}");
 		line = %Q|`uvm_#{@uvmtype}_utils_begin(#{@classname}|;
 		params = '';
 		params += "#{@tparams.params.join(',')}" if @tparams;
@@ -191,6 +194,10 @@ class SVClass
 
 	# }
 
+	def childExtraCode ##{{{
+		return [];
+	end ##}}}
+
 	def publishCode ##{{{
 		codes = [];
 		cg = CodeGenerator.new(@debug);
@@ -209,6 +216,8 @@ class SVClass
 			codes.append(*(f.code(:instance).map!{|l| "\t\t"+l;}));
 		end
 		codes.append(*@utils['utils_end'].code(:instance).map!{|l|"\t"+l;});
+
+		codes.append(*childExtraCode);
 
 		@methods.each_value do |m|
 			codes.append(*(m.code(:prototype).map!{|l| "\t"+l;}));

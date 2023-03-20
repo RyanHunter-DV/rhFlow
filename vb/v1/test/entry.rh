@@ -24,3 +24,28 @@ driver 'ext' do
 		CODE
 	end
 end
+
+monitor 'ext' do
+	tparam 'REQ=ResetGenTrans','RSP=REQ'
+
+	task 'mainProcess','','virtual' do
+		<<-CODE.gsub(/^\s+\-/,'')
+		-if (is_active) begin
+		-	$display("hello");
+		-else begin
+		-	$display("world");
+		-end
+		CODE
+	end
+	run do
+		<<-CODE.gsub(/^\s+\-/,'')
+		-fork
+		-	mainProcess();
+		-join
+		CODE
+	end
+end
+seqr 'ext' do
+	tparam 'REQ=ResetGenTrans','RSP=REQ'
+	path 'seqr'
+end

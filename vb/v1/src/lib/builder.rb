@@ -1,9 +1,11 @@
 require 'svDriver.rb'
 require 'svMonitor.rb'
 require 'svSeqr.rb'
+require 'svSeq.rb'
 require 'svTrans.rb'
 require 'svAgent.rb'
 require 'svEnv.rb'
+require 'svConfig.rb'
 
 module Builder
 
@@ -11,9 +13,11 @@ module Builder
 	attr_accessor :drivers;
 	attr_accessor :monitors;
 	attr_accessor :seqrs;
+	attr_accessor :seqs;
 	attr_accessor :trans;
 	attr_accessor :agents;
 	attr_accessor :envs;
+	attr_accessor :configs;
 
 	attr :debug;
 	attr :project;
@@ -21,7 +25,7 @@ module Builder
 	def self.setup(p,d) ##{{{
 		@path = p;@debug= d;
 		@drivers=[];@monitors=[];@seqrs=[];@trans=[];
-		@agents=[];@envs=[];
+		@agents=[];@envs=[];@seqs=[];@configs=[];
 	end ##}}}
 	def self.project(p=nil) ##{{{
 		@project = p if p;
@@ -40,6 +44,9 @@ module Builder
 		@seqrs.each do |seqr|
 			seqr.finalize;
 		end
+		@seqs.each do |seq|
+			seq.finalize;
+		end
 		@trans.each do |tr|
 			tr.finalize;
 		end
@@ -47,6 +54,9 @@ module Builder
 			o.finalize;
 		end
 		@envs.each do |o|
+			o.finalize;
+		end
+		@configs.each do |o|
 			o.finalize;
 		end
 	end ##}}}
@@ -60,6 +70,9 @@ module Builder
 		@seqrs.each do |seqr|
 			seqr.publish(@path);
 		end
+		@seqs.each do |seq|
+			seq.publish(@path);
+		end
 		@trans.each do |tr|
 			tr.publish(@path);
 		end
@@ -67,6 +80,9 @@ module Builder
 			o.publish(@path);
 		end
 		@envs.each do |o|
+			o.publish(@path);
+		end
+		@configs.each do |o|
 			o.publish(@path);
 		end
 	end ##}}}
@@ -100,6 +116,16 @@ module Builder
 		o.instance_eval &block;
 		@envs << o;
 	end ##}}}
+	def self.createSeq(ext,&block) ##{{{
+		seq = SVSeq.new(@project,ext,@debug);
+		seq.instance_eval &block;
+		@seqs<<seq;
+	end ##}}}
+	def self.createConfig(ext,&block) ##{{{
+		o = SVConfig.new(@project,ext,@debug);
+		o.instance_eval &block;
+		@configs<<o;
+	end ##}}}
 end
 
 def project(n) ##{{{
@@ -118,6 +144,10 @@ def seqr(ext='',&block) ##{{{
 	ext = ext.to_s;
 	Builder.createSeqr(ext,&block);
 end ##}}}
+def seq(ext='',&block) ##{{{
+	ext=ext.to_s;
+	Builder.createSeq(ext,&block);
+end ##}}}
 def trans(ext='',&block) ##{{{
 	ext = ext.to_s;
 	Builder.createTrans(ext,&block);
@@ -129,4 +159,8 @@ end ##}}}
 def env(ext='',&block) ##{{{
 	ext=ext.to_s;
 	Builder.createEnv(ext,&block);
+end ##}}}
+def config(ext='',&block) ##{{{
+	ext=ext.to_s;
+	Builder.createConfig(ext,&block);
 end ##}}}
