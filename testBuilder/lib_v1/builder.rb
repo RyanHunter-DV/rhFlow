@@ -1,3 +1,4 @@
+require 'rhload.rb'
 require 'debugger.rb'
 require 'seq.rb'
 require 'test.rb'
@@ -38,7 +39,7 @@ module Builder
 		setm = tn.to_sym;
 		Test.define_method setm do |n,&block|
 			#TODO, establish test.rb first
-			self.prepareSeq(setm.to_s,n,block);
+			self.prepareSeq(setm.to_s,n,&block);
 		end
 		@seqs[tn] = s;
 	end
@@ -57,10 +58,22 @@ module Builder
 		@seqs.each_value do |s|
 			s.finalize;
 		end
+		@templates.each_value do |s|
+			s.finalize;
+		end
+		@tests.each_value do |s|
+			s.finalize;
+		end
 	end
 	def self.publish
 		self.buildpath(@rootpath);
 		@seqs.each_value do |s|
+			s.publish(@rootpath);
+		end
+		@templates.each_value do |s|
+			s.publish(@rootpath);
+		end
+		@tests.each_value do |s|
 			s.publish(@rootpath);
 		end
 	end
@@ -68,6 +81,10 @@ module Builder
 	def self.buildpath(p)
 		@sh.builddir(p);
 	end
+
+	def self.loadSource(entry) ##{{{
+		rhload entry;
+	end ##}}}
 end
 
 def test(tn,bn,&block)

@@ -68,8 +68,7 @@ class SVField
 		line = %Q|#{q}#{@fieldtype} #{@name}[];| if @type==:darray;
 		line = %Q|#{q}#{@fieldtype} #{@name}[$];| if @type==:queue;
 		line = %Q|#{q}#{@fieldtype} #{@name}[#{@indextype}];| if @type==:aarray;
-		expr = %Q|#{@name}|;expr+= " = #{@default}" if @default;
-		line = %Q|#{q}#{@fieldtype} #{expr};| if @type==:scalar or @type==:class;
+		line = %Q|#{q}#{@fieldtype} #{@name};| if @type==:scalar or @type==:class;
 		return [line];
 	end ##}}}
 
