@@ -1,4 +1,0 @@
-uvm.driver do |s|
-end
-
-assembly 'test.svh'

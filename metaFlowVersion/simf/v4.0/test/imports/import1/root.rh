@@ -1,6 +1,0 @@
-component :testComponent do
-	puts "tesComponent"
-end
-context :test2Context do
-	component :testComponent
-end

@@ -1,4 +1,0 @@
-component :rtl do
-	fileset 'libs/*.v'
-	fileset '*.v'
-end

@@ -1,5 +1,0 @@
-component :env do
-	required 'Import0Context.I0Comp'
-	fileset '*.sv'
-	includes 'env.svh' # currently is optional
-end
