@@ -1,7 +1,7 @@
 This chapter will list all possible usage/issues or features this tool are going to solve, it's kind of a very beginning state to collecting requirements and provide the features, and because of the lack of experience, this chapter may continue updating.
 
 # Flexible step specification to run the tool
-- BuildOnly
+- [[v5.0/doc/v1/features/BuildOnly|BuildOnly]]
 - CompileOnly
 - RunOnly
 - ManuallyStepChosen
@@ -14,3 +14,4 @@ This chapter will list all possible usage/issues or features this tool are going
 #TBD 
 # Usage examples
 #TBD 
+- [[v5.0/doc/v1/example/VipProject|VipProject]]

@@ -1,0 +1,2 @@
+This is specifically for simulator to compile and elaborate a certain config, by using the option with format: `-c <ConfigName>`, this command will start calling the compile and elaborate command of an EDA tool directly, so if the database is not built, which will report an error.
+#MARKER 
