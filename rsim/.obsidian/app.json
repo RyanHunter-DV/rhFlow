@@ -3,5 +3,7 @@
   "showLineNumber": true,
   "newLinkFormat": "relative",
   "vimMode": true,
-  "spellcheck": false
+  "spellcheck": false,
+  "promptDelete": false,
+  "alwaysUpdateLinks": true
 }
