@@ -1,0 +1,4 @@
+[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/UserInterface.rb:9:in `initialize'] setup node step
+[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/DynamicLoader.rb:19:in `block in loading'] loading step(rhload)
+[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/dl/rhload.rb:8:in `initialize'] getting opts({})
+[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/DynamicLoader.rb:19:in `block in loading'] loading step(build)

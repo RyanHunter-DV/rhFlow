@@ -1,0 +1,9 @@
+# DE component with default generator
+component
+# DV component
+component :RhLpi do
+	# link generator is a soft-link
+	fileset 'RhLpi.sv'
+	# if generator not specified, then will use the source file directly.
+	# generator :none
+end

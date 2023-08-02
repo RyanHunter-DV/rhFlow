@@ -7,6 +7,7 @@ The BuildOnly feature let user to call the tool to build target HDL & Verif file
 Details in [[v5.0/doc/v1/features/BuildOnly|BuildOnly]].
 **CompileOnly**
 #TBD 
+More details in [[features/CompileOnly|CompileOnly]].
 **RunOnly**
 #TBD 
 **ManuallyStepChosen**
@@ -26,6 +27,7 @@ More features and details in [[features/ipxact/Config|Config]]. #TBD , need buil
 ### Design
 The design is the only top meta-data collection of a project. It'll collect all available components within this project.
 - Support component instance, by which can set alias name for a component so that it can be easily operated by the design configuration.
+- For components that needed by other components, it will be automatically instantiated
 More details in [[features/ipxact/Design|Design]] #TBD , need build the details
 ### Component
 Component is the central placeholder for the meta-data designs, such as HDL or Verif sources.
@@ -34,10 +36,15 @@ Component is the central placeholder for the meta-data designs, such as HDL or V
 - Parameter definition, looks like a local config for component, for example, by using of the parameter can specify different filesets.
 - Nested component, if a component that will use another component(s), then can use a `need` command to declare the reliance relations.
 - busInterface, channel etc more features for HDL shall be added #TBD
-More details in [[features/ipxact/Component|Component]] #TBD , need build the details.
+Integrated Component, is a special component that just a container for sub components by the need command. In these components, the generator and fileset command are useless since they will not specify source and target files by themself.
+More details in [[features/ipxact/Component|Component]]
 ## Support exporting a design and corresponding configuration for integration
+For easy integration, #MARKER need figure out a way to export an IP into SS or SOC.
 #TBD 
 
+
+# Architecture
+The generic architecture map:
 
 
 --- 

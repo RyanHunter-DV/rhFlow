@@ -1,0 +1,3 @@
+[INFO](./MessagePrinterTest.rb:13:in `main'):test for debug, bk: 0
+[INFO](./MessagePrinterTest.rb:21:in `<main>'):test for info with debug, bk: 1
+[INFO] test for info, bk: 2
