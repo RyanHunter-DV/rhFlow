@@ -1,6 +1,6 @@
-require 'ipxact/metadata'
-require 'ipxact/component'
-require 'ipxact/design'
+require 'ipxact/MetaData'
+require 'ipxact/Component'
+require 'ipxact/Design'
 require 'ipxact/DesignConfig'
 class Rhload
 
