@@ -6,7 +6,7 @@ A design being loaded into current tool, will be shown as a global method name t
 Example:
 ```ruby
 config :ConfigName do
-  ADefinedDesign(:viewname)
+  view :viewname
   # options such as tool configurations, generator options
   # parameters for a component
   # features, TBD
@@ -17,7 +17,7 @@ The options indicate to the tool options, such as generator tools, EDA tools and
 Brief example:
 ```ruby
 config :ConfigName do
-  ADefinedDesign(:viewname)
+  view(:viewname) # specify view of the design, only one deisng is allowed, call design can directly get the design object.
   opt simulator.compile, '-A "option string"','-B "option string"',...
   opt simulator.elab, '-A "option string"','-B "option string"',...
   opt simulator.run, '-A "option string"','-B "option string"',...
@@ -40,7 +40,7 @@ end
 Parameter used for component meta-data to define a configurable variable for such component data, in config, if users want to use a different parameter, then it need to change it like:
 ```ruby
 config :name do
-  ADefinedDesign(:view)
+  view(:view)
   design.compA.param :pa=>'value string', ...
 end
 ```
