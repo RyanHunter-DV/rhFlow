@@ -1,4 +1,5 @@
 Component is a central placeholder for all meta-data within the project. In typical IC project, it can be a collection of the certain purposed DV packages, HDL sources etc. Example listed in <link here>.
+This will be placed by a ruby Component class object, while user nodes calls the global 'component' command, which will actually build a ruby ==Component== object, and register it to ==Rsim== module.
 # Supported component commands
 ## fileset
 Command to specify all affected files of this component, can use wildcard to collect multiple or certain formatted files, just like:
@@ -49,3 +50,5 @@ end
 ```
 # Container component
 A container component is a component that only used as a container by variety sub components required by the `need` command. In this typed component, the generator, fileset commands are useless, but will not ignored. And users can define a container component which can be used by higher level integration.
+
+

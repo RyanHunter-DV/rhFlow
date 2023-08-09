@@ -23,12 +23,12 @@ The design configuration in ipxact is used to build a specific project with the 
 - tool options, can set options for different generator tool chains, simulator tools.
 - parameters, define and overrides parameters for different components.
 - Need configuration, the included design cannot be directly published to target, unless users has set a `need` command, which will explicitly need a component for this config.
-More features and details in [[features/ipxact/Config|Config]]. #TBD , need build the details
+More features and details in [[objects/ipxact/Config|Config]]. #TBD , need build the details
 ### Design
 The design is the only top meta-data collection of a project. It'll collect all available components within this project.
 - Support component instance, by which can set alias name for a component so that it can be easily operated by the design configuration.
 - For components that needed by other components, it will be automatically instantiated
-More details in [[features/ipxact/Design|Design]] #TBD , need build the details
+More details in [[objects/ipxact/Design|Design]] #TBD , need build the details
 ### Component
 Component is the central placeholder for the meta-data designs, such as HDL or Verif sources.
 - Specify source files/dirs, a component must shall specify the source files/dirs that this component mainly operate on.
@@ -37,7 +37,7 @@ Component is the central placeholder for the meta-data designs, such as HDL or V
 - Nested component, if a component that will use another component(s), then can use a `need` command to declare the reliance relations.
 - busInterface, channel etc more features for HDL shall be added #TBD
 Integrated Component, is a special component that just a container for sub components by the need command. In these components, the generator and fileset command are useless since they will not specify source and target files by themself.
-More details in [[features/ipxact/Component|Component]]
+More details in [[objects/ipxact/Component|Component]]
 ## Support exporting a design and corresponding configuration for integration
 For easy integration, #MARKER need figure out a way to export an IP into SS or SOC.
 #TBD 

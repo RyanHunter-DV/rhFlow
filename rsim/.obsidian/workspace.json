@@ -13,19 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "v5.0/doc/v1/Overview.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "217517dc8c77dfd7",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "v5.0/doc/v1/features/ipxact/Config.md",
+                "file": "v5.0/doc/v1/objects/ipxact/Component.md",
                 "mode": "source",
                 "source": false
               }
@@ -39,15 +27,15 @@
               "state": {
                 "file": "v5.0/doc/v1/arch/topology.canvas",
                 "viewState": {
-                  "x": -248.22854806218788,
-                  "y": -2445.552902363343,
-                  "zoom": 0.07982932286336979
+                  "x": -2056.461095828959,
+                  "y": -3217.3166570307835,
+                  "zoom": -0.32017067713663017
                 }
               }
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -192,10 +180,13 @@
   },
   "active": "9c574e2178eefef3",
   "lastOpenFiles": [
-    "v5.0/doc/v1/features/ipxact/Config.md",
-    "v5.0/doc/v1/Overview.md",
+    "v5.0/doc/v1/objects/Rsim.md",
+    "v5.0/doc/v1/objects/ipxact/Component.md",
     "v5.0/doc/v1/arch/topology.canvas",
-    "v5.0/doc/v1/features/ipxact/Design.md",
+    "v5.0/doc/v1/objects/ipxact/Config.md",
+    "v5.0/doc/v1/objects/ipxact/Design.md",
+    "v5.0/doc/v1/Overview.md",
+    "v5.0/doc/v1/objects",
     "v5.0/src/ipxact/DesignConfig.rb",
     "v5.0/src/ipxact/DesignConfiguration.rb",
     "v5.0/src/ipxact/DesignView.rb",
@@ -203,13 +194,11 @@
     "v5.0/doc/v1/sketches/ipToSocIntegration.canvas",
     "v5.0/doc/v1/features/BuildOnly.md",
     "v5.0/doc/v1/features/CompileOnly.md",
-    "v5.0/doc/v1/features/ipxact/Component.md",
     "v5.0/src/ipxact/metadata.rb",
     "v5.0/src/steps/build.rb",
     "v5.0/src/steps/rhload.rb",
     "v5.0/src/steps",
     "v5.0/src/core.rb",
-    "v5.0/src/Core.rb",
     "v5.0/doc/v1/backup/IP-XACTBase.md",
     "v5.0/marker.md"
   ]
