@@ -4,8 +4,9 @@ class UserInterface
 
 	attr_accessor :steps;
 	attr_accessor :stepOpts;
+	attr_accessor :options;
 	def initialize() ##{{{
-		@steps=[];@stepOpts={};
+		@steps=[];@stepOpts={};@options={};
 		Rsim.mp.debug("setup node step");
 		setupNodeStep;
 		OptionParser.new do |opts|
@@ -30,13 +31,31 @@ class UserInterface
 			opts.on('-rg','--regression=TAG','to start a regression') do |v|
 				setupStep(:regr,:tag=>v);
 			end
+			opts.on('-s','--stem=STEM','manually set the stem path') do |v|
+				setpupOption(:stem,v,[:build]);
+			end
 		end.parse!
+		setupMandatoryOptions;
 	end ##}}}
 
 public
 # TODO, step APIs for other components.
 
 private
+
+	## API: setupMandatoryOptions, user not specified, need add a mandatory value
+	def setupMandatoryOptions ##{{{
+		setupOption(:stem,ENV['STEM'],[:build]) unless @options.has_key?(:stem);
+		#TODO
+	end ##}}}
+
+	## API: setupOption(name,val), to setup an option available in local.
+	def setupOption(name,val,steps=[]) ##{{{
+		@options[name] = val;
+		steps.each do |s|
+			addStepOpts(s,name=>val)
+		end
+	end ##}}}
 
 	def setupNodeStep ##{{{
 		initNodes = ENV['RSIM_INIT'];
@@ -60,14 +79,18 @@ private
 		end
 		return merged;
 	end ##}}}
-	def setupStep(sname,opts={}) ##{{{
-		sname=sname.to_sym;
-		@steps << sname;
+	## API: addStepOpts(sname,opts={}), add options to a certain step.
+	def addStepOpts(sname,opts={}) ##{{{
 		if @stepOpts.has_key?(sname)
 			@stepOpts[sname] = mergeOpts(opts,@stepOpts[sname]);
 		else
 			@stepOpts[sname] = opts;
 		end
+	end ##}}}
+	def setupStep(sname,opts={}) ##{{{
+		sname=sname.to_sym;
+		@steps << sname;
+		addStepOpts(sname,opts);
 	end ##}}}
 	
 end

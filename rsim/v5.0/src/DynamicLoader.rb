@@ -1,3 +1,6 @@
+require 'steps/StepBase'
+require 'steps/build'
+require 'steps/rhload'
 class DynamicLoader
 	def initialize(ui) ##{{{
 		loadSteps(ui);
@@ -8,7 +11,9 @@ class DynamicLoader
 		noDl() if Rsim.steps.empty?;
 		Rsim.steps.each do |step|
 			if step.run() == Rsim::FAILED
-				raise StepException.new(step,Rsim::FAILED);
+				message = "#{step.name} failed";
+				reason = step.reason;
+				raise StepException.new(message,reason);
 			end
 		end
 	end ##}}}
