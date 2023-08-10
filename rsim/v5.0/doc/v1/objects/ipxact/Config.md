@@ -48,3 +48,10 @@ end
 component can have features defined in a design or config, this is #TBD later.
 # Clone a config
 when defining a config, can use a clone to get all executions from the cloned config.
+
+---
+# class DesignConfig
+## Fields
+## Public apis
+### design
+return Rsim.design, which is registered unique Design object.

@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "v5.0/doc/v1/objects/ipxact/Component.md",
+                "file": "v5.0/doc/v1/objects/Core.md",
                 "mode": "source",
                 "source": false
               }
@@ -27,8 +27,8 @@
               "state": {
                 "file": "v5.0/doc/v1/arch/topology.canvas",
                 "viewState": {
-                  "x": -2056.461095828959,
-                  "y": -3217.3166570307835,
+                  "x": -30.91753369084411,
+                  "y": -2328.620642584478,
                   "zoom": -0.32017067713663017
                 }
               }
@@ -180,10 +180,12 @@
   },
   "active": "9c574e2178eefef3",
   "lastOpenFiles": [
-    "v5.0/doc/v1/objects/Rsim.md",
-    "v5.0/doc/v1/objects/ipxact/Component.md",
+    "v5.0/doc/v1/objects/UserInterface.md",
+    "v5.0/doc/v1/objects/Core.md",
     "v5.0/doc/v1/arch/topology.canvas",
+    "v5.0/doc/v1/objects/Rsim.md",
     "v5.0/doc/v1/objects/ipxact/Config.md",
+    "v5.0/doc/v1/objects/ipxact/Component.md",
     "v5.0/doc/v1/objects/ipxact/Design.md",
     "v5.0/doc/v1/Overview.md",
     "v5.0/doc/v1/objects",
