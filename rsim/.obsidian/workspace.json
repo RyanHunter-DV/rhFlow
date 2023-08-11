@@ -4,38 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "b41bdf8d05328e6d",
+        "id": "a2faba108c26b8b2",
         "type": "tabs",
         "children": [
           {
-            "id": "44d54bfcfed22070",
+            "id": "c73f9ff488877fad",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "v5.0/doc/v1/objects/Core.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "9c574e2178eefef3",
-            "type": "leaf",
-            "state": {
-              "type": "canvas",
-              "state": {
-                "file": "v5.0/doc/v1/arch/topology.canvas",
-                "viewState": {
-                  "x": -30.91753369084411,
-                  "y": -2328.620642584478,
-                  "zoom": -0.32017067713663017
-                }
-              }
+              "type": "empty",
+              "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -121,7 +101,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "v5.0/doc/v1/arch/topology.canvas",
+                "file": "v5.0/doc/v1/objects/Core.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -133,7 +113,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "v5.0/doc/v1/arch/topology.canvas"
+                "file": "v5.0/doc/v1/objects/Core.md"
               }
             }
           }
@@ -151,7 +131,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "v5.0/doc/v1/arch/topology.canvas",
+                "file": "v5.0/doc/v1/objects/Core.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -178,12 +158,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "9c574e2178eefef3",
+  "active": "79ab98e1a0fdfc80",
   "lastOpenFiles": [
-    "v5.0/doc/v1/objects/UserInterface.md",
+    "v5.0/doc/v1/objects/Rsim.md",
     "v5.0/doc/v1/objects/Core.md",
     "v5.0/doc/v1/arch/topology.canvas",
-    "v5.0/doc/v1/objects/Rsim.md",
+    "v5.0/src/ipxact/component.rb",
+    "v5.0/doc/v1/objects/UserInterface.md",
     "v5.0/doc/v1/objects/ipxact/Config.md",
     "v5.0/doc/v1/objects/ipxact/Component.md",
     "v5.0/doc/v1/objects/ipxact/Design.md",
@@ -200,7 +181,6 @@
     "v5.0/src/steps/build.rb",
     "v5.0/src/steps/rhload.rb",
     "v5.0/src/steps",
-    "v5.0/src/core.rb",
     "v5.0/doc/v1/backup/IP-XACTBase.md",
     "v5.0/marker.md"
   ]
