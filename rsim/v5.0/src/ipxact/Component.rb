@@ -14,6 +14,12 @@ class Component < MetaData
 	attr :filelist;
 	attr :toolchain;
 
+	# A hash used to store dirs, available pairs:
+	# [:published] -> the published dir of this component, out/components/<CompName>
+	# [:source] -> the source node dir of this component, for different blocks, the source is different.
+	# TODO, which will create unique id for different nodes for this component.
+	attr :dirs;
+
 public
 	def initialize(name) ##{{{
 		super(name);
