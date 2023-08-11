@@ -4,15 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "a2faba108c26b8b2",
+        "id": "5a9fd298e0a2a77d",
         "type": "tabs",
         "children": [
           {
-            "id": "c73f9ff488877fad",
+            "id": "544ef311d728e8b2",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "canvas",
+              "state": {
+                "file": "v5.0/doc/v1/arch/topology.canvas",
+                "viewState": {
+                  "x": 450.2321266917649,
+                  "y": -2549.3964998182964,
+                  "zoom": -0.2900649603630759
+                }
+              }
             }
           }
         ]
@@ -101,7 +108,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "v5.0/doc/v1/objects/Core.md",
+                "file": "v5.0/doc/v1/arch/topology.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -113,7 +120,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "v5.0/doc/v1/objects/Core.md"
+                "file": "v5.0/doc/v1/arch/topology.canvas"
               }
             }
           }
@@ -131,7 +138,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "v5.0/doc/v1/objects/Core.md",
+                "file": "v5.0/doc/v1/arch/topology.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -158,8 +165,9 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "79ab98e1a0fdfc80",
+  "active": "544ef311d728e8b2",
   "lastOpenFiles": [
+    "v5.0/src/Rsim.rb.md",
     "v5.0/doc/v1/objects/Rsim.md",
     "v5.0/doc/v1/objects/Core.md",
     "v5.0/doc/v1/arch/topology.canvas",
