@@ -2,8 +2,8 @@ require 'steps/StepBase'
 require 'steps/build'
 require 'steps/rhload'
 class DynamicLoader
-	def initialize(ui) ##{{{
-		loadSteps(ui);
+	def initialize(ui,tc) ##{{{
+		loadSteps(ui,tc);
 	end ##}}}
 
 	## run steps.
@@ -20,12 +20,14 @@ class DynamicLoader
 private
 	# according to the steps in ui, to load builder, simulator regrmanager etc.
 	#
-	def loadSteps(ui) ##{{{
+	def loadSteps(ui,tc) ##{{{
 		ui.steps.each do |step|
 			Rsim.mp.debug("loading step(#{step})");
 			opts = ui.stepOpts[step];
-			require %Q|steps/#{step}|;
-			Rsim.steps << eval("#{step.capitalize}.new(#{opts});");
+			opts[:tconfig] = tc;
+			step = step.capitalize;
+			require %Q|steps/#{step}Flow|;
+			Rsim.steps << eval("#{step}Flow.new(#{opts});");
 		end
 	end ##}}}
 	def noDl() ##{{{

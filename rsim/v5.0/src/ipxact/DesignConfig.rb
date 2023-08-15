@@ -1,9 +1,17 @@
 class DesignConfig < MetaData
+
+
 	attr_accessor :name;
+
+	# format
+	# dirs[:out] -> out path for this config.
+	# dirs[:fulllist] -> full filelist name + path
+	attr_accessor :dirs;
 
 	attr :simulator;
 	attr :design;
 	attr :marks;
+
 	def initialize ##{{{
 		#TODO
 		@simulator = nil;

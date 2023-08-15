@@ -31,12 +31,16 @@ class SimulatorFilelistOption < SimulatorOption
 
 end
 
+class SimulatorCompileOption < SimulatorOption
+	
+end
+
 class Simulator
 
 	attr :filelist;
-	attr :compiler;
-	attr :elaborator;
-	attr :runner;
+	attr :compile;
+	attr :elab;
+	attr :run;
 
 	## API: initialize, 
 	def initialize ##{{{

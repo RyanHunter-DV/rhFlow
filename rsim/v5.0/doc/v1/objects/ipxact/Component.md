@@ -1,5 +1,15 @@
 Component is a central placeholder for all meta-data within the project. In typical IC project, it can be a collection of the certain purposed DV packages, HDL sources etc. Example listed in <link here>.
 This will be placed by a ruby Component class object, while user nodes calls the global 'component' command, which will actually build a ruby ==Component== object, and register it to ==Rsim== module.
+
+# filter out the rtl filelist and other filelist
+In component command, the type of a component can be specified by user and so that tool can recognize the different component type.
+```
+# hdl is hardware layer, which used to specify the RTL files
+# tb is the testbench layer
+component :name,:hdl do
+	...
+end
+```
 # Supported component commands
 ## fileset
 Command to specify all affected files of this component, can use wildcard to collect multiple or certain formatted files, just like:
@@ -8,6 +18,8 @@ fileset '*/*'
 fileset 'path/*.v'
 fileset 'path/*.sv*'
 ```
+
+
 ## generator
 Generator is a command to specify the way to generate a target file, for now will have following type of generators:
 - not specify or `:default`, then the tool will directly file and put the source file into a file list
