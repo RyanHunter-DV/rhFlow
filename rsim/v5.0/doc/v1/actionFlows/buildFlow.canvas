@@ -1,0 +1,35 @@
+{
+	"nodes":[
+		{"type":"group","id":"ffb58c8ed291bbc2","x":-1479,"y":-730,"width":2958,"height":1460,"color":"5","label":"BuildFlow"},
+		{"type":"group","id":"24784a5561afb7d1","x":-481,"y":-550,"width":480,"height":820,"label":"Build"},
+		{"type":"group","id":"aa716ff33d5d3ecc","x":-1401,"y":-650,"width":290,"height":190,"label":"Rsim.start"},
+		{"type":"group","id":"7d346fa933cb597f","x":-1401,"y":-370,"width":290,"height":180,"label":"Core.new"},
+		{"type":"text","text":"core=Core.new()","id":"b2837e71b106f944","x":-1381,"y":-540,"width":250,"height":60},
+		{"type":"text","text":"steps=setup(ui)","id":"cf6c8d7c4817b80c","x":-1381,"y":-350,"width":250,"height":60},
+		{"type":"text","text":"run(steps)","id":"8a56f1d6d19eebe4","x":-1381,"y":-270,"width":250,"height":60},
+		{"type":"text","text":"ui=UserInterface.new","id":"3f6de37605672c6e","x":-1381,"y":-630,"width":250,"height":60},
+		{"type":"text","text":"require 'step/build'\nsteps << Build.new","id":"e270dfee56a77ebf","x":-941,"y":-360,"width":333,"height":80},
+		{"type":"text","text":"steps.each do |s|\n\ts.run()\nend","id":"16a0b11f49a18cb8","x":-941,"y":-280,"width":333,"height":109},
+		{"type":"text","text":"elaborate\n```ruby\nblocks.each do |b|\n\tself.instance_eval b\nend\n```\n","id":"3d0faeecab3fc31d","x":499,"y":50,"width":339,"height":211},
+		{"type":"text","text":"elaborate\nsame above","id":"c5941ecf0aeefa44","x":499,"y":261,"width":339,"height":211},
+		{"type":"text","text":"elaborate, same above\n","id":"cb6c0f5331ef6ba9","x":499,"y":472,"width":339,"height":211},
+		{"type":"text","text":"call internal apis as user commands","id":"41b02ce98a1be911","x":959,"y":126,"width":250,"height":60},
+		{"type":"text","text":"buildCommons","id":"94ff1061c57b23a4","x":79,"y":-360,"width":250,"height":60},
+		{"type":"text","text":"run\n1. self.elaborate\n2. build commons,\n\t1. out dir, log dir\n\t2. component/\n\t3. config/\n\t4. ...\n3. build toolchain\n\t1. out/components/Comp/generator.cmd\n4. run toolchain","id":"6f691b9577a7eb10","x":-461,"y":-360,"width":440,"height":250},
+		{"type":"text","text":"new","id":"472b3ab110e22b27","x":-461,"y":-530,"width":440,"height":120},
+		{"type":"text","text":"elaborate\n```ruby\nRsim.components.each do |c|\n\tc.elaborate\nend\nRsim.design.elaborate\nRsim.configs.each do |c|\n\tc.elaborate\nend\n```","id":"6a98fdd9038b1dff","x":-461,"y":-59,"width":440,"height":260}
+	],
+	"edges":[
+		{"id":"0e8514ead3e9981f","fromNode":"aa716ff33d5d3ecc","fromSide":"bottom","toNode":"7d346fa933cb597f","toSide":"top"},
+		{"id":"4f375265172e9210","fromNode":"cf6c8d7c4817b80c","fromSide":"right","toNode":"e270dfee56a77ebf","toSide":"left"},
+		{"id":"5b367087abf33247","fromNode":"8a56f1d6d19eebe4","fromSide":"right","toNode":"16a0b11f49a18cb8","toSide":"left"},
+		{"id":"e632fea509652c7c","fromNode":"e270dfee56a77ebf","fromSide":"right","toNode":"472b3ab110e22b27","toSide":"left"},
+		{"id":"52301dfeab2fdebb","fromNode":"16a0b11f49a18cb8","fromSide":"right","toNode":"6f691b9577a7eb10","toSide":"left"},
+		{"id":"c958ef6375e2373c","fromNode":"3d0faeecab3fc31d","fromSide":"right","toNode":"41b02ce98a1be911","toSide":"left"},
+		{"id":"1960991fe28f2abb","fromNode":"6a98fdd9038b1dff","fromSide":"right","toNode":"3d0faeecab3fc31d","toSide":"left","label":"component"},
+		{"id":"6f1113c8048f9ff3","fromNode":"6a98fdd9038b1dff","fromSide":"right","toNode":"c5941ecf0aeefa44","toSide":"left","label":"design"},
+		{"id":"0d81683d9ef7faee","fromNode":"6a98fdd9038b1dff","fromSide":"right","toNode":"cb6c0f5331ef6ba9","toSide":"left","label":"config"},
+		{"id":"2683799229e7456b","fromNode":"6f691b9577a7eb10","fromSide":"bottom","toNode":"6a98fdd9038b1dff","toSide":"top"},
+		{"id":"c18b9ab1c46bc211","fromNode":"472b3ab110e22b27","fromSide":"bottom","toNode":"6f691b9577a7eb10","toSide":"top"}
+	]
+}

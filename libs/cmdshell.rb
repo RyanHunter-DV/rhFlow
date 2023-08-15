@@ -78,7 +78,11 @@ module Shell ##{
 		return [err.chomp!,st.exitstatus]
 	end ##}
 
-	def self.generate t=:file,n='<null>',*cnts ##{
+	# generate a specified file, 
+	# - t->type, default is file
+	# - n->name, the name of file
+	# - cnts, all contents.
+	def self.generate t=:file,n='<null>',cnts ##{
 		##puts "DEBUG, generate file: #{n}"
 		##puts "DEBUG, contents: #{cnts}"
 		case (t)
@@ -92,6 +96,20 @@ module Shell ##{
 			$stderr.puts "Error, not support type(#{t})"
 		end
 	end ##}
+	# api to build a file with fn->the specified filename,
+	# *items, items can be multiple arraies, or stringline. like:
+	# cmdshell.buildfile('test',['aline','line2'],['line3'],'line4'...
+	def self.buildfile(fn,*items) ##{{{
+		cnts=[];
+		items.each do |item|
+			if item.is_a?(Array)
+				cnts.append(*item);
+			else
+				cnts << item;
+			end
+		end
+		self.generate(:file,fn,cnts);
+	end ##}}}
 
 	def self.find p,n,ext ##{{{
 		"""

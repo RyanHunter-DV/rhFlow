@@ -11,7 +11,7 @@ class Component < MetaData
 		-
 	"""
 	
-	attr :filelist;
+	attr :filesets;
 	attr :toolchain;
 
 	# A hash used to store dirs, available pairs:
@@ -20,11 +20,17 @@ class Component < MetaData
 	# TODO, which will create unique id for different nodes for this component.
 	attr :dirs;
 
+	# indicates the component type.
+	# :hdl
+	# :tb
+	# :others
+	attr :type;
+
 public
-	def initialize(name) ##{{{
+	def initialize(name,t) ##{{{
 		super(name);
-		@filelist = Filesets.new();
-		@toolchain;
+		@filesets = Filesets.new(t);
+		@toolchain;@type=t;
 	end ##}}}
 
 	## fileset command, to specify source files of this component, files can be specified
@@ -38,7 +44,7 @@ public
 		# by default, the files added by fileset will be added into filelist
 		opts[:filelist] = true unless opts.has_key?(:filelist);
 		args.each do |fptrn|
-			@filelist.addfiles(nodepath,fptrn,opts);
+			@filesets.addfiles(nodepath,fptrn,opts);
 		end
 	end ##}}}
 
@@ -95,12 +101,14 @@ end
 
 ## define a global command: component, which used by node files to declare a component
 ## with certain declaration blocks. Multiple component can be declared at different place
-##
-def component(name,&block) ##{{{
+## t -> is the type of this component, will be used by user to specify different usages.
+## t=:hdl, used to tell rsim current is an RTL component.
+## t=:tb, used to tell rsim current is a testbench component.
+def component(name,t=:others,&block) ##{{{
 	isNew = false;
 	c = Rsim.find(:Component,name);
 	if c==nil
-		c = Component.new(name);
+		c = Component.new(name,t);
 		isNew=true;
 	end
 	c.addCodeBlock(block);

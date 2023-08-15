@@ -1,0 +1,30 @@
+{
+	"nodes":[
+		{"id":"f68fda3decd60c4c","x":-675,"y":210,"width":1255,"height":770,"type":"group","label":"CompileFlow"},
+		{"id":"2ecfe6c3505e7d28","x":-540,"y":60,"width":540,"height":100,"type":"group","label":"DynamicLoader"},
+		{"id":"f2e4fd5429476ef3","x":-520,"y":80,"width":250,"height":60,"type":"text","text":"load step"},
+		{"id":"52c5c2b22da2ac20","x":-270,"y":80,"width":250,"height":60,"type":"text","text":"run step"},
+		{"id":"97dd0cb04e070157","x":-395,"y":-140,"width":250,"height":60,"type":"text","text":"Core.run(ui)"},
+		{"id":"5479836f0a62d0dc","x":-417,"y":-300,"width":295,"height":60,"type":"text","text":"UserInterface.setupStep"},
+		{"id":"803bb468d2572db5","x":-270,"y":230,"width":250,"height":60,"type":"text","text":"CompileFlow.run"},
+		{"id":"2def2f5d28590611","x":-655,"y":230,"width":270,"height":60,"type":"text","text":"CompileFlow.new(opts)"},
+		{"id":"52e9206418c5d33a","x":-355,"y":380,"width":420,"height":60,"type":"text","text":"config=Rsim.find(targetConfigName)"},
+		{"id":"bcb51637cf088f78","x":-270,"y":520,"width":250,"height":60,"type":"text","text":"builtin options"},
+		{"id":"8f40d3e3f06036b8","x":100,"y":440,"width":460,"height":220,"type":"text","text":"config.simulator.option('name','value')\n...\n1. filelist\n2. debug\n3. others TBD."},
+		{"id":"bb266d3a347383d6","x":-270,"y":680,"width":250,"height":60,"type":"text","text":"cmd = simulator.base + simulator.options"},
+		{"id":"7e1680e06ade0070","x":-394,"y":780,"width":498,"height":60,"type":"text","text":"`path = out/configs/configname/<eda>Compile.cmd`\nshell.buildfile(path,cmd)"},
+		{"id":"456798bd33e60bf1","x":-270,"y":900,"width":250,"height":60,"type":"text","text":"run compile cmd"}
+	],
+	"edges":[
+		{"id":"e5527b00a136af54","fromNode":"f2e4fd5429476ef3","fromSide":"bottom","toNode":"2def2f5d28590611","toSide":"top"},
+		{"id":"96030c9d3cd02443","fromNode":"52c5c2b22da2ac20","fromSide":"bottom","toNode":"803bb468d2572db5","toSide":"top"},
+		{"id":"4c114157e4bfc001","fromNode":"97dd0cb04e070157","fromSide":"bottom","toNode":"2ecfe6c3505e7d28","toSide":"top"},
+		{"id":"e862497c7a39de0f","fromNode":"97dd0cb04e070157","fromSide":"top","toNode":"5479836f0a62d0dc","toSide":"bottom","label":"ui=UserInterface.new"},
+		{"id":"1a47b6b1ab6d1341","fromNode":"803bb468d2572db5","fromSide":"bottom","toNode":"52e9206418c5d33a","toSide":"top"},
+		{"id":"b235599259656da1","fromNode":"52e9206418c5d33a","fromSide":"bottom","toNode":"bcb51637cf088f78","toSide":"top"},
+		{"id":"46d58d938c73b944","fromNode":"bcb51637cf088f78","fromSide":"right","toNode":"8f40d3e3f06036b8","toSide":"left"},
+		{"id":"128fb088583f693f","fromNode":"bcb51637cf088f78","fromSide":"bottom","toNode":"bb266d3a347383d6","toSide":"top"},
+		{"id":"e2ba482c8edb26b6","fromNode":"bb266d3a347383d6","fromSide":"bottom","toNode":"7e1680e06ade0070","toSide":"top"},
+		{"id":"38b1512057ec251f","fromNode":"7e1680e06ade0070","fromSide":"bottom","toNode":"456798bd33e60bf1","toSide":"top"}
+	]
+}

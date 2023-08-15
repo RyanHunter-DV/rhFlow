@@ -1,15 +1,22 @@
 class Filesets
 
 	attr_accessor :source;
+
+	# format
+	# incdir[:rtl] -> []
+	# incdir[:tb]  -> []
 	attr_accessor :incdir;
 	
 	# raw files that is part of source file but not in filelist.
 	attr_accessor :raw;
 
 	#attr :shell; #TODO
-	def initialize ##{{{
-		@source=[];@incdir=[];
-		@raw=[];
+
+	attr :type;
+	def initialize(t) ##{{{
+		initTypeByComponentType(t);
+		@source={};@incdir={};
+		@raw={};
 	end ##}}}
 public
 	## place public methods here
@@ -36,5 +43,14 @@ private
 	# the given p must absolute path.
 	def addIncdir(p) ##{{{
 		@incdir<<p unless @incdir.include?(p);
+	end ##}}}
+
+	def initTypeByComponentType(ct) ##{{{
+		case (ct)
+		when :hdl
+			@type = :rtl;
+		else
+			@type = ct;
+		end
 	end ##}}}
 end

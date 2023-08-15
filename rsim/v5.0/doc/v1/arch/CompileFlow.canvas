@@ -1,0 +1,18 @@
+{
+	"nodes":[
+		{"id":"00e68c9d0bdc3adc","x":-458,"y":-264,"width":250,"height":60,"type":"text","text":"CompileFlow"},
+		{"id":"5e0b915be96a5127","x":-458,"y":-80,"width":250,"height":60,"type":"text","text":"run"},
+		{"id":"8de21a7e3f22e90c","x":-458,"y":360,"width":250,"height":60,"type":"text","text":"buildElabCmd if has"},
+		{"id":"a107ce9c3446e723","x":-458,"y":220,"width":250,"height":60,"type":"text","text":"run compileCmd"},
+		{"id":"731380fd52a5d2a9","x":-458,"y":500,"width":250,"height":60,"type":"text","text":"run elabCmd"},
+		{"id":"257108e475cd15f3","x":-35,"y":-192,"width":215,"height":112,"type":"text","text":"CompileFlow"},
+		{"id":"7e147fd4c1325e42","x":-52,"y":75,"width":250,"height":70,"type":"text","text":"simulator.compile"},
+		{"id":"4e984e52b49b7a94","x":380,"y":-166,"width":250,"height":60,"type":"text","text":"toolCompile.cmd"}
+	],
+	"edges":[
+		{"id":"a2b93d5e05c63158","fromNode":"00e68c9d0bdc3adc","fromSide":"bottom","toNode":"5e0b915be96a5127","toSide":"top"},
+		{"id":"faa7bdc6c1d09cad","fromNode":"257108e475cd15f3","fromSide":"bottom","toNode":"7e147fd4c1325e42","toSide":"top","label":"setOption(name,value)"},
+		{"id":"8f9898e744849e82","fromNode":"257108e475cd15f3","fromSide":"right","toNode":"4e984e52b49b7a94","toSide":"left","label":"buildCmd"},
+		{"id":"9c049bb2f6165f8c","fromNode":"7e147fd4c1325e42","fromSide":"right","toNode":"4e984e52b49b7a94","toSide":"bottom","label":"getOptions"}
+	]
+}
