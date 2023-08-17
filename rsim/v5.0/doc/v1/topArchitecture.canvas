@@ -49,7 +49,8 @@
 		{"id":"0bdd506a1e7aa3d6","x":1559,"y":1620,"width":319,"height":60,"type":"text","text":"build wave form cmd into file"},
 		{"id":"6713f431bc57dec8","x":1559,"y":1680,"width":316,"height":60,"type":"text","text":"execute simulator.sim.exec..."},
 		{"id":"c7a66e7cfe5bf886","x":1160,"y":1320,"width":250,"height":60,"type":"text","text":"RuntestFlow.new"},
-		{"id":"2e571e53deef1b01","x":1160,"y":1380,"width":250,"height":58,"type":"text","text":"run(runner)"}
+		{"id":"2e571e53deef1b01","x":1160,"y":1380,"width":250,"height":58,"type":"text","text":"run(runner)"},
+		{"id":"a3de4c98712755c6","x":1160,"y":1880,"width":250,"height":60,"type":"text","text":"RegressionFlow.new"}
 	],
 	"edges":[
 		{"id":"2959d2ffd1279e38","fromNode":"141414365863bea4","fromSide":"right","toNode":"c607c310d7e7342d","toSide":"left","label":"core=Core.new"},
