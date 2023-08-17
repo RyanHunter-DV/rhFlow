@@ -9,11 +9,12 @@ class StepBase
 	# differs from the IP-XACT's DesignConfig.
 	attr_accessor :tconfig;
 	attr_accessor :shell;
+	attr_accessor :ui;
 
 	## API: initialize(n), 
-	def initialize(n,tc) ##{{{
+	def initialize(n,tc,ui) ##{{{
 		@reason='';@name='build';
-		@tconfig = tc;@shell= CmdShell;
+		@tconfig=tc;@shell=CmdShell;@ui=ui;
 	end ##}}}
 
 end
