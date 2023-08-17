@@ -13,31 +13,32 @@
             "state": {
               "type": "canvas",
               "state": {
-                "file": "v5.0/doc/v1/topArchitecture.canvas",
+                "file": "v5.0/doc/v1/features/nodeflowCases.canvas",
                 "viewState": {
-                  "x": 1528.9199999999817,
-                  "y": 419.42999999998983,
+                  "x": -46.49999999999999,
+                  "y": -108.81000000000009,
                   "zoom": 0
                 }
               }
             }
           },
           {
-            "id": "2a124c65ee37b985",
+            "id": "5df283d181cda5e6",
             "type": "leaf",
             "state": {
               "type": "canvas",
               "state": {
-                "file": "v5.0/doc/v1/sketches/topology.canvas",
+                "file": "v5.0/doc/v1/topArchitecture.canvas",
                 "viewState": {
-                  "x": -680,
-                  "y": -1950,
-                  "zoom": -1.8022359514325905
+                  "x": 1546.7516477238617,
+                  "y": 57.00887335657945,
+                  "zoom": 0.058021855702002585
                 }
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -180,22 +181,33 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "544ef311d728e8b2",
+  "active": "5df283d181cda5e6",
   "lastOpenFiles": [
-    "v5.0/doc/v1/actionFlows/compileFlow.canvas",
+    "v5.0/src/flows/BuildFlow.rb",
+    "v5.0/src/flows/rhload.rb",
+    "v5.0/src/flows/StepBase.rb",
+    "v5.0/src/flows/CompileFlow.rb",
+    "v5.0/src/flows",
+    "v5.0/doc/v1/features/nodeflowCases.canvas",
     "v5.0/doc/v1/topArchitecture.canvas",
+    "v5.0/doc/v1/features/regressionCases.canvas",
+    "v5.0/doc/v1/objects/ipxact/Design.md",
+    "v5.0/doc/v1/objects/ipxact/Config.md",
+    "v5.0/doc/v1/objects/ipxact/Component.md",
+    "v5.0/doc/v1/features/BuildOnly.md",
+    "v5.0/doc/v1/features/CompileOnly.md",
+    "v5.0/doc/v1/backup/compileFlow.canvas",
+    "v5.0/doc/v1/example/VipProject.md",
+    "v5.0/doc/v1/arch/CompileFlow.canvas",
+    "v5.0/doc/v1/backup/buildFlow.canvas",
     "v5.0/doc/v1/sketches/topology.canvas",
     "v5.0/doc/v1/sketches/topology-archive.canvas",
-    "v5.0/doc/v1/actionFlows/buildFlow.canvas",
     "v5.0/doc/v1/actionFlows/Untitled.md",
     "v5.0/src/Rsim.rb.md",
     "v5.0/doc/v1/objects/Rsim.md",
     "v5.0/doc/v1/objects/Core.md",
     "v5.0/src/ipxact/component.rb",
     "v5.0/doc/v1/objects/UserInterface.md",
-    "v5.0/doc/v1/objects/ipxact/Config.md",
-    "v5.0/doc/v1/objects/ipxact/Component.md",
-    "v5.0/doc/v1/objects/ipxact/Design.md",
     "v5.0/doc/v1/Overview.md",
     "v5.0/doc/v1/objects",
     "v5.0/src/ipxact/DesignConfig.rb",
@@ -203,12 +215,6 @@
     "v5.0/src/ipxact/DesignView.rb",
     "v5.0/src/ipxact/design.rb",
     "v5.0/doc/v1/sketches/ipToSocIntegration.canvas",
-    "v5.0/doc/v1/features/BuildOnly.md",
-    "v5.0/doc/v1/features/CompileOnly.md",
-    "v5.0/src/ipxact/metadata.rb",
-    "v5.0/src/steps/build.rb",
-    "v5.0/src/steps/rhload.rb",
-    "v5.0/src/steps",
     "v5.0/doc/v1/backup/IP-XACTBase.md",
     "v5.0/marker.md"
   ]
