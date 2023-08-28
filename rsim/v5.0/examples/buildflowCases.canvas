@@ -1,0 +1,12 @@
+{
+	"nodes":[
+		{"id":"3a14ac13cef5ae4e","x":-448,"y":-184,"width":308,"height":124,"type":"text","text":"component :ca do\n...\nend"},
+		{"id":"29bb55dc0809c75a","x":-419,"y":-480,"width":250,"height":105,"type":"text","text":"c=Component.new\nRsim.register\nc.addBlock(block)"},
+		{"id":"140e083d7af0b035","x":-80,"y":-172,"width":292,"height":112,"type":"text","text":"design ...\n\tview ...\n\t\tinstance ..."},
+		{"id":"65e965442d24dd50","x":-89,"y":-482,"width":249,"height":107,"type":"text","text":"d=Design.new\nRsim.register\nd.addBlock"}
+	],
+	"edges":[
+		{"id":"cc990045f5940688","fromNode":"3a14ac13cef5ae4e","fromSide":"top","toNode":"29bb55dc0809c75a","toSide":"bottom","label":"load by nodeflow"},
+		{"id":"5199405c9e70abfe","fromNode":"140e083d7af0b035","fromSide":"top","toNode":"65e965442d24dd50","toSide":"bottom","label":"load by nodeflow"}
+	]
+}

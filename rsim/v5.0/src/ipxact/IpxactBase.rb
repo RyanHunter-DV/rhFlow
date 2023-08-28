@@ -1,8 +1,8 @@
 """
-The base ipxact object type, the MetaData, all ipxact data model inherits from this
+The base ipxact object type, the IpxactBase, all ipxact data model inherits from this
 class.
 """
-class MetaData
+class IpxactBase
 	attr_accessor :vlnv;
 
 	attr :nodes;

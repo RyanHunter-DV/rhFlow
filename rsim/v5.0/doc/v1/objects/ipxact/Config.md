@@ -41,7 +41,8 @@ Parameter used for component meta-data to define a configurable variable for suc
 ```ruby
 config :name do
   view(:view)
-  design.compA.param :pa=>'value string', ...
+##  design.compA.params :pa=>'value string', ...
+  design.compA.param :pa=>'value stringt'
 end
 ```
 # Features for components

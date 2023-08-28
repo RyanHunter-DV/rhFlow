@@ -1,13 +1,21 @@
 class DesignView < MetaData
 
+	"""
+	Description,
+	"""
+
 	attr :comps;
-	attr :nodes;
-	def initialize ##{{{
+
+	attr_accessor :nodes;
+	attr_accessor :name;
+
+	def initialize(n,p=nil) ##{{{
 		# format: @comps['instname']=componentObject
 		@comps={};
-
 		# format: @nodes['location']=Proc
 		@nodes={};
+		@name = n;
+		clone(p) if p;
 		#TODO
 	end ##}}}
 
@@ -37,6 +45,19 @@ public
 		end
 	end ##}}}
 
+	def addBlock(b) ##{{{
+		loc = b.source_location;
+		@nodes[loc] = b;
+	end ##}}}
+
 private
+
+	# clone all user blocks from parent's block, so that while elaborating
+	# this view will also elaborate the cloned blocks;
+	def clone(p) ##{{{
+		p.nodes.each_pair do |loc,b|;
+			@nodes[loc] = b;
+		end
+	end ##}}}
 
 end
