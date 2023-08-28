@@ -4,41 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "5a9fd298e0a2a77d",
+        "id": "f61d6ed667bf81eb",
         "type": "tabs",
         "children": [
           {
-            "id": "544ef311d728e8b2",
+            "id": "95bc0d237c92c730",
             "type": "leaf",
             "state": {
-              "type": "canvas",
-              "state": {
-                "file": "v5.0/doc/v1/features/nodeflowCases.canvas",
-                "viewState": {
-                  "x": -46.49999999999999,
-                  "y": -108.81000000000009,
-                  "zoom": 0
-                }
-              }
-            }
-          },
-          {
-            "id": "5df283d181cda5e6",
-            "type": "leaf",
-            "state": {
-              "type": "canvas",
-              "state": {
-                "file": "v5.0/doc/v1/topArchitecture.canvas",
-                "viewState": {
-                  "x": 1546.7516477238617,
-                  "y": 57.00887335657945,
-                  "zoom": 0.058021855702002585
-                }
-              }
+              "type": "empty",
+              "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -124,7 +101,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "v5.0/doc/v1/topArchitecture.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -135,9 +111,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "v5.0/doc/v1/topArchitecture.canvas"
-              }
+              "state": {}
             }
           }
         ],
@@ -154,7 +128,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "v5.0/doc/v1/topArchitecture.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -169,7 +142,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -181,21 +155,25 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "5df283d181cda5e6",
+  "active": "95bc0d237c92c730",
   "lastOpenFiles": [
+    "v5.0/doc/v1/topArchitecture.canvas",
+    "v5.0/doc/v1/objects/ipxact/Component.md",
+    "v5.0/doc/v1/objects/ipxact/Design.md",
+    "v5.0/doc/v1/objects/ipxact/Config.md",
+    "v5.0/doc/v1/features/BuildOnly.md",
+    "v5.0/doc/v1/features/CompileOnly.md",
+    "v5.0/examples/buildflowCases.canvas",
+    "v5.0/doc/v1/features/nodeflowCases.canvas",
+    "v5.0/src/ipxact/IpxactBase.rb",
+    "v5.0/src/MetaData.rb",
+    "v5.0/src/flows/NodeFlow.rb",
     "v5.0/src/flows/BuildFlow.rb",
     "v5.0/src/flows/rhload.rb",
     "v5.0/src/flows/StepBase.rb",
     "v5.0/src/flows/CompileFlow.rb",
     "v5.0/src/flows",
-    "v5.0/doc/v1/features/nodeflowCases.canvas",
-    "v5.0/doc/v1/topArchitecture.canvas",
     "v5.0/doc/v1/features/regressionCases.canvas",
-    "v5.0/doc/v1/objects/ipxact/Design.md",
-    "v5.0/doc/v1/objects/ipxact/Config.md",
-    "v5.0/doc/v1/objects/ipxact/Component.md",
-    "v5.0/doc/v1/features/BuildOnly.md",
-    "v5.0/doc/v1/features/CompileOnly.md",
     "v5.0/doc/v1/backup/compileFlow.canvas",
     "v5.0/doc/v1/example/VipProject.md",
     "v5.0/doc/v1/arch/CompileFlow.canvas",
@@ -210,10 +188,6 @@
     "v5.0/doc/v1/objects/UserInterface.md",
     "v5.0/doc/v1/Overview.md",
     "v5.0/doc/v1/objects",
-    "v5.0/src/ipxact/DesignConfig.rb",
-    "v5.0/src/ipxact/DesignConfiguration.rb",
-    "v5.0/src/ipxact/DesignView.rb",
-    "v5.0/src/ipxact/design.rb",
     "v5.0/doc/v1/sketches/ipToSocIntegration.canvas",
     "v5.0/doc/v1/backup/IP-XACTBase.md",
     "v5.0/marker.md"
