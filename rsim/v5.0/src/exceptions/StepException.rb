@@ -1,10 +1,11 @@
+#require 'exceptions/RsimException'
 class StepException < RsimException
 
-	def initialize(step,status) ##{{{
+	def initialize(step,reason) ##{{{
 		super();
-		@exitstatus = status;
+		@signal = 2; # step fail exit with signal 2
+		@toExit = true;
 		@stacks = caller(2);
-		@message= "#{step} failed, Stack:";
+		@message = "#{step} failed(#{reason}), Stacks:";
 	end ##}}}
-	
 end

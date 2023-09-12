@@ -1,7 +1,8 @@
 require 'generators/GeneratorBase'
-class LinkGenerator
+class LinkGenerator < GeneratorBase
 
-	def initialize ##{{{
+	def initialize(old=nil) ##{{{
+		super('LinkGenerator',old);
 	end ##}}}
 public
 	## place public methods here

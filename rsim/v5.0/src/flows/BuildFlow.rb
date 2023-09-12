@@ -1,30 +1,35 @@
 # This DL used for build flow, so it will then include all build related
 # files, like design, component, config concepts etc.
+"""
+# Object description:
+The flow to build targets, the specified config and all necessary components:
+1. build root dirs necessary for certain config, components, such as:
+	- $OUT/common, $OUT/config/<configname>, $OUT/components/<componentname>
+2. 
+"""
 
+require 'exceptions/StepException'
 class BuildFlow < StepBase
 
-
-	attr :configname;
 	attr :config; # object instance of DesignConfig, find from Rsim, specified by user.
+	attr :configname;
 	attr :commonDirs;
 
 	def initialize(opts={}) ##{{{
-		super('build',opts[:tconfig]);
-		setupConfigName(opts);
-		setupDirs(opts);
-		@config = nil;
-		#TODO
+		ui = opts[:ui];
+		@configname='';
+		@configname=opts[:config] if opts.has_key?(:config);
+		super('build',opts[:tconfig],ui);
+		setupCommonDirs(@tconfig);
 	end ##}}}
 public
 
 	## API: run, this is a run api called by Core object to start running
 	## the build flow, this api shall return Rsim::SUCCESS or Rsim::FAILED
-	## #TODO
 	def run ##{{{
-		## TODO, to delete, raise BuildException.new('buildCommons',@reason) if (buildCommons==Rsim::FAILED);
-		## TODO, to delete, raise BuildException.new('elaborate',@reason) if (elaborate==Rsim::FAILED);
 		# build required components into out
-		messages = [:elaborate,:buildCommons,:buildComponents,:buildFilelist];
+		setupConfig();
+		messages = [:buildCommons,:buildComponents,:buildFilelist];
 		messages.each do |message|
 			return Rsim::FAILED if (self.send(message)==Rsim::FAILED);
 		end
@@ -35,12 +40,9 @@ public
 private
 
 	## API: setupDirs, to setup the dirname
-	def setupDirs(opts) ##{{{
+	def setupCommonDirs(tconfig) ##{{{
 		#raise StepException.new(@name,'stem option required but not specified') unless opts.has_key?(:stem);
-		#TODO, to be deleted, stem = opts[:stem];
-		#TODO, to be deleted, out  = "#{stem}/out";
 		@commonDirs = {
-#TODO, require commonDirs in ToolConfig.
 			'out'       => tconfig.commonDirs[:out],
 			'log'       => tconfig.commonDirs[:logs],
 			'config'    => tconfig.commonDirs[:configs],
@@ -50,10 +52,10 @@ private
 
 	## API: setupConfigName(opts), to set the @config value, this is a must have field,
 	# if user not provided, then will report fail.
-	def setupConfigName(opts) ##{{{
-		@configname = '';
-		raise StepException.new(@name,'config required not specified') unless opts.has_key?(:config);
-		@configname = opts[:config];
+	def setupConfig() ##{{{
+		raise StepException.new(@name,'config required not specified') if @configname=='';
+		@config = Rsim.find(:Config,@configname);
+		raise StepException.new(@name,"config(#{@configname}) not found") unless @config;
 	end ##}}}
 
 
@@ -63,27 +65,27 @@ private
 		# 1. build dirs, call comp.directory.build
 		# 2. build generators, call comp.generator.build
 		# 3. build filesets, call comp.generator.run
-		@config.nestedComponents.each do |c|
-#TODO, require directory in component, indicates the out/components/<compname> dir.
-			@shell.makedir(c.dirs[:published]);
+		@config.nestedComponents.each_pair do |iname,c|
+			home = File.join(@commonDirs['component'],%Q|#{c.name}-#{iname}|);
+			@shell.makedir(home);
 # TODO, require build api in generator, the builder is current object
-			c.generator.build(self);
+			Rsim.mp.debug("building component(#{c.vlnv}) by generator(#{c.generator.name})");
+			c.generator.build(self,home);
 # TODO, require run api in generator, the builder is current object
-			c.generator.run(self);
+			c.generator.run(self,home);
 		end
 	end ##}}}
 	## private API: buildFilelist, to generate the filelist for target simulator
 	## this step called after elaborate, so the @config shall be ready now.
 	def buildFilelist ##{{{
-		# TODO, filelist.option, api to return a speficied filelist option for 'incdir', shall be added in filelist object's api.
-		incdirPrefix = @config.simulator.filelist.option('incdir');
+		incdirPrefix = @config.simulator.compile.option.format('incdir');
 		incdirs=[];sources=[];
 		# get nested components' filesets
 		@config.nestedComponents.each do |c|
 			incdirs.append(*c.filesets.incdir.map{|i| "#{incdirPrefix}#{i}"});
 			sources.append(*c.filesets.source);
 		end
-		filelist = generateFilelistName(@config);
+		filelist = @config.dirs[:fulllist];
 		@shell.buildfile(filelist,incdirs,sources);
 #TODO, require outDir for config.
 		lists = {
@@ -98,7 +100,8 @@ private
 	end ##}}}
 	def genFullFilelist(lists) ##{{{
 		# build a full list that includes all pre built lists
-		listname = File.join(@config.dirs[:out],'full.filelist');
+		#listname = File.join(@config.dirs[:out],'full.filelist');
+		listname = @config.dirs[:fulllist];
 		contents = lists.map{|i| %Q|-f #{i}|};
 		@shell.buildfile(listname,contents);
 	end ##}}}
@@ -113,16 +116,16 @@ private
 		@shell.buildfile(listname,incdirs,sources);
 	end ##}}}
 
-	## API: elaborate, to elaborate all nodes pre-loaded, this will elaborate from
-	# component -> design -> config.
-	def elaborate ##{{{
-		Rsim.components.elaborate;
-		# one design only allowed in one project
-		Rsim.design.elaborate;
-		# one design can have multiple configs
-		Rsim.configs.elaborate;
-		@config = Rsim.find(Config,@configname)
-	end ##}}}
+	#TODO, to delete, ## API: elaborate, to elaborate all nodes pre-loaded, this will elaborate from
+	#TODO, to delete, # component -> design -> config.
+	#TODO, to delete, def elaborate ##{{{
+	#TODO, to delete, 	Rsim.components.elaborate;
+	#TODO, to delete, 	# one design only allowed in one project
+	#TODO, to delete, 	Rsim.design.elaborate;
+	#TODO, to delete, 	# one design can have multiple configs
+	#TODO, to delete, 	Rsim.configs.elaborate;
+	#TODO, to delete, 	@config = Rsim.find(Config,@configname)
+	#TODO, to delete, end ##}}}
 
 	## API: buildCommons, this local api to build commons such as the out dir,
 	## out/common dir etc.

@@ -1,4 +1,5 @@
-class DesignConfig < MetaData
+require 'exceptions/UserException'
+class DesignConfig < IpxactBase
 	"""
 	Description, configs for a certain design object in Rsim, since for one flow running, the design is unique,
 	so it will be linked only once after elaborate
@@ -14,9 +15,6 @@ class DesignConfig < MetaData
 	then will return the pre-created simulator object.
 	"""
 
-
-	attr_accessor :name;
-
 	# format
 	# dirs[:out] -> out path for this config.
 	# dirs[:fulllist] -> full filelist name + path
@@ -25,31 +23,42 @@ class DesignConfig < MetaData
 	attr_accessor :nodes;
 
 	attr :simulator;
-	attr :design;attr :viewname;
+	attr :design;attr :view;
 	attr :marks;
+	attr :needs; # local needs specified by user nodes
 
 	def initialize(n) ##{{{
-		@name = n;
+		super(n);
 		@simulator = nil;
-		@design=nil;@viewname='';
+		@needs={};
+		@design=nil;@view=nil;
 		@marks = {
 			:xrun   => 'Xcelium',
 			:vcs    => 'Vcs',
 			:questa => 'Questasim'
 		}
+		setupDirs;
 	end ##}}}
 
 public
-	## <DefinedDesign>, this is automatically built when a design is declared in a node file
-	## the corresponding method named as the design name will be declared within the DesignConfig
-	## object.
 
-## view(name), user node command to specify which to to be used in this config.
-# using examples:
-# - view(:viewname)
-# this will be recorded into @viewname, which will be used in building flow
+
+	## param(o,opts), overrides the target o's params according to given opts
+	def param(o,opts); ##{{{
+		o.send(:param,opts,self);
+		#puts "#{__FILE__}:(param(o,opts)) is not ready yet."
+	end ##}}}
+
+
+	## view(name), user node command to specify which to to be used in this config.
+	# using examples:
+	# - view(:viewname)
+	# this will be recorded into @viewname, which will be used in building flow
 	def view(name) ##{{{
-		@viewname=name;
+		#@design.setview(name); # set target view of this config
+		raise UserException.new("view(#{name}) not declared in design") unless @design.views.has_key?(name);
+		@view = @design.views[name] ;
+		@design.setupView(name);
 	end ##}}}
 
 	## API: design, method to return the instance var: @design, which is an object
@@ -69,9 +78,9 @@ public
 	##
 	def opt(tool,*opts) ##{{{
 		if tool==nil
-			msg = "tool specified by opt command not exists in config(#{@name})\n";
-			msg +="-- node position: #{self.nodeLocation}";
-			raise NodeException.new(msg);
+			msg = "tool specified by opt command not exists in config(#{@vlnv})\n";
+			msg +="-- node position: #{currentNodeLocation}";
+			raise UserException.new(msg);
 		end
 		opts.each do |o|
 #TODO, require the tool has option object, which comes from the same ToolOption, and require add api
@@ -86,8 +95,11 @@ public
 	## when input arg is nil, which users didn't enter any arg, then this command will return the specified simulator.
 	def simulator(toolmark=nil) ##{{{
 		return getSimulator if toolmark==nil;
-		require "simulator/#{@marks[toolmark]}";
-		@simulator = eval %Q|#{tool.capitalize}.new()|;
+		tool = @marks[toolmark].to_s;
+		Rsim.mp.debug("load and creating simulator: #{tool}");
+		opts={:filelist=>@dirs[:fulllist]};
+		require "simulator/#{tool}";
+		@simulator = eval %Q|#{tool}.new(opts)|;
 	end ##}}}
 
 
@@ -111,17 +123,46 @@ public
 		end
 	end ##}}}
 
-private
 
+	## nestedComponents, api to return all required component of this config, if this api
+	# is called first time, then will analyze and load the nested component relations, else
+	# return the analyzed nestComponents.
+	def nestedComponents; ##{{{
+		#allocateNestedComponents if @nests.empty?;
+		return @needs;
+	end ##}}}
+
+	## need(name), need a component to build this config
+	def need(instname); ##{{{
+#TODO, exception mechanism required, raise UserException.new("a view must specified before calling need") if @view==nil;
+		c= @view.findInstance(instname);
+		@needs[instname] = c unless c==nil;
+	end ##}}}
+
+	"""
+	addBlock(b), to add code block into nodes through push api
+	"""
+	def addBlock(b) ##{{{
+		push(b.source_location,b);
+		#puts "#{__FILE__}:(addBlock(b)) not ready yet."
+	end ##}}}
+
+private
 
 	## extra options needed if @simulator is nil but called by user, shall raise exceptions.
 	def getSimulator ##{{{
 		return @simulator if @simulator!=nil;
-		msg = "calling simulator before specified in config(#{@name})\n";
+		msg = "calling simulator before specified in config(#{@vlnv})\n";
 		msg+= "setting a simulator shall placed before getting it\n";
-		msg+= "-- node position: #{self.nodeLocation}";
-		raise NodeException.new(msg);
-		return nil;
+		msg+= "-- node position: #{currentNodeLocation}";
+		raise UserException.new(msg);
+	end ##}}}
+
+	## setupDirs, setup the out path of this config and full filelist name
+	def setupDirs; ##{{{
+		@dirs={};
+		@dirs[:out] = File.join(Rsim.dirs[:configs],@vlnv);
+		@dirs[:fulllist] = File.join(@dirs[:out],'full.filelist');
 	end ##}}}
 	
 end
@@ -136,4 +177,5 @@ def config(name,opts={},&block) ##{{{
 		message = o.to_sym;
 		c.send(message,v);
 	end
+	Rsim.register(c);
 end ##}}}

@@ -4,7 +4,7 @@ def init() ##{{{
 	libpath = File.dirname(File.absolute_path(__FILE__));
 	$LOAD_PATH << libpath;
 	# require the core of the tool
-	require 'Rsim';
+	require 'Rsim.rb';
 end ##}}}
 def main() ##{{{
 	init();

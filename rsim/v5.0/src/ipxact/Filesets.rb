@@ -1,21 +1,17 @@
+require 'libs/cmdshell'
 class Filesets
 
+	# one fileset can only support one component type.
+	attr_accessor :incdir;
 	attr_accessor :source;
 
-	# format
-	# incdir[:rtl] -> []
-	# incdir[:tb]  -> []
-	attr_accessor :incdir;
-	
 	# raw files that is part of source file but not in filelist.
 	attr_accessor :raw;
-
-	#attr :shell; #TODO
 
 	attr :type;
 	def initialize(t) ##{{{
 		initTypeByComponentType(t);
-		@source={};@incdir={};
+		@source=[];@incdir=[];
 		@raw={};
 	end ##}}}
 public
@@ -25,9 +21,17 @@ public
 	def addfiles(r,p,opts={}) ##{{{
 		found = Shell.search(r,p);
 		once = false;
+		Rsim.mp.debug("searching path(#{r}), patter(#{p})");
+		Rsim.mp.debug("found files: (#{found})");
+		#puts RUBY_PLATFORM
+		#if Shell.os==:windows
+		#	found=['D:/panel/Quest/rhFlow-main/rsim/v5.0/test/ipxact/test.v'];
+		#	Rsim.mp.debug("in window system, add temp file #{found}");
+		#end
+		raise UserException.new("no file found by the given fileset pattern(#{p})") if found.empty?;
 		found.each do |f|
-			if opts[:filelist]==true
-				if once==false
+			if opts[:filelist]
+				unless once
 					addIncdir(r);once=true;
 				end
 				@source << f;
@@ -35,7 +39,6 @@ public
 				@raw << f;
 			end
 		end
-		#TODO
 	end ##}}}
 private
 	## place private methods here

@@ -11,6 +11,7 @@ class UserInterface
 		setupNodeStep;
 		OptionParser.new do |opts|
 			opts.on('-b','--build=CONFIG','to build a specified config') do |v|
+				Rsim.mp.debug("detect -b option");
 				setupStep(:build,:config=>v);
 			end
 			opts.on('-c','--compile=CONFIG','to compile a design that has been built') do |v|
@@ -19,16 +20,18 @@ class UserInterface
 			opts.on('-r','--run=TEST','to run a test directly') do |v|
 				setupStep(:run,:test=>v);
 			end
-			opts.on('-bc','--build_compile=CONFIG','to build then compile the specified config') do |v|
+			opts.on('--bc','--build_compile=CONFIG','to build then compile the specified config') do |v|
+				Rsim.mp.debug("detect -bc option");
 				setupStep(:build,:config=>v);
 				setupStep(:compile,:config=>v);
 			end
-			opts.on('-bcr','--build_compile_run=TEST','to build, compile then run the specified test') do |v|
+			opts.on('--bcr','--build_compile_run=TEST','to build, compile then run the specified test') do |v|
+				Rsim.mp.debug("detect -bcr option");
 				setupStep(:build,:test=>v);
 				setupStep(:compile,:test=>v);
 				setupStep(:run,:test=>v);
 			end
-			opts.on('-rg','--regression=TAG','to start a regression') do |v|
+			opts.on('--rg','--regression=TAG','to start a regression') do |v|
 				setupStep(:regr,:tag=>v);
 			end
 			opts.on('-s','--stem=STEM','manually set the stem path') do |v|
@@ -61,9 +64,9 @@ private
 		initNodes = ENV['RSIM_INIT'];
 		if initNodes
 			initNodes = initNodes.split(';');
-			setupStep(:rhload,:node=>initNodes);
+			setupStep(:node,:node=>initNodes);
 		else
-			setupStep(:rhload);
+			setupStep(:node,:node=>[]);
 		end
 	end ##}}}
 
@@ -88,6 +91,7 @@ private
 		end
 	end ##}}}
 	def setupStep(sname,opts={}) ##{{{
+		Rsim.mp.debug("setupStep(#{sname},#{opts})");
 		sname=sname.to_sym;
 		@steps << sname;
 		addStepOpts(sname,opts);

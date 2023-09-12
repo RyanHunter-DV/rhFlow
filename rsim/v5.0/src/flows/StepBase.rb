@@ -1,4 +1,4 @@
-
+require 'libs/cmdshell'
 class StepBase
 	# the detailed string information of latest failure
 	attr_accessor :reason;
@@ -14,7 +14,7 @@ class StepBase
 	## API: initialize(n), 
 	def initialize(n,tc,ui) ##{{{
 		@reason='';@name='build';
-		@tconfig=tc;@shell=CmdShell;@ui=ui;
+		@tconfig=tc;@shell=Shell;@ui=ui;
 	end ##}}}
 
 end

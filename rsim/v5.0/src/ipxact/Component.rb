@@ -1,5 +1,6 @@
 ## doc: [[doc/v1/features/ipxact/Component.md]]
 require 'ipxact/Filesets'
+require 'generators/DefaultGenerator'
 class Component < IpxactBase
 	"""
 	class for generating an IP-XACT component, which will be a collection
@@ -17,13 +18,8 @@ class Component < IpxactBase
 
 	# format
 	# tooloption['name'] = 'value'
-	attr :tooloption; # for storing generator's options
+	#attr :tooloption; # for storing generator's options
 
-	# A hash used to store dirs, available pairs:
-	# [:published] -> the published dir of this component, out/components/<CompName>
-	# [:source] -> the source node dir of this component, for different blocks, the source is different.
-	# TODO, which will create unique id for different nodes for this component.
-	attr :dirs;
 
 	# indicates the component type.
 	# :hdl
@@ -36,7 +32,7 @@ class Component < IpxactBase
 
 	attr :paramovrds;
 
-	attr_accessor :needs;
+	attr :needs;
 
 public
 	def initialize(name,t) ##{{{
@@ -45,8 +41,11 @@ public
 		@toolchain=nil;@type=t;
 		# default generator is used while use nodes not specified a special generator.
 		@toolname='DefaultGenerator';
-		@tooloption={};@paramovrds={};
+		@paramovrds={};
+		#@tooloption={};
 		@needs=[];
+		# a default toolchain is built when component created, if user has
+		setupDefaultGenerator;
 	end ##}}}
 
 	## fileset command, to specify source files of this component, files can be specified
@@ -54,13 +53,16 @@ public
 	## the opts is optional configs for fileset, for example, some of the files are part of
 	## the source file, but shall not generated in filelist, then an option can be added like:
 	## fileset :filelist=>false, "*.svh"
-	def fileset(opts={},*args) ##{{{
-		nodepath = currentNodeLocation(:path);
-		$mp.debug("fileset(#{opts},#{args}) called by node(#{nodepath}/node.rh)");
+	def fileset(args,opts={}) ##{{{
+		args = [args] if args.is_a?(String);
+		nodeloc = currentNodeLocation(:full);
+		path = currentNodeLocation(:path);
+		Rsim.mp.debug("fileset(#{opts},#{args}) called by node(#{nodeloc})");
 		# by default, the files added by fileset will be added into filelist
 		opts[:filelist] = true unless opts.has_key?(:filelist);
 		args.each do |fptrn|
-			@filesets.addfiles(nodepath,fptrn,opts);
+			Rsim.mp.debug("calling addfiles(#{path},#{fptrn},#{opts})");
+			@filesets.addfiles(path,fptrn,opts);
 		end
 	end ##}}}
 
@@ -73,54 +75,40 @@ public
 	# if tool is :default, then will return the generator, else set @toolchain
 	# when user call generator with empty args like: generate, which will return curretn defined generator,
 	# if user not specified a component's generate, then it will use the :default type.
-	def generator(tool=nil,*args) ##{{{
-		if tool==nil
-			# this will only be called by config to setup options,
-			return @tooloption;
-		end
-		@toolname = %Q|#{tool.to_s.capitalize}Generator|;
-		buildGenerator;
-	end ##}}}
+	def generator(name=nil) ##{{{
+		# this will only be called by config to setup options,
+		Rsim.mp.debug("generating called, with name(#{name})");
+		return @toolchain if name==nil;
 
-	## params, to declare parameters for this component, params can be overridden by a design configuration
-	## params shall be declared with a format as a hash, like:
-	## params :pa=>'10',:pb=>11 ...
-	## those params will be finally defined as an instance variable in this component, and it can be used
-	## to determine the behavior of component blocks.
-	def params(plist) ##{{{
-		plist.each_pair do |p,v|
-			p=p.to_sym;valueUsed = v;
-			valueUsed = @paramovrds[p] if @paramovrds.has_key?(p);
-			self.instance_variable_set("@#{p}".to_sym,valueUsed);
-		end
+		# if name is not nil, which means called by generator('xxx')
+		name = name.to_s;
+		return if name=='default'; # return if user specified a default generator
+		# if user specifies other toolchains, then need rebuild it.
+		@toolname = %Q|#{name.to_s.capitalize}Generator|;
+		buildGenerator(@toolname);
 	end ##}}}
 
 	# called by config to override a certain param, this will be stored in @paramovrds while, the component
 	# is elaborated and params command is called to setup a new param, then it will check the @paramovrds hash.
-	# using exmaples, from DesignConfig:
+	# using examples, from DesignConfig:
 	# - design.compA.param :pa=>'xxx'
-	def param(opts={}) ##{{{
-		opts.each_pair do |p,v|
-			@paramovrds[p.to_sym] = v;
+	def param(opts,parent=self) ##{{{
+		if parent.is_a?(DesignConfig)
+			opts.each_pair do |p,v|
+				@paramovrds[p.to_sym] = v;
+			end
+		else
+			# declaration
+			declareParam opts;
 		end
-	end ##}}}
-
-	## API: need, this used by a component to indicate that if users want to embed this component,
-	# it's dependent requirement will be embeded as well. In a design,
-	# different component may need same requirements, so in design
-	## level, will do unique operation to skip duplicate quoting of the same component.
-	# the needed components shall be loaded by rhload before, or will report cannot find component issue.
-	def need(comp) ##{{{
-		# this is used only while building this component, the needed component shall be built as well.
-		@needs << comp; #TODO, this part code may be changed while creating BuildFlow
 	end ##}}}
 
 
 	## API: elaborate, to execute the blocks while stored by user nodes.
 	# the given config is the object that the target config.
-	def elaborate(config) ##{{{
-		#TODO, not used yet, @config = config;
+	def elaborate() ##{{{
 		result = evalUserNodes(:component,self);
+		Rsim.mp.debug("Component(#{@vlnv}) elaborate done");
 		return result;
 	end ##}}}
 
@@ -131,14 +119,37 @@ public
 
 private
 
-	def buildGenerator ##{{{
-		$mp.debug("build generator(#{@toolname}) for component(#{name})");
-		require "generators/#{@toolname}"
-		@toolchain = eval %Q|#{@toolname}.new()|;
-#TODO, require setOptions api in generator, to setup a hash format option into it.
-		@toolchain.setOptions(@tooloption);
+	def buildGenerator(name) ##{{{
+		Rsim.mp.debug("build generator(#{name}) for component(#{@vlnv}), current generator(#{@toolchain.name})");
+		require "generators/#{name}"
+		newtool = eval %Q|#{name}.new(@toolchain)|;
+		@toolchain = newtool;
 	end ##}}}
 
+	## declareParam, to declare parameters for this component, params can be overridden by a design configuration
+	## params shall be declared with a format as a hash, like:
+	## params :pa=>'10',:pb=>11 ...
+	## those params will be finally defined as an instance variable in this component, and it can be used
+	## to determine the behavior of component blocks.
+#TODO, if multiple configs has multiple overrides, this base shall recognize it for build flow which will actually build
+# only one config.
+	def declareParam(plist) ##{{{
+		Rsim.mp.debug("declarParam(#{plist})");
+		plist.each_pair do |p,v|
+			p=p.to_sym;valueUsed = v;
+			valueUsed = @paramovrds[p] if @paramovrds.has_key?(p);
+			self.instance_variable_set("@#{p}".to_sym,valueUsed);
+		end
+	end ##}}}
+
+
+	## setupDefaultGenerator, a default toolchain is built hwne component created, and config can
+	# set options firstly into this toolchain, if users update the toolchain to what they expected
+	# the options will be copied to it as well.
+	def setupDefaultGenerator; ##{{{
+		@toolchain = DefaultGenerator.new();
+		#puts "#{__FILE__}:(setupDefaultGenerator) is not ready yet."
+	end ##}}}
 end
 
 ## define a global command: component, which used by node files to declare a component
@@ -148,15 +159,11 @@ end
 ## t=:tb, used to tell rsim current is a testbench component.
 def component(name,t=:others,&block) ##{{{
 	isNew = false;
-#TODO, require find in Rsim module, which actually call: @core.db.find ...
-# to find if this type of the certain name model been created before.
 	c = Rsim.find(:Component,name);
 	if c==nil
 		c = Component.new(name,t);
 		isNew=true;
 	end
 	c.addCodeBlock(block);
-#TODO, require register in Rsim module, which actually call: @core.db.register...
-# to register a new component into db.
 	Rsim.register(c) if isNew;
 end ##}}}

@@ -3,7 +3,7 @@ Object connections
 """	
 require 'ipxact/DesignView'
 
-class Design < MetaData
+class Design < IpxactBase
 	"""
 	Description, for the ipxact design concept, created while user calls a global design method
 	public APIs
@@ -13,16 +13,16 @@ class Design < MetaData
 	- TODO.
 	"""
 	
-	attr :views;
+	attr_accessor :views;
 	# format: @comps['componentname']=object
 	attr :comps;
 
-	attr_accessor :name;
+	attr :targetView;
 
 	def initialize(n) ##{{{
 		# format: @views['viewname'] = viewobject.
-		@views={};
-		@name = n;
+		@views={}; @targetView='';
+		super(n);
 	end ##}}}
 public
 
@@ -32,23 +32,58 @@ public
 		parent = nil;
 		parent = findView(name,opts[:clones]) if opts.has_key?(:clones);
 		v = DesignView.new(name,parent);
-		v.addBlock(&block);
+		v.addBlock(block);
 		v.elaborate;
 		@views[v.name] = v;
+	end ##}}}
+
+	"""
+	addBlock(b), add the design's code block into the attr
+	"""
+	def addBlock(b) ##{{{
+		push(b.source_location,b);
 	end ##}}}
 
 
 	## API: elaborate, to eval the blocks in different view, will eval blocks where it
 	## stored.
 	def elaborate ##{{{
-		#TODO, not used, elaborateComponentsIncluded;
+		Rsim.mp.debug("elaborating design #{@vlnv}");
+		# eval blocks
+		evalUserNodes(:design,self);
+
+		# elaborate views
 		@views.each_pair do |n,o|
 			o.elaborate;
 		end
-		#TODO
+
+		# setup configured views
+		#setupView(@targetView);
 	end ##}}}
 
+	"""
+	setview(name), set to local attr that this config uses the name of the view
+	"""
+	def setview(name) ##{{{
+		#@targetView = name;
+		setupView(name);
+	end ##}}}
+	"""
+	setupView(name), called by DesignConfig in view command, to setup this design's view,
+	instantiating the components that can be called hierarchically like:
+	design.a, design.compB... The hierarchy name is the instance name.
+	"""
+	def setupView(name) ##{{{
+		view = findView(name,name);
+		view.instances.each_pair do |inst,comp|
+			self.define_singleton_method inst.to_sym do
+				return comp;
+			end
+		end
+	end ##}}}
 private
+
+
 
 	# according to the given name, to find and return the view object in current @views.
 	# sview -> used for report error, where view block this findView is called
@@ -56,8 +91,7 @@ private
 	def findView(sview,name) ##{{{
 		name = name.to_sym;
 		return @views[name] if @views.has_key?(name);
-		raise NodeException.new("the parent view(#{name}) not exists of view(#{sview})");
-		return nil;
+		raise UserException.new("the parent view(#{name}) not exists of view(#{sview})");
 	end ##}}}
 
 	#TODO, to be deleted, ## API: elaborateComponentsIncluded, to elaborate the components within this design, duplicated
@@ -74,7 +108,7 @@ def design(name,&block) ##{{{
 	d=Rsim.find(:design,name);
 	if d==nil
 		d=Design.new(name);
-		Rsim.register(:design,d);
+		Rsim.register(d);
 	end
 	d.addBlock(block);
 end ##}}}
