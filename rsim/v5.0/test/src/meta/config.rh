@@ -1,0 +1,6 @@
+config :TestConfigA do
+	view :common
+	simulator :xrun
+	opt design.rtl.param :usea => false
+	need :rtl
+end
