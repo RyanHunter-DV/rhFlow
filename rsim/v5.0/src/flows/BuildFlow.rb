@@ -70,14 +70,16 @@ private
 			@shell.makedir(home);
 # TODO, require build api in generator, the builder is current object
 			Rsim.mp.debug("building component(#{c.vlnv}) by generator(#{c.generator.name})");
-			c.generator.build(self,home);
+			c.generator.build(c,home);
 # TODO, require run api in generator, the builder is current object
-			c.generator.run(self,home);
+			c.generator.run(c,home);
 		end
 	end ##}}}
 	## private API: buildFilelist, to generate the filelist for target simulator
 	## this step called after elaborate, so the @config shall be ready now.
 	def buildFilelist ##{{{
+		#TODO, filelist flow shall be rebuilt, because the generator can generate the filelist.
+		# 
 		incdirPrefix = @config.simulator.compile.option.format('incdir');
 		incdirs=[];sources=[];
 		# get nested components' filesets

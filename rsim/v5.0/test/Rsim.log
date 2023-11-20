@@ -1,4 +1,39 @@
-[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/UserInterface.rb:9:in `initialize'] setup node step
-[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/DynamicLoader.rb:19:in `block in loading'] loading step(rhload)
-[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/dl/rhload.rb:8:in `initialize'] getting opts({})
-[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/DynamicLoader.rb:19:in `block in loading'] loading step(build)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/Rsim.rb:46:in `init'] message printer completed for debug mode
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/UserInterface.rb:10:in `initialize'] setup node step
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/UserInterface.rb:94:in `setupStep'] setupStep(node,{:node=>["./root.rh"]})
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/UserInterface.rb:14:in `block (2 levels) in initialize'] detect -b option
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/UserInterface.rb:94:in `setupStep'] setupStep(build,{:config=>"TestConfigA"})
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ToolConfig.rb:32:in `initStem'] getting STEM(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/DynamicLoader.rb:27:in `block in loadFlows'] loading step(node)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/DynamicLoader.rb:32:in `block in loadFlows'] create NodeFlow with options:({:node=>["./root.rh"], :tconfig=>#<ToolConfig:0x0000000134114d30 @stem="/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test", @commonDirs={:out=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out", :logs=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/logs", :configs=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/configs", :components=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/components"}>, :ui=>#<UserInterface:0x00000001341c6828 @steps=[:node, :build], @stepOpts={:node=>{...}, :build=>{:stem=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test", :config=>"TestConfigA"}}, @options={:stem=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test"}>})
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/DynamicLoader.rb:27:in `block in loadFlows'] loading step(build)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/DynamicLoader.rb:32:in `block in loadFlows'] create BuildFlow with options:({:stem=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test", :config=>"TestConfigA", :tconfig=>#<ToolConfig:0x0000000134114d30 @stem="/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test", @commonDirs={:out=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out", :logs=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/logs", :configs=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/configs", :components=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/components"}>, :ui=>#<UserInterface:0x00000001341c6828 @steps=[:node, :build], @stepOpts={:node=>{:node=>["./root.rh"], :tconfig=>#<ToolConfig:0x0000000134114d30 @stem="/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test", @commonDirs={:out=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out", :logs=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/logs", :configs=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/configs", :components=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/components"}>, :ui=>#<UserInterface:0x00000001341c6828 ...>}, :build=>{...}}, @options={:stem=>"/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test"}>})
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/flows/NodeFlow.rb:36:in `run'] loading entry node:(./root.rh)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/Rsim.rb:71:in `find'] finding Rtl in Component
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/IpxactBase.rb:28:in `push'] pushing nodes, loc(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/src/rtl/node.rh,1)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/Rsim.rb:71:in `find'] finding TestDesign in design
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/IpxactBase.rb:28:in `push'] pushing nodes, loc(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/src/meta/design.rh,1)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/Rsim.rb:71:in `find'] finding TestConfigA in config
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/IpxactBase.rb:28:in `push'] pushing nodes, loc(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/src/meta/config.rh,1)
+[INFO@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/flows/NodeFlow.rb:38:in `run'] starting elaborating the user nodes
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Design.rb:51:in `elaborate'] elaborating design TestDesign
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/Rsim.rb:71:in `find'] finding Rtl in Component
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/Rsim.rb:71:in `find'] finding Rtl in Component
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/DataPool.rb:37:in `block in elaborate'] elaborating config: TestConfigA
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/DesignConfig.rb:108:in `simulator'] load and creating simulator: Xcelium
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Component.rb:137:in `declareParam'] declarParam({:usea=>false})
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/DataPool.rb:37:in `block in elaborate'] elaborating component: Rtl
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Component.rb:137:in `declareParam'] declarParam({:usea=>true})
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Component.rb:60:in `fileset'] fileset({},["test1.v"]) called by node(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/src/rtl/node.rh,1)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Component.rb:64:in `block in fileset'] calling addfiles(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/src/rtl,test1.v,{:filelist=>true})
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Filesets.rb:24:in `addfiles'] searching path(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/src/rtl), patter(test1.v)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Filesets.rb:25:in `addfiles'] found files: (["/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/src/rtl/test1.v"])
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Component.rb:111:in `elaborate'] Component(Rtl) elaborate done
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/Rsim.rb:71:in `find'] finding TestConfigA in Config
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/flows/BuildFlow.rb:134:in `block in buildCommons'] building common dir(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/flows/BuildFlow.rb:134:in `block in buildCommons'] building common dir(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/logs)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/flows/BuildFlow.rb:134:in `block in buildCommons'] building common dir(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/configs)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/flows/BuildFlow.rb:134:in `block in buildCommons'] building common dir(/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/test/out/components)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Component.rb:80:in `generator'] generating called, with name()
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/flows/BuildFlow.rb:72:in `block in buildComponents'] building component(Rtl) by generator(DefaultGenerator)
+[DEBUG@/Users/ryanhunter/project/local/rhFlow/rsim/v5.0/src/ipxact/Component.rb:80:in `generator'] generating called, with name()

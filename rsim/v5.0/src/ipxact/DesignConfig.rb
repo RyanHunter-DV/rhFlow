@@ -95,6 +95,15 @@ public
 	## when input arg is nil, which users didn't enter any arg, then this command will return the specified simulator.
 	def simulator(toolmark=nil) ##{{{
 		return getSimulator if toolmark==nil;
+		toolmark = toolmark.to_sym;
+		unless @marks.has_key?(toolmark)
+			msg = "invalid simulator mark(#{toolmark}), please use following types:\n";
+			@marks.each_key do |k|
+				msg += "- #{k}\n";
+			end
+			Rsim.mp.error(msg);
+			raise UserException.new('error in using simulator');
+		end
 		tool = @marks[toolmark].to_s;
 		Rsim.mp.debug("load and creating simulator: #{tool}");
 		opts={:filelist=>@dirs[:fulllist]};
