@@ -1,4 +1,0 @@
-component :RhDassExample do
-	generator :RhDass # specify the way to generate source files
-	fileset '*.vsrc'
-end

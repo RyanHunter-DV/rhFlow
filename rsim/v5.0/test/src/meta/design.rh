@@ -1,5 +1,0 @@
-design :TestDesign do
-	view :common do
-		instance 'Rtl', :as => 'rtl'
-	end
-end

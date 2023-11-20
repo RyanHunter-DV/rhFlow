@@ -1,9 +1,0 @@
-{
-	"nodes":[
-		{"type":"text","text":"`fileset '*.v' ,:filelist=>false`","id":"c7a84d62e7bb8ea3","x":-500,"y":-320,"width":380,"height":60},
-		{"id":"6d28403d89b04870","x":-671,"y":40,"width":331,"height":100,"type":"text","text":"component :name do\n\tgenerator :copy...\nend"},
-		{"id":"4a44767b65fcbca8","x":-671,"y":200,"width":331,"height":100,"type":"text","text":"component :name do\n....\nend"},
-		{"id":"1b99d27f49d6108e","x":-840,"y":-171,"width":530,"height":171,"type":"text","text":"```ruby\ncomponent :name do\n\tparams :pa=>10,:pb=>'hello'\n\n\tif @pa==10\n\t\tneed :xxxx\n\telse\n\t\tneed :b\n\tend\n```"}
-	],
-	"edges":[]
-}

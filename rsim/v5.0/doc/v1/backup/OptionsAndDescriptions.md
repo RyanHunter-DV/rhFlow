@@ -1,1 +1,0 @@
-This chapter can be the display message of the tool.

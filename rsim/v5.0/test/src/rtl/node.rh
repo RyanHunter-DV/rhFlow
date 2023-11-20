@@ -1,8 +1,0 @@
-component :Rtl do
-	param :usea => true
-	if @usea
-		fileset 'test1.v'
-	else
-		fileset 'test2.v'
-	end
-end
