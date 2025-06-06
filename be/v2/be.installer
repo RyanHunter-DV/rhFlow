@@ -61,6 +61,7 @@ def main()
 	sig = 0;
 	shell = File.basename(ENV['SHELL']);
 	# shell = 'bash'; ## for test only
+	shell='sh' if shell=='zsh';
 	if shell=='sh'||shell=='bash'||shell=='csh'
 		puts "using shell: #{shell}";
 		begin
