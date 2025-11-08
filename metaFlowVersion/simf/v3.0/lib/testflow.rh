@@ -27,6 +27,7 @@ public
 	## run from publish to sim
 	def run ##{{{
 		@runs.each do |b|
+			## puts "#{b.source_location}"
 			b.call;
 		end
 		@flow.run
@@ -45,7 +46,7 @@ private
 		@flow.define_singleton_method :setupSimCommand do |*userOpts| ##{
 			builtins = [];
 			## TODO, add builtin options
-			puts "generating sim commands"
+			puts "generating sim commands for test: #{@test.name}"
 			userOpts.push(*(@test.simopts[@test.simulator.name.to_sym]));
 			puts "user opts:#{userOpts}";
 			@test.simulator.generateCommand :sim,*builtins,*userOpts;
@@ -53,7 +54,7 @@ private
 		@flow.define_singleton_method :sim do ##{
 			builtins = [];
 			userOpts = [];
-			puts "generating sim commands"
+			puts "generating sim commands for test: #{@test.name}"
 			userOpts.push(*(@test.simopts[@test.simulator.name.to_sym]));
 			## puts "user opts:#{userOpts}";
 			@test.simulator.generateCommand :sim,*builtins,*userOpts;
