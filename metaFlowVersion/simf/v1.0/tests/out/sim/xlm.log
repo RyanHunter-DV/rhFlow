@@ -1,0 +1,8 @@
+xrun(64): 18.03-s001: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	18.03-s001: Started on Jun 06, 2022 at 08:03:14 PDT
+xrun
+	-sv
+	-64bit
+	-l xlm.log
+xrun: *E,NOMOPT: You have not specified a -R (or a -r <snapshot>) option, nor have you specified a source file for compilation.
+TOOL:	xrun(64)	18.03-s001: Exiting on Jun 06, 2022 at 08:03:14 PDT  (total: 00:00:00)
