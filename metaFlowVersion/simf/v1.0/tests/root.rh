@@ -1,1 +1,0 @@
-compopt :xlm, '-sv','-64bit','-l xlm.log'

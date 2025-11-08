@@ -1,0 +1,16 @@
+#! /usr/bin/env ruby
+# this shell is only for v1, other versions to generate another file.
+$toolhome = File.dirname(File.aboslute_path(__FILE__))
+$LOAD_PATH << $toolhome;
+$version  = 'v1';
+$LOAD_PATH << File.join($toolhome,"lib_#{$version}")
+
+require "lib_#{$version}/mainentry.rb";
+
+def main
+	entry = MainEntry.new();
+	return entry.run();
+end
+
+$sig = main;
+exit $sig;

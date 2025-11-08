@@ -1,1 +1,0 @@
-../simf -e 'buildflow(:testConfig).run'
